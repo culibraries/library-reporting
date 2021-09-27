@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-09-27T13:53:34.594Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36" etag="xogq7YO4vMIHXSkdIHAD" version="15.3.5" type="github">
+<mxfile host="app.diagrams.net" modified="2021-09-27T14:10:54.488Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36" etag="n3F0ZoOPqvTsM4IfCxNh" version="15.3.5" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1083" dy="1335" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -50,7 +50,7 @@
             <mxPoint x="481" y="320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ZLskoHaiqCr__3fe_2wh-25" value="&lt;h1&gt;How the LDP works&lt;/h1&gt;&lt;p&gt;The LDP is an app that runs separately from FOLIO with its own database, but pulls data from FOLIO. There are three ways to get data out of the LDP database: the LDP UI, FOLIO Analytics (raw SQL) and visual query builders like Tableau. FOLIO in-app reports pull data directly from FOLIO.&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;hachureGap=4;pointerEvents=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="ZLskoHaiqCr__3fe_2wh-25" value="&lt;h1&gt;How reporting works in FOLIO&lt;/h1&gt;&lt;p&gt;The LDP is an app that runs separately from FOLIO with its own database, but pulls data from FOLIO. There are three ways to get data out of the LDP database: the LDP UI, FOLIO Analytics (raw SQL) and visual query builders like Tableau. FOLIO in-app reports pull data directly from FOLIO.&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;hachureGap=4;pointerEvents=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="164" y="90" width="536" height="120" as="geometry" />
         </mxCell>
         <mxCell id="ZLskoHaiqCr__3fe_2wh-26" value="The LDP App is a process that pulls data from FOLIO once a day and puts it it its own special database." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;hachureGap=4;pointerEvents=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
@@ -85,6 +85,9 @@
             <mxPoint x="70" y="520" as="sourcePoint" />
             <mxPoint x="120" y="470" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="0NKoxsxA9t4i3aU0X2-a-16" value="In-app repports pul data directly out of FOLIO." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;hachureGap=4;pointerEvents=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="640" y="460" width="120" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

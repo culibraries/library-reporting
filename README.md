@@ -6,7 +6,9 @@ This repo both documents and contains the code for running reports. The "report"
 It is our intention that this repository serve as the central hub for all reporting documentation. If a report exists, it should have a directory and a README.md file, even if it only contains notes or TODOs. In fact, putting notes and TODOs in this file is totally fine.
 
 # Getting started
-Clone the repo, make a branch for your work, add some stuff, and push.
+Install git following the instructions [here](https://github.com/git-guides/install-git).
+
+Clone the repo, make a branch for your work, add some stuff, and push. Here's how.
 
 ```shell
 # Clone this repo.
@@ -29,6 +31,8 @@ git push --set-upstream origin issue-1-add-sections-to-readme-github
 That last bit says "push this branch to the remote repository" (the upstream origin part).
 
 Afterwords you can continue to push using the simpler `git push`. It will remember where you're pushing to.
+
+The [git guides](https://github.com/git-guides) are super helpful for more documentation if that's your thing.
 
 ## Authenticating to github
 You don't need to be logged into github to `clone` and `pull`. But you do need to be logged in to `push`. Creating a personal access token is the way to log in. Once you have done so, you use it like a password. Also make sure to protect it like one too!

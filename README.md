@@ -5,12 +5,46 @@ This repo both documents and contains the code for running reports. The "report"
 
 It is our intention that this repository serve as the central hub for all reporting documentation. If a report exists, it should have a directory and a README.md file, even if it only contains notes or TODOs. In fact, putting notes and TODOs in this file is totally fine.
 
-# Getting started
+# Contributing to this project
+There are several ways to contribute. All are welcome.
+
+* You can create a new report
+* You can run an existing report
+* You can create an issue or comment on one
+
+See the section below for the steps for creating a report. To run an existing report see the documentation for existing reports in the wiki.
+
+Creating an issue is the easiest way to contribute. Have an idea for a report? Create an issue for it first, describing what you'd like to do.
+
+# What is a report?
+A report consists of data that helps you in your work. It may come from FOLIO or it may come from other systems. After a report is "run" it may consist of columns and rows of data. But a report, as we define it, also refers to the _documentation for how to generate the report_. These docs will allow others, and maybe even your future self, to run and perhaps contribute to the report's development.
+
+# Creating a report
+All new reports should have an issue and a wiki page. All existing reports will have at least a wiki page.
+
+1. Check the [wiki](/wiki) to see to see if your report exists. If it does, follow the documentation there.
+2. If nothing in the wiki exists yet, [create an issue](/issues) for your report. Without an issue it is likely your report won't be seen by others or get worked on.
+3. Create a wiki page for your report. Congratulations, your report now exists! Link to the issue you created on the wiki page for the time being. Say something like "this is work in progress".
+4. Consider tagging other interested parties in your issue. Issues are great places to collaborate and track progress.
+5. Describe the goals of your report. This can be as simple as a few sentences or something more involved -- whatever makes sense. This can be done on the wiki page or in the issue if you're just getting started.
+6. Figure out the [data sources](/wiki/report-data-sources) for your report. There are many ways to get library data, from running a query inside of FOLIO, to creating a SQL query. Document your progress in the wiki page or your issue, whatever seems most appropriate.
+7. Ask for help! If at any point in the process, you're feeling stuck, reach out to the reporting pod on Teams. We'll get you going in the right direction!
+
+## Issue or wiki?
+Issues are good for collaboration. The wiki page is more permanent. Issues ultimately should be closed when the work is complete.
+
+# Current reports
+The [wiki](/wiki) is the central location for all documentation of current reports. Check this first to see if your report or something like it already exists or is underway.
+
+# Working with github and git
+Github and git are central to our reporting work. If you need to create or collaborate on a report that has source code associated with it, it is highly recommended that you install and use git on your local machine.
+
+## Installing git
 Install git following the instructions [here](https://github.com/git-guides/install-git).
 
-Clone the repo, make a branch for your work, add some stuff, and push. Here's how.
+Clone this repo, make a branch for your work, add some stuff, and push. Here's how.
 
-```shell
+```sh
 # Clone this repo.
 git clone https://github.com/culibraries/library-reporting.git
 cd library-reporting
@@ -64,6 +98,3 @@ Squashing is almost always good at this stage, because it combines all of your c
 On your local machine, remember to checkout main by doing `checkout main` and then pull your (and other's changes) by doing `git pull`.
 
 If you haven't done a pull request before (don't worry it's easy) you can always ask someone who has to show you the ropes.
-
-# Current reports
-* **[Example report name](example-report/README.md)** - An example report with a link to it's readme file in the report's name

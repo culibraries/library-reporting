@@ -14,6 +14,9 @@ See the section below for the steps for running a report or creating a new repor
 
 Creating an issue is the easiest way to contribute. Have an idea for a report? Follow the steps below for how to get things going.
 
+# Getting access to this repository
+Just ping the pod on Teams with your github username and someone will add you to the repository.
+
 # What is a report?
 A report consists of data that helps you in your work. It may come from FOLIO or it may come from other systems. After a report is "run" it may consist of columns and rows of data. But a report, as we define it, also refers to the _documentation for how to generate the report_. These docs will allow others, and maybe even your future self, to run and perhaps contribute to the report's development.
 

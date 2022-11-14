@@ -35,8 +35,8 @@ paste the content of this file into the reporting tool of your choice
 * [Title Count by Language Codes](collection_development/CD102)
 * [PPOD Title List with Status and Amount Paid](collection_development/CD103)
 
-### EResources Management (ERM)
-* [Film Expiration Search](eresources_management/ERM100)
+### eResource Management (ERM)
+* [Film Expiration Search](eresource_management/ERM100)
 
 ### External Reporting (EXR)
 

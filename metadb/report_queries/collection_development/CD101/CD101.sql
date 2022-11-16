@@ -1,4 +1,4 @@
-/** Documentation of Collection Development: Item Field Statistics Report 
+/** Documentation of Collection Development: Item Count By Material Type 
 
 DERIVED TABLES
 

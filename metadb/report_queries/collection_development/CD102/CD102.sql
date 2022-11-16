@@ -1,4 +1,4 @@
-/** Documentation of Collection Development: Title Count by Language Codes 
+/** Documentation of Collection Development: Item Count by Language Codes 
 
 DERIVED TABLES
 

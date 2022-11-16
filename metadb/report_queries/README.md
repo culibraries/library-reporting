@@ -31,8 +31,8 @@ paste the content of this file into the reporting tool of your choice
 
 ### Collection Development (CD)
 * [Circulation Activity](collection_development/CD100)
-* [Item Field Statistics](collection_development/CD101)
-* [Title Count by Language Codes](collection_development/CD102)
+* [Item Count By Material Type](collection_development/CD101)
+* [Item Count by Language Codes](collection_development/CD102)
 * [PPOD Title List with Status and Amount Paid](collection_development/CD103)
 
 ### eResource Management (ERM)
@@ -41,5 +41,8 @@ paste the content of this file into the reporting tool of your choice
 ### External Reporting (EXR)
 
 ### Materials Management (MM)
+* [Trace Lost and Missing Lists](materials_management/MM100)
 
 ### Patron Services (PS)
+* [Overdue Items](patron_services/PS100)
+* [Coming Billed](patron_services/PS101)

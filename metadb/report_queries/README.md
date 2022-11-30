@@ -1,19 +1,19 @@
 # The FOLIO Report Query Repository 
 
 This repository stores queries designed to produce reports of FOLIO data in 
-a local LDP metadb instance.  Many of these queries have been developed
+a local LDP Metadb instance.  Many of these queries have been developed
 by the FOLIO reporting community or adapted from them.  Some queries are custom queries developed by and specific to the University of Colorado Boulder FOLIO instance.
 
 
-## How to find a query
+## How to find a report query
 
 You can find queries by browsing the subfolders in this folder or by
 reviewing the [Query Table of Contents](#query-table-of-contents) below.
 
-## Understanding query files
+## Understanding report query files
 
-Queries are divided into different tracks and given a track code and number.
-In the folder for each query, you should see a .sql file and a README
+Reports are divided into different tracks and given a track code 
+and number.  For each report, you should see a .sql file and a README
 file.
 
 The README file summarizes the purpose, output, and special instructions
@@ -26,14 +26,23 @@ paste the content of this file into the reporting tool of your choice
 ## Query Table of Contents
 
 ### Acquisitions (ACQ)
+* [Reconciliation Report](acquisitions/ACQ100)
 
 ### Catalog Management (CM)
+* [Backstage Record Pull](catalog_management/CM100)
+* [Backstage Records With 948 Field Added](catalog_management/CM101)
+* [GoldRush Holdings](catalog_management/CM102)
+* [OCLC MARC Holdings (LHRs)](catalog_management/CM103)
+* [Holdings To OCLC](catalog_management/CM104)
+* [Occam's Reader](catalog_management/CM105)
+* [RAPID - Print Monographs](catalog_management/CM106)
+* [RAPID - Print Serials](catalog_management/CM107)
 
 ### Collection Development (CD)
 * [Circulation Activity](collection_development/CD100)
 * [Item Count By Material Type](collection_development/CD101)
-* [Item Count by Language Codes](collection_development/CD102)
-* [PPOD Title List with Status and Amount Paid](collection_development/CD103)
+* [Item Count By Language Codes](collection_development/CD102)
+* [PPOD Title List With Status And Amount Paid](collection_development/CD103)
 
 ### eResource Management (ERM)
 * [Film Expiration Search](eresource_management/ERM100)
@@ -41,7 +50,7 @@ paste the content of this file into the reporting tool of your choice
 ### External Reporting (EXR)
 
 ### Materials Management (MM)
-* [Trace Lost and Missing Lists](materials_management/MM100)
+* [Trace Lost And Missing Lists](materials_management/MM100)
 
 ### Patron Services (PS)
 * [Overdue Items](patron_services/PS100)

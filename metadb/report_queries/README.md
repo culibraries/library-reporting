@@ -27,6 +27,7 @@ paste the content of this file into the reporting tool of your choice
 
 ### Acquisitions (ACQ)
 * [Reconciliation Report](acquisitions/ACQ100)
+* [Order Details Report](acquisitions/ACQ101)
 
 ### Catalog Management (CM)
 * [Backstage Record Pull](catalog_management/CM100)

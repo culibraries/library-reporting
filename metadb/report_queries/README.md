@@ -28,6 +28,7 @@ paste the content of this file into the reporting tool of your choice
 ### Acquisitions (ACQ)
 * [Reconciliation Report](acquisitions/ACQ100)
 * [Order Details Report](acquisitions/ACQ101)
+* [Unpaid Serials Report](acquisitions/ACQ102)
 
 ### Catalog Management (CM)
 * [Backstage Record Pull](catalog_management/CM100)
@@ -40,19 +41,22 @@ paste the content of this file into the reporting tool of your choice
 * [RAPID - Print Serials](catalog_management/CM107)
 
 ### Collection Development (CD)
-* [Circulation Activity](collection_development/CD100)
-* [Item Count By Material Type](collection_development/CD101)
-* [Item Count By Language Codes](collection_development/CD102)
-* [PPOD Title List With Status And Amount Paid](collection_development/CD103)
+* [Title List Report](collection_development/CD100)
+* [PASCAL Criteria Lists](collection_development/CD101)
+* [583 Bib Search](collection_development/CD102)
+* [956 Bib Search](collection_development/CD103)
 
 ### eResource Management (ERM)
 * [Film Expiration Search](eresource_management/ERM100)
-
-### External Reporting (EXR)
+* [Google Analytics 856 Records Viewed](eresource_management/ERM101)
+* [E-resource that are covered by an agreement](eresource_management/ERM102)
+* [Incorrect Text in URL Field](eresource_management/ERM103)
 
 ### Materials Management (MM)
-* [Trace Lost And Missing Lists](materials_management/MM100)
+* [Google Books Individual Manifests](materials_management/MM100)
 
 ### Patron Services (PS)
 * [Overdue Items](patron_services/PS100)
 * [Coming Billed](patron_services/PS101)
+
+### Reporting & Statistics (RS)

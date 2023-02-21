@@ -1,4 +1,4 @@
-/** Documentation of Collection Development: Circulation Activity Report
+/** Documentation of Collection Development: Title List Report 
 
 DERIVED TABLES
 

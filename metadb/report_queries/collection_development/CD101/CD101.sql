@@ -1,5 +1,4 @@
-/** Documentation of Collection Development: Item Count By Material Type 
-
+/** Documentation of Collection Development: PASCAL Criteria List
 DERIVED TABLES
 
 TABLES

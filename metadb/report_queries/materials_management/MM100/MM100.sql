@@ -1,4 +1,4 @@
-/** Documentation of Materials Management: Trace Lost and Missing Lists 
+/** Documentation of Materials Management: Google Books Individual Manifests 
 
 DERIVED TABLES
 

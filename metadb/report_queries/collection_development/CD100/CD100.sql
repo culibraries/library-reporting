@@ -11,7 +11,7 @@
  */
 WITH parameters AS (
 	SELECT 
-		'Norlin Stacks' ::VARCHAR AS effective_location_filter
+		'' ::VARCHAR AS effective_location_filter
 )
 /*
  * Select Table Details

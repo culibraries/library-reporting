@@ -27,12 +27,13 @@ FILTERS FOR USER TO SELECT:
 	Item Last Out Date < ''
 	Item Create Date <= ''
 	Item Volume = ''	(verify why since this would potentially limit results due to current quality of data for the volume field)
+(Amelia Spann Updated: 3/14/23)
 */
 WITH parameters AS (
 	SELECT 
 		''::VARCHAR AS Effective_Location_Filter,
-		''::TIMESTAMP AS Create_Date_Filter,	--timestamp field
-		''::TIMESTAMPTZ AS Last_Out_Date_Filter	--timestamptz field
+		''::TIMESTAMP AS Create_Date_Filter,	--ie.created_date is a timestamp field
+		''::TIMESTAMPTZ AS Last_Out_Date_Filter	--li.loan_date is a timestamptz field
 		--''::VARCHAR AS Item_Volume_Filter	--Quality of data could limit results, text field
 )		
 SELECT
@@ -47,7 +48,7 @@ SELECT
 	ic.contributor_name AS Contributor,
 	ic2.classification_number AS Instance_Call_Number,
 	ihi.item_level_call_number AS Item_Call_Number,
-	--lrc.num_loans AS Item_Total_Loans,	--Need total loan count not renewal count, so needs new table
+	--lrc.num_loans AS Item_Total_Loans,	--(table also has num_renewals) Need total loan count not renewal count, so needs new table or no? 
 	li.loan_date AS Last_Out_Date
 FROM folio_derived.item_ext AS ie
 LEFT JOIN folio_derived.loans_items AS li ON ie.item_id = li.item_id
@@ -59,10 +60,9 @@ LEFT JOIN folio_derived.instance_classifications AS ic2 ON ihi.instance_id = ic2
 WHERE ie.status_name = 'Available'
 	--AND lrc.num_loans = 0		--Removed until new table has total loan count, see above
 	AND (ie.effective_location_name = (SELECT Effective_Location_Filter FROM parameters) OR (SELECT Effective_Location_Filter FROM parameters) = '')
-	AND (ie.created_date <=  (SELECT Create_Date_Filter FROM parameters) OR (SELECT Create_Date_Filter FROM parameters) = '')
-	AND (li.loan_date < (SELECT Last_Out_Date_Filter FROM parameters) OR (SELECT Last_Out_Date_Filter FROM parameters) = '')
+	AND (ie.created_date <=  (SELECT Create_Date_Filter::TIMESTAMP FROM parameters) OR (SELECT Create_Date_Filter FROM parameters) = '')
+	AND (li.loan_date < (SELECT Last_Out_Date_Filter::TIMESTAMPTZ FROM parameters) OR (SELECT Last_Out_Date_Filter FROM parameters) = '')
 	--AND (ie.volume = (SELECT Item_Volume_Filter FROM parameters) OR (SELECT Item_Volume_Filter FROM parameters) = '') --Quality of data could limit results
 ;
-/* Still getting "SQL Error [42883]: ERROR: operator does not exist: timestamp without time zone <= character varying
-  Hint: No operator matches the given name and argument types. You might need to add explicit type casts." -Same error for < line. 
+/* Getting SQL Error [22007]: ERROR: invalid input syntax for type timestamp: ""
 */

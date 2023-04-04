@@ -1,23 +1,17 @@
-/** Documentation of Catalog Management: Holdings To OCLC
+WITH
+field_998 AS (
+SELECT srs_id, instance_id
+FROM folio_source_record.marc__t
+WHERE field = '998' AND sf = 'c' AND content NOT IN ('f', 'w', 's', 'y', '-', 'b', 'o', 'n', 'g')
+),
+field_994 AS (
+SELECT srs_id
+FROM folio_source_record.marc__t
+WHERE field = '994' AND sf = 'b' AND content = 'UCX'
+)
+SELECT i.id AS instance_id
+FROM folio_inventory.instance AS i
+JOIN field_998 AS r1 ON i.id = r1.instance_id
+LEFT JOIN field_994 AS r2 ON r1.srs_id = r2.srs_id
+WHERE r2.srs_id IS NULL AND (i.creation_date >= '2023-01-27' AND i.creation_date < '2023-02-01');
 
-DERIVED TABLES
-
-TABLES
-
-FILTERS FOR USER TO SELECT:
-*/
-SELECT * FROM folio_source_record.marc__t as marc
-LEFT JOIN folio_inventory.instance as inventory
-  ON inventory.id = marc.instance_id
-  where marc.field= '994' and marc.sf = 'b' and marc.content != 'UCX'
-  and (marc.field = '998' and marc.sf = 'c' and marc."content" != 'f'
-  or marc."content" != 'w'
-  or marc."content" != 's'
-  or marc."content" != 'y'
-  or marc."content" != '-'
-  or marc."content" != 'b'
-  or marc."content" != 'o'
-  or marc."content" != 'n'
-  or marc."content" != 'g')
-	and inventory.creation_date >= '2023-01-01 00:00:00.000'
-	and inventory.creation_date < '2023-01-31 00:00:00.000'

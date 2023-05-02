@@ -6,7 +6,8 @@ WITH parameters AS (
 		'' ::VARCHAR AS fiscal_year_filter, --'FY23', 'FY24'
 		'' ::VARCHAR AS po_workflow_status, -- 'Open', 'Closed'
 		'' ::VARCHAR AS payment_status, --'Awaiting Payment','Fully Paid','Pending',etc...
-		'' ::VARCHAR AS acquisition_method -- 'Purchase','Approval Plan','Demand-Driven Acquisitions (DDA)', etc...
+		'' ::VARCHAR AS acquisition_method, -- 'Purchase','Approval Plan','Demand-Driven Acquisitions (DDA)', etc...
+		'' ::VARCHAR AS ISSN_filter -- 'Enter ISSN'
 ),
 acq AS (
 SELECT 
@@ -15,19 +16,46 @@ acq_unit_id.jsonb #>> '{}' AS acq_unit
 FROM folio_orders.purchase_order
 CROSS JOIN LATERAL jsonb_array_elements(jsonb_extract_path(jsonb, 'acqUnitIds')) WITH ORDINALITY
 AS acq_unit_id (jsonb)
+),
+ISBN AS (
+SELECT
+ii.instance_id AS instance_id,
+string_agg (DISTINCT ii.identifier,' | ') AS ISBN
+FROM folio_derived.instance_identifiers AS ii
+WHERE ii.identifier_type_name = 'ISBN'
+GROUP BY instance_id
+),
+ISSN AS (
+SELECT
+ii.instance_id AS instance_id,
+string_agg (DISTINCT ii.identifier,' | ') AS ISSN
+FROM folio_derived.instance_identifiers AS ii
+WHERE ii.identifier_type_name = 'ISSN'
+GROUP BY instance_id
+),
+publisher AS (
+SELECT 
+ip.instance_id,
+string_agg (DISTINCT ip.publisher, ' | ') AS publisher, 
+string_agg (DISTINCT ip.date_of_publication,' | ') AS publication_date
+FROM folio_derived.instance_publication AS ip
+GROUP BY
+ip.instance_id
 )
 	SELECT
-	a.name AS acquisition_unit,
 	ft.id AS transaction_id,  
+	ft.SOURCE,
+	a.name AS acquisition_unit,
 	u.username AS created_by,
     ftj.creation_date,
     po.date_ordered,
+    amt.value AS acquisition_method,
+    pol.order_format,
     po.workflow_status,
     pol.payment_status,
     po.order_type,
     pol.receipt_status,
     pol.receipt_date,
-    ft.SOURCE,
     ft.amount AS amount,
     ft.currency AS currency,
     ft.transaction_type,
@@ -42,15 +70,13 @@ AS acq_unit_id (jsonb)
     jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'initialAmountEncumbered')::numeric(19,4) AS transaction_encumbrance_initial_amount,
     pol.po_line_number AS encumbrance_po_line_number,
     po.po_number AS encumbrance_po_number,
-    pol.description,
-    amt.value AS acquisition_method,
-    po.order_type,
-    pol.order_format,
+    pol.description, 
     po.re_encumber,
     t.title,
-    string_agg (DISTINCT ii.identifier,' | ') AS ISBN,
-    string_agg (DISTINCT ip.publisher, ' | ') AS publisher, 
-    string_agg (DISTINCT ip.date_of_publication,' | ') AS date_publication,
+    ISBN.ISBN,
+    ISSN.ISSN,
+    publisher.publisher,
+    publisher.publication_date,
     t.subscription_from,
     t.subscription_to,
     oo.name AS vendor
@@ -70,8 +96,9 @@ FROM
     LEFT JOIN folio_finance.fiscal_year__t AS f ON ft.fiscal_year_id = f.id 
     LEFT JOIN folio_orders.acquisition_method__t AS amt ON pol.acquisition_method = amt.id
     LEFT JOIN folio_orders.titles__t AS t ON jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'sourcePoLineId')::uuid = t.po_line_id 
-    LEFT JOIN folio_derived.instance_identifiers AS ii ON pol.instance_id = ii.instance_id 
-    LEFT JOIN folio_derived.instance_publication AS ip ON pol.instance_id = ip.instance_id
+    LEFT JOIN ISBN ON pol.instance_id = ISBN.instance_id 
+    LEFT JOIN ISSN ON pol.instance_id = ISSN.instance_id 
+    LEFT JOIN publisher ON pol.instance_id = publisher.instance_id
 WHERE
 	(ff.code = (SELECT fund_filter FROM parameters) OR (SELECT fund_filter FROM parameters) = '') 
 	AND
@@ -84,38 +111,48 @@ WHERE
 	(amt.value= (SELECT acquisition_method FROM parameters) OR (SELECT acquisition_method FROM parameters) = '')
 	AND 
 	(a.name= (SELECT acquisitions_unit FROM parameters) OR (SELECT acquisitions_unit FROM parameters) = '')
+	AND 
+	(ISSN.ISSN= (SELECT ISSN_filter FROM parameters) OR (SELECT ISSN_filter FROM parameters) = '')
+	--
+	--OPTIONAL Publisher filter. Remove "--" to make filter active. 
+--AND publisher.publisher LIKE '%Duke University%'
+	--
 GROUP BY
-	a.name,
-	ft.id,
-	u.username,
-	ftj.creation_date,
-    po.date_ordered,
-    po.workflow_status,
-    pol.payment_status,
-    po.order_type,
-    pol.receipt_status,
-    pol.receipt_date,
-    ft.SOURCE,
-    ft.amount,
-    ft.currency,
-    ft.transaction_type,
-    e.name,
-    f.code,
-    ff.code,
-    ff.name,
-    jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'status'),
-    jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'subscription'),
-    jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'amountAwaitingPayment')::numeric(19,4),
-    jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'amountExpended')::numeric(19,4),
-    jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'initialAmountEncumbered')::numeric(19,4),
-    pol.po_line_number,
-    po.po_number,
-    pol.description,
-    amt.value,
-    po.order_type,
-    pol.order_format,
-    po.re_encumber,
-    t.title,
-    t.subscription_from,
-    t.subscription_to,
-    oo.name
+ft.id,	
+a.name,
+u.username,
+ftj.creation_date,
+po.date_ordered,
+amt.value,
+po.order_type,
+po.workflow_status,
+pol.payment_status,
+po.order_type,
+pol.receipt_status,
+pol.receipt_date,
+ft.SOURCE,
+ft.amount,
+ft.currency,
+ft.transaction_type,
+e.name,
+f.code,
+ff.code,
+ff.name,
+jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'status'),
+jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'subscription'),
+jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'amountAwaitingPayment')::numeric(19,4),
+jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'amountExpended')::numeric(19,4),
+jsonb_extract_path_text(ftj.jsonb, 'encumbrance', 'initialAmountEncumbered')::numeric(19,4),
+pol.po_line_number,
+po.po_number,
+pol.description,
+pol.order_format,
+po.re_encumber,
+t.title,
+ISBN.ISBN,
+ISSN.ISSN,
+publisher.publisher,
+publisher.publication_date,
+t.subscription_from,
+t.subscription_to,
+oo.name

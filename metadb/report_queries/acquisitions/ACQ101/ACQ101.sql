@@ -7,7 +7,8 @@ WITH parameters AS (
 		'' ::VARCHAR AS po_workflow_status, -- 'Open', 'Closed'
 		'' ::VARCHAR AS payment_status, --'Awaiting Payment','Fully Paid','Pending',etc...
 		'' ::VARCHAR AS acquisition_method, -- 'Purchase','Approval Plan','Demand-Driven Acquisitions (DDA)', etc...
-		'' ::VARCHAR AS ISSN_filter -- 'Enter ISSN'
+		'' ::VARCHAR AS ISSN_filter, -- 'Enter ISSN'
+		'' ::VARCHAR AS vendor_filter -- 'Enter Vendor Name'
 ),
 acq AS (
 SELECT 
@@ -113,6 +114,8 @@ WHERE
 	(a.name= (SELECT acquisitions_unit FROM parameters) OR (SELECT acquisitions_unit FROM parameters) = '')
 	AND 
 	(ISSN.ISSN= (SELECT ISSN_filter FROM parameters) OR (SELECT ISSN_filter FROM parameters) = '')
+	AND 
+	(oo.name= (SELECT vendor_filter FROM parameters) OR (SELECT vendor_filter FROM parameters) = '')
 	--
 	--OPTIONAL Publisher filter. Remove "--" to make filter active. 
 --AND publisher.publisher LIKE '%Duke University%'

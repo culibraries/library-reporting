@@ -1,52 +1,68 @@
-/** Documentation of Collection Development: PASCAL Criteria List
+/* Documentation of Collection Development: PASCAL Criteria List
 DERIVED TABLES
-
+	folio_derived.item_ext
+	folio_derived.loans_items
+	folio_derived.items_holdings_instances
+	folio_derived.		(loans_renewal_count is placeholder until total loan count in table)
+	folio_derived.instance_ext
+	folio_derived.instance_contributors
+	folio_derived.instance_classifications
 TABLES
-
+FIELDS
+	Item UUID
+	Item Create Date
+	Item Barcode
+	Item Status
+	Item Permanent Location
+	Item Effective Location
+	Item Hold Status
+	Title
+	Contributor
+	Instance Call Number
+	Item Call Number
 FILTERS FOR USER TO SELECT:
+	(Item Total Loans = 0)
+	(Item Status = available)
+	Location = ''
+	Item Last Out Date < ''
+	Item Create Date <= ''
+	Item Volume = ''	(verify why since this would potentially limit results due to current quality of data for the volume field)
+(Amelia Spann Updated: 3/14/23)
 */
-/*
-Amelia Spann Updated: 3/6/23
-PASCAL Criteria Lists: Creates a table of items that meet the PASCAL transfer criteria.
-	Required Fields: Item UUID, Item Create Date, Item Barcode, Item Status, Item Permanent Location, 
-		Item Effective Location, Item Hold Status, Title, Contributor, Instance Call Number, Item Call Number
-	Filters: Location = '', Item Total Loans = 0, Item Last Out Date less than '', Item Create Date less than or equal to '',
-		(TEMP EXCLUDE) Item Volume = "" (verify why since this would potentially limit results due to current quality of data for the volume field),
-		 Item Status = available
-*/
--- Three required prepared statement parameters.
 WITH parameters AS (
 	SELECT 
-		$1::VARCHAR AS Permanent_Location_Filter,
-		$2::VARCHAR AS Last_Out_Date_Filter,	-- To make optional pass a far future date like '9999-01-01'	
-		$3::VARCHAR AS Create_Date_Filter		-- To make optional pass a far future date like '9999-01-01'
+		'' ::VARCHAR AS Effective_Location_Filter,
+		'' ::TIMESTAMP AS Create_Date_Filter,	--ie.created_date is a timestamp field
+		'' ::TIMESTAMPTZ AS Last_Out_Date_Filter	--li.loan_date is a timestamptz field
+		--''::VARCHAR AS Item_Volume_Filter	--Quality of data could limit results, text field
 )		
 SELECT
-	item_ext.item_id AS UUID,
-	item_ext.created_date AS Create_Date,
-	item_ext.barcode AS Barcode,
-	item_ext.status_name AS Status,
-	item_ext.permanent_location_name AS Permanent_Location,
-	item_ext.effective_location_name AS Effective_Location,
-	loans_items.loan_due_date AS Hold_Status,
-	instance_ext.title AS Title,
-	instance_contributors.contributor_name AS Contributor,
-	instance_classifications.classification_number AS Instance_Call_Number,
-	items_holdings_instances.item_level_call_number AS Item_Call_Number,
-	loans_renewal_count.num_loans AS Item_Total_Loans,
-	loans_items.loan_date AS Last_Out_Date
-FROM item_ext
-INNER JOIN loans_items ON item_ext.item_id = loans_items.item_id
-INNER JOIN items_holdings_instances ON item_ext.item_id = items_holdings_instances.item_id
-INNER JOIN loans_renewal_count ON item_ext.item_id = loans_renewal_count.item_id
-INNER JOIN instance_ext ON items_holdings_instances.instance_id = instances_ext.instance_id
-INNER JOIN instance_contributors ON items_holdings_instances.instance_id = instance_contributors.instance_id
-INNER JOIN instance_classifications ON items_holdings_instances.instance_id = instance_classifications.instance_id
--- Joining on prepared statement parameters CTE's single row. 
-INNER JOIN parameters p ON TRUE 
-WHERE item_ext.status_name = 'Available'
-	AND loans_renewal_count.num_loans = 0
-	AND item_ext.permanent_location_name = p.Permanent_Location_Filter
-	AND item_ext.created_date <= p.Create_Date_Filter	
-	AND loans_items.loan_date < p.Last_Out_Date_Filter
-;
+	ie.item_id AS UUID, --Would item HRID be more useful for this list?
+	ie.created_date AS Create_Date,
+	ie.barcode AS Barcode,
+	ie.status_name AS Status,
+	--ie.permanent_location_name AS Permanent_Location,  --Remove until more widely applied
+	ie.effective_location_name AS Effective_Location,
+	li.loan_due_date AS Hold_Status,
+	ie2.title AS Title,
+	ic.contributor_name AS Contributor,
+	ic2.classification_number AS Instance_Call_Number,
+	ihi.item_level_call_number AS Item_Call_Number,
+	--lrc.num_loans AS Item_Total_Loans,	--(table also has num_renewals) Need total loan count not renewal count, so needs new table or no? 
+	li.loan_date AS Last_Out_Date
+FROM folio_derived.item_ext AS ie
+LEFT JOIN folio_derived.loans_items AS li ON ie.item_id = li.item_id
+LEFT JOIN folio_derived.items_holdings_instances AS ihi ON ie.item_id = ihi.item_id
+--LEFT JOIN folio_derived.loans_renewal_count AS lrc ON ie.item_id = lrc.item_id	--Removed until new table has total loan count, see above
+LEFT JOIN folio_derived.instance_ext AS ie2 ON ihi.instance_id = ie2.instance_id
+LEFT JOIN folio_derived.instance_contributors AS ic ON ihi.instance_id = ic.instance_id
+LEFT JOIN folio_derived.instance_classifications AS ic2 ON ihi.instance_id = ic2.instance_id
+WHERE ie.status_name = 'Available'
+	--AND lrc.num_loans = 0		--Removed until new table has total loan count, see above
+	AND (ie.effective_location_name = (SELECT Effective_Location_Filter FROM parameters) OR (SELECT Effective_Location_Filter FROM parameters) = '')
+	AND (ie.created_date <= (SELECT Create_Date_Filter::TIMESTAMP FROM parameters) -- OR (SELECT Create_Date_Filter FROM parameters) = '')
+	AND (li.loan_date < (SELECT Last_Out_Date_Filter::TIMESTAMPTZ FROM parameters) -- OR (SELECT Last_Out_Date_Filter FROM parameters) = '')
+	--AND (ie.volume = (SELECT Item_Volume_Filter FROM parameters) OR (SELECT Item_Volume_Filter FROM parameters) = '') --Quality of data could limit results
+; 
+/* Getting SQL Error [22007]: ERROR: invalid input syntax for type timestamp: ""
+*/

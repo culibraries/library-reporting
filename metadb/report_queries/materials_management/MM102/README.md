@@ -4,7 +4,7 @@
 This report creates a list of items with a status of "IN TRANSIT" that might be in the stacks. 
 
 ## Parameters
-User-selected filters: Location, Last Checkin Date, Create Date
+User-selected filters: Location, Last Checkin Date, Create Date\
 Hard-coded filters: Status = in transit
 
 ## Sample Output

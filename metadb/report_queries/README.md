@@ -48,6 +48,7 @@ paste the content of this file into the reporting tool of your choice
 * [583 Bib Search](collection_development/CD102)
 * [956 Bib Search](collection_development/CD103)
 * [Missing Books Review List](collection_development/CD104)
+* [Maps Report](collection_development/CD105)
 
 ### eResource Management (ERM)
 * [Film Expiration Search](eresource_management/ERM100)
@@ -65,5 +66,7 @@ paste the content of this file into the reporting tool of your choice
 ### Patron Services (PS)
 * [Overdue Items](patron_services/PS100)
 * [Coming Billed](patron_services/PS101)
+* [Claimed Return](patron_services/PS102)
+* [Patron Billing](patron_services/PS103)
 
 ### Reporting & Statistics (RS)

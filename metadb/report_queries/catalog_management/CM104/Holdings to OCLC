@@ -1,6 +1,0 @@
-SELECT * FROM folio_source_record.marc__t as marc
-LEFT JOIN folio_inventory.instance as inventory
-  ON inventory.id = marc.instance_id
-  where marc.field = '998' and marc.sf = 'c' and marc."content" not in ('f', 'w','s','y', '-', 'b', 'o', 'n', 'g')
-  and marc.field = '994' and marc.sf = 'b' and marc.content != 'UCX'
-  and inventory.creation_date between '2000-01-26 00:00:00.000' and '2023-01-27 00:00:00.000'

@@ -1,5 +1,5 @@
 /** Documentation of Catalog Management: Backstage Record Pull 
-
+*/
 WITH
 field_998 AS (
 SELECT srs_id, instance_id

@@ -1,0 +1,47 @@
+/* Documentation of Patron Services: Claims Returned List
+DERIVED TABLES
+	folio_derived.item_ext
+	folio_derived.instance_ext
+	folio_derived.item_notes (possibly)
+FIELDS:
+	Item Status Date 
+	Item Barcode
+	Item Location Name
+	Item Call #
+	Item Copy #
+	Item Volume
+	Item Title
+	Item Note (those that include 'claim' and do not include 'search' - this works for Sierra but not a good idea in FOLIO. Also, IN and NOT IN are not filtering the note fields.)
+FILTERS:
+	Item Location = ''
+	Status = "Claimed returned"
+	All note fields don't have "Search" (used in Sierra to eliminate old items that still have clms retd status, not ideal and not functioning)
+*/
+WITH parameters AS (
+	SELECT 
+		'' ::VARCHAR AS Effective_Location_Filter
+)				
+SELECT
+	ie.status_name AS Status,
+	ie.status_date AS Status_Date,
+	ie.barcode AS Barcode,
+	ie.permanent_location_name AS Permanent_Location,
+	ie.effective_location_name AS Effective_Location,
+	ie.call_number AS Call_Number,
+	ie.effective_call_number AS Effective_Call_Number,
+	ie.copy_number AS Copy_Num,
+	ie.volume AS Volume,
+	ie2.title AS Title
+	--itn.note AS Item_Note
+FROM folio_derived.item_ext AS ie
+LEFT JOIN folio_derived.items_holdings_instances AS ihi ON ie.item_id = ihi.item_id
+LEFT JOIN folio_derived.instance_ext AS ie2 ON ihi.instance_id = ie2.instance_id
+--LEFT JOIN folio_derived.item_notes AS itn ON ie.item_id = itn.item_id 
+WHERE ie.status_name = 'Claimed returned'
+	AND (ie.effective_location_name = (SELECT Effective_Location_Filter FROM parameters) OR (SELECT Effective_Location_Filter FROM parameters) = '')
+	--AND itn.note IN ('Claimed')
+	--AND itn.note NOT IN ('search')
+;
+/* Including item_notes gives addtl row for each note, including things with 'search', remove notes and exclude old claims some other way. 
+Even without the row duplication, gives over 300 items and should give ~30 items.
+*/

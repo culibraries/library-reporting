@@ -1,6 +1,6 @@
-# CD103: 956 Collection Name Details
+# CD103: 956 Platform Details Report
 ## Purpose
-Provides instance-level information for each title with a collection name specified in the MARC 956|a field. 
+Provides instance-level information for each title on a platform as recorded in the MARC 956|a field. 
 ## Parameters
 Enter a collection or platform name in the marc.content LIKE statement. For example: marc.content LIKE '%Wiley%'
 ## Sample Output

@@ -1,4 +1,4 @@
---CD103: 956 Platform Name Details Report
+--CD103: 956 Platform Details Report
 --Provides information about titles in a specific collection.
 SELECT * 
 FROM folio_source_record.marc__t AS marc 

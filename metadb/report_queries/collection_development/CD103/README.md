@@ -1,4 +1,4 @@
-# CD103: 956 Platform Details Report
+# CD103: 956 Collection Details Report
 ## Purpose
 Provides instance-level information for each title on a platform as recorded in the MARC 956|a field. 
 ## Parameters

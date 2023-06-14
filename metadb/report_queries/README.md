@@ -10,6 +10,26 @@ by the FOLIO reporting community or adapted from them.  Some queries are custom 
 You can find queries by browsing the subfolders in this folder or by
 reviewing the [Query Table of Contents](#query-table-of-contents) below.
 
+Numbering schema: 
+
+100s = General
+
+200s = Business
+
+300s = Earth Sciences and Maps
+
+400s = Engineering Math and Physics
+
+500s = Music
+
+600s = Norlin
+
+700s = Offsite
+
+800s = Online
+
+1000s = Projects
+
 ## Understanding report query files
 
 Reports are divided into different tracks and given a track code 

@@ -1,0 +1,12 @@
+--A count of primary contributors--
+CREATE TABLE dashboard_primary_contributor_count AS
+SELECT
+ic.contributor_name,
+count(ic.instance_hrid) AS instance_count
+FROM folio_inventory.INSTANCE__t AS ii
+LEFT JOIN
+folio_derived.instance_contributors AS ic ON ii.id = IC.instance_id 
+WHERE ic.contributor_is_primary = 'true'
+AND discovery_suppress = 'false' OR discovery_suppress IS NULL
+GROUP BY ic.contributor_name 
+ORDER BY instance_count DESC

@@ -79,7 +79,8 @@ paste the content of this file into the reporting tool of your choice
 * [MM1000: Google Books Individual Manifests](materials_management/MM1000)
 * [MM101: Escaped Paged Report](materials_management/MM101)
 * [MM102: Trace Lost Reports](materials_management/MM102)
-* [MM603: Old In-Transits Report](materials_management/MM603)
+* [MM602: Norlin Awaiting Delivery Report](materials_management/MM602)
+* [MM603: Norlin In-Transits Report](materials_management/MM603)
 * [MM604: Norlin RaD 856](materials_management/MM604)
 
 ### Patron Services (PS)

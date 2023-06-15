@@ -1,15 +1,13 @@
-# Materials Management: Google Books Individual Manifests 
+# Materials Management: Google Book Carts Manifest Report
 
 ## Purpose
 The report searches for all items checked out to all Google Book carts. 
 
 ## Parameters
-Items checked out to users with "Google" in the barcode. 
-
---STILL NEED TO ADD FORMER IDENTIFER
+Items checked out to users with 'Google' in the barcode.
 
 ## Sample Output
-| barcode  | barcode       |
-|----------|---------------|
-| Google55 | U183012777744 |
-| Google55 | U183075048065 |
+| cart     | barcode       | former_barcode |
+|----------|---------------|----------------|
+| Google55 | P105362006008 | U183041145631  |
+| Google55 | P105362006008 | U183041145631  |

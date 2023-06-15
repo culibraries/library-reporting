@@ -1,4 +1,4 @@
-# Materials Management: Norlin Awaiting Delivery Report 
+# Materials Management: Norlin Awaiting Pickup Report 
 
 ## Purpose
 Returns a list of all items in Norlin Library locations with a status of 'Awaiting pickup'

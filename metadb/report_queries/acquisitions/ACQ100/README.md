@@ -4,7 +4,7 @@
 This report is used by Accounting to reconcile new purchases.
 
 ## Parameters
-This report exports all invoice transactions for the CU Boulder acquistiions unit. 
+This report exports all invoice transactions for the CU Boulder acquistions unit. 
 
 ## Sample Output
 | po_acquisition_unit_name | invoice_line_id                      | invoice_line_number | invoice_line_status | po_line_number | order_name               | fund                                 | vendor            | invoice_line_total | ledger                   | folio_invoice_no | vendor_invoice_no | invoice_date | invoice_account_number | payment_date | payment_method | transaction_type | transaction_amount | receipt_status       | receipt_date |

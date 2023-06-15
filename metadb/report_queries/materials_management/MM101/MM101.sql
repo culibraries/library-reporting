@@ -14,6 +14,6 @@ LEFT JOIN folio_inventory.location__t AS loc ON loc.id = i.effective_location_id
 LEFT JOIN folio_inventory.loclibrary__t AS lib ON lib.id = loc.library_id
 LEFT JOIN folio_inventory.item AS ij ON ij.id = i.id
 WHERE 
-jsonb_extract_path_text(ij.jsonb, 'status', 'name') = 'Awaiting Delivery'
+jsonb_extract_path_text(ij.jsonb, 'status', 'name') = 'Awaiting pickup'
 ORDER BY loc.name, h.call_number
 ;

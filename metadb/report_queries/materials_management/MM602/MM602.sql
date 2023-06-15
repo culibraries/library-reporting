@@ -1,5 +1,5 @@
---MM602: Norlin Awaiting Delivery Report
---Returns a list of all items in Norlin Library locations with a status of 'Awaiting Delivery'
+--MM602: Norlin Awaiting Pickup Report
+--Returns a list of all items in Norlin Library locations with a status of 'Awaiting pickup'
 SELECT 
 loc.name AS LOCATION,
 i.barcode, 
@@ -14,7 +14,7 @@ LEFT JOIN folio_inventory.location__t AS loc ON loc.id = i.effective_location_id
 LEFT JOIN folio_inventory.loclibrary__t AS lib ON lib.id = loc.library_id
 LEFT JOIN folio_inventory.item AS ij ON ij.id = i.id
 WHERE 
-jsonb_extract_path_text(ij.jsonb, 'status', 'name') = 'Awaiting Delivery'
+jsonb_extract_path_text(ij.jsonb, 'status', 'name') = 'Awaiting pickup'
 AND lib.name = 'Norlin'
 ORDER BY loc.name, h.call_number
 ;

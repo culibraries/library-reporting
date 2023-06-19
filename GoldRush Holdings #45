@@ -1,6 +1,0 @@
-SELECT* FROM folio_source_record.marc__t AS marc WHERE (marc.field = '998'
-and marc.sf = 'e'
-and marc.content != 'n')
-or (marc.field = '994'
-and marc.sf = 'b'
-and marc.content != 'UCX');

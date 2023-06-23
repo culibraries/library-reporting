@@ -1,4 +1,4 @@
-/** MM102: Old In Transits List
+/** MM603: Norlin In Transits Report
 --
 --This report returns a list of items that have a status of in transit. 
 --

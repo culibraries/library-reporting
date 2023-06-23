@@ -1,0 +1,21 @@
+SELECT
+hs.instance_id,
+hs.instance_hrid,
+hs.holdings_hrid,
+hs.holdings_statement,
+hs.public_note,
+hs.staff_note,
+hss.instance_hrid AS supplements_instance_hrid,
+hss.holdings_hrid AS supplements_holdings_hrid,
+hss.holdings_statement AS supplements_holdings_statement,
+hss.public_note AS supplements_public_note,
+hss.staff_note AS supplements_staff_note,
+hsi.instance_hrid AS index_instance_hrid,
+hsi.holdings_hrid AS index_holdings_hrid,
+hsi.holdings_statement AS index_holdings_statement,
+hsi.public_note AS index_public_note,
+hsi.staff_note AS index_staff_note
+FROM folio_derived.holdings_statements hs
+LEFT JOIN folio_derived.holdings_statements_indexes hsi ON hs.holdings_id = hsi.holdings_id 
+LEFT JOIN folio_derived.holdings_statements_supplements hss ON hs.holdings_id = hss.holdings_id 
+WHERE hsi.public_note NOTNULL OR HSS.public_note notnull

@@ -10,6 +10,26 @@ by the FOLIO reporting community or adapted from them.  Some queries are custom 
 You can find queries by browsing the subfolders in this folder or by
 reviewing the [Query Table of Contents](#query-table-of-contents) below.
 
+Numbering schema: 
+
+100s = General
+
+200s = Business
+
+300s = Earth Sciences and Maps
+
+400s = Engineering Math and Physics
+
+500s = Music
+
+600s = Norlin
+
+700s = Offsite
+
+800s = Online
+
+1000s = Projects
+
 ## Understanding report query files
 
 Reports are divided into different tracks and given a track code 
@@ -26,32 +46,56 @@ paste the content of this file into the reporting tool of your choice
 ## Query Table of Contents
 
 ### Acquisitions (ACQ)
-* [Reconciliation Report](acquisitions/ACQ100)
+* [ACQ100: Reconciliation Report](acquisitions/ACQ100)
+* [ACQ101: Order Details Report](acquisitions/ACQ101)
+* [ACQ102: Unpaid Serials Report](acquisitions/ACQ102)
+* [ACQ103: Serials Detail Report](acquisitions/ACQ103)
 
 ### Catalog Management (CM)
-* [Backstage Record Pull](catalog_management/CM100)
-* [Backstage Records With 948 Field Added](catalog_management/CM101)
-* [GoldRush Holdings](catalog_management/CM102)
-* [OCLC MARC Holdings (LHRs)](catalog_management/CM103)
-* [Holdings To OCLC](catalog_management/CM104)
-* [Occam's Reader](catalog_management/CM105)
-* [RAPID - Print Monographs](catalog_management/CM106)
-* [RAPID - Print Serials](catalog_management/CM107)
+* [CM100: Backstage Record Pull](catalog_management/CM100)
+* [CM102: GoldRush Holdings](catalog_management/CM102)
+* [CM103: OCLC MARC Holdings (LHRs)](catalog_management/CM103)
+* [CM104: Holdings To OCLC](catalog_management/CM104)
+* [CM105: Occam's Reader](catalog_management/CM105)
+* [CM106: RAPID - Print Monographs](catalog_management/CM106)
+* [CM107: RAPID - Print Serials](catalog_management/CM107)
+* [CM109: Cataloging Records by User](catalog_management/CM109)
+* [CM110: 583 Colorado Alliance Retention Candidate Report](catalog_management/CM110)
 
 ### Collection Development (CD)
-* [Circulation Activity](collection_development/CD100)
-* [Item Count By Material Type](collection_development/CD101)
-* [Item Count By Language Codes](collection_development/CD102)
-* [PPOD Title List With Status And Amount Paid](collection_development/CD103)
+* [CD100: Title List Report](collection_development/CD100)
+* [CD101: PASCAL Criteria Lists](collection_development/CD101)
+* [CD103: 956 Bib Search](collection_development/CD103)
+* [CD104: Missing Books Review List](collection_development/CD104)
+* [CD300: Maps Report](collection_development/CD300)
 
 ### eResource Management (ERM)
-* [Film Expiration Search](eresource_management/ERM100)
-
-### External Reporting (EXR)
+* [ERM100: Film Expiration Search](eresource_management/ERM100)
+* [ERM101: Google Analytics 856 Records Viewed](eresource_management/ERM101)
+* [ERM102: E-resource Covered By An Agreement](eresource_management/ERM102)
+* [ERM103: Incorrect Text in URL Field](eresource_management/ERM103)
 
 ### Materials Management (MM)
-* [Trace Lost And Missing Lists](materials_management/MM100)
+* [MM1000: Google Books Individual Manifests](materials_management/MM1000)
+* [MM101: Awaiting Pickup Report](materials_management/MM101)
+* [MM102: Trace Lost Reports](materials_management/MM102)
+* [MM200: Business Missing Books Report](materials_management/MM200)
+* [MM300: Earth Sciences & Map Library Missing Books Report](materials_management/MM300)
+* [MM400: Engineering Math and Physics Library Missing Books Report](materials_management/MM400)
+* [MM500: Music Library Missing Books Report](materials_management/MM500)
+* [MM600: Norlin Library Missing Books Report](materials_management/MM600)
+* [MM601: Norlin Trace Lost Search Report](materials_management/MM601)
+* [MM602: Norlin Awaiting Delivery Report](materials_management/MM602)
+* [MM603: Norlin In-Transits Report](materials_management/MM603)
+* [MM604: Norlin RaD 856](materials_management/MM604)
+* [MM700: Offsite Missing Books Report](materials_management/MM700)
+* [MM800: Online Item Inventory Report](materials_management/MM800)
 
 ### Patron Services (PS)
-* [Overdue Items](patron_services/PS100)
-* [Coming Billed](patron_services/PS101)
+* [PS100: Overdue Items](patron_services/PS100)
+* [PS101: Coming Billed](patron_services/PS101)
+* [PS102: Claimed Return](patron_services/PS102)
+* [PS103: Patron Billing](patron_services/PS103)
+
+### Reporting & Statistics (RS)
+[Data dashboards](https://o365coloradoedu.sharepoint.com/sites/libraries/collectionmanagement/SitePages/FOLIO-Dashboards.aspx) are available on the Collection Management's Sharepoint Page.

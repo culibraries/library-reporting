@@ -1,0 +1,21 @@
+CREATE TABLE dashboard_LC_Callnumbers_Location AS
+SELECT 
+item.effective_call_number AS effective_call_number,	
+item.effective_call_number_type_name AS call_number_type,
+item.status_name,
+item.discovery_suppress AS item_suppressed,
+item.material_type_name,
+loc.name AS item_location,
+count(item.item_id) AS item_count
+FROM 
+folio_derived.item_ext AS item
+LEFT JOIN 
+folio_inventory.location__t AS loc ON item.effective_location_id = loc.id 
+GROUP BY 
+effective_call_number, 
+call_number_type, 
+item.status_name, 
+item_suppressed, 
+item.material_type_name, 
+item_location
+;

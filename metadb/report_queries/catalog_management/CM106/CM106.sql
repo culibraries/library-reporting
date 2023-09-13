@@ -7,7 +7,7 @@ TABLES
 FILTERS FOR USER TO SELECT:
 */
 SELECT 
-inst.hrid,
+inst.id,
 count(item.id)
 FROM
 folio_inventory.item__t AS item
@@ -23,4 +23,4 @@ AND stat.statistical_code_name = 'Book, print (books)'
 AND item.barcode != '[NULL]'
 AND format.instance_format_name = 'unmediated -- volume'
 AND inst.discovery_suppress = FALSE
-GROUP BY inst.hrid ORDER BY count(item.id) DESC
+GROUP BY inst.id ORDER BY count(item.id) DESC

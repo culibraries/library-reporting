@@ -2,18 +2,17 @@
 --Returns a list of currrent loans from folio_circulation.loan__t__
 SELECT
 loan.__current,
-loan.id,
-loan.item_status ,
-loan.__start,
-loan.__end,
-loan_date,
+loan.id AS loan_id,
+loan.__start::date AS record_load_date,
+loan.item_status,
+loan_date::date,
 mt.name AS material_type,
-co.name AS service_point,
+co.name AS checkout_service_point,
 loc.name AS item_location,
-due_date,
+due_date::date,
 lp.name AS loan_policy,
-loan.ACTION,
-item.barcode,
+loan.ACTION AS loan_action,
+item.barcode AS item_barcode,
 inst.title,
 pg.GROUP AS patron_group
 FROM folio_circulation.loan__t__ AS loan
@@ -27,4 +26,5 @@ LEFT JOIN folio_circulation.loan_policy__t AS lp ON lp.id = loan.loan_policy_id
 LEFT JOIN folio_inventory.service_point__t AS co ON co.id = loan.checkout_service_point_id
 LEFT JOIN folio_inventory.location__t AS loc ON loc.id = loan.item_effective_location_id_at_check_out
 WHERE loan."__current" = TRUE
-ORDER BY __start DESC
+ORDER BY loan.__start::date DESC
+;

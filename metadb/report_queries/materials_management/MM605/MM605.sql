@@ -1,4 +1,4 @@
-/** Documentation of Patron Services: Claimed Returned Report 
+/** Documentation of Materials Management: Norlin Claims Returned Report 
 
 DERIVED TABLES
 
@@ -11,7 +11,7 @@ folio_inventory.instance__t__
 
 FILTERS FOR USER TO SELECT:
 */
---Returns a list of all items marked 'Claimed returned.'
+--Returns a list of all items marked 'Claimed returned' across selected Norlin Library locations.
 SELECT DISTINCT
 	lt.item_status AS status,
 	lt.claimed_returned_date AS claim_date,
@@ -29,6 +29,9 @@ LEFT JOIN folio_inventory.location__t__ lt2 ON lt2.id = lt.item_effective_locati
 LEFT JOIN folio_inventory.holdings_record__t__ hrt ON hrt.id = it.holdings_record_id
 LEFT JOIN folio_inventory.instance__t__ it2 ON it2.id = hrt.instance_id
 WHERE lt.item_status = 'Claimed returned'
+	AND lt2.code IN ('ART','ARTST','ARTOV','ARTREF','ASN','ASNST','ASNOV','ASNCIRREF', 'CYA','CYAST'
+	,'NORGEN','NORRES','NORGSC','NORDC','NORED','NORRAD','NORDIS','NORDVD','NOROV','NORST','PASCAL','PEROV','PERST'
+	,'NORPOP','REFCIR','SCIST','SCIOV','SCIREF')
 	AND call_number IS NOT NULL
 ORDER BY claim_date
 ;

@@ -1,4 +1,4 @@
-/** Documentation of Patron Services: Claimed Returned Report 
+/** Documentation of Materials Management: Music Claims Returned
 
 DERIVED TABLES
 
@@ -11,7 +11,7 @@ folio_inventory.instance__t__
 
 FILTERS FOR USER TO SELECT:
 */
---Returns a list of all items marked 'Claimed returned.'
+--Returns a list of all items marked 'Claimed returned' across selected Music Library locations.
 SELECT DISTINCT
 	lt.item_status AS status,
 	lt.claimed_returned_date AS claim_date,
@@ -25,10 +25,11 @@ SELECT DISTINCT
 	lt.user_id AS patron_uuid
 FROM folio_circulation.loan__t__ lt 
 LEFT JOIN folio_inventory.item__t__ it ON it.id = lt.item_id
-LEFT JOIN folio_inventory.location__t__ lt2 ON lt2.id = lt.item_effective_location_id_at_check_out  --or lt2.id = it.effective_location_id 
+LEFT JOIN folio_inventory.location__t__ lt2 ON lt2.id = lt.item_effective_location_id_at_check_out
 LEFT JOIN folio_inventory.holdings_record__t__ hrt ON hrt.id = it.holdings_record_id
 LEFT JOIN folio_inventory.instance__t__ it2 ON it2.id = hrt.instance_id
 WHERE lt.item_status = 'Claimed returned'
+	AND lt2.code IN ('MUS','MUSST','MUSRES','MUSCSA','MUSCSOV','MUSMIN','MUSOV','MUSREF')
 	AND call_number IS NOT NULL
 ORDER BY claim_date
 ;

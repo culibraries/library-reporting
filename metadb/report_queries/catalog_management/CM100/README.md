@@ -5,7 +5,7 @@ Query that is run monthly to send new MARC records to backstage for controlled
 vocabulary and name authority work.
 
 ## Parameters
-Records cataloged in the past month.
+Records cataloged in the past month. Only IDs needed. Uploaded to FOLIO and then the MARC records are exported.
 ## Sample Output
 | id                                   |
 |--------------------------------------|

@@ -1,5 +1,6 @@
 --MM103: Missing Books MS1 Report - All Locations
 SELECT 
+jsonb_extract_path_text(i.jsonb, 'tags', 'tagList') AS tag,
 i.jsonb -> 'status' ->> 'name' AS item_status,
 loc.name AS item_location,
 i.jsonb ->> 'barcode' AS item_barcode,

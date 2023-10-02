@@ -1,4 +1,4 @@
-# Materials Management: Norlin Library Missing Books Report
+# Materials Management: Norlin Missing Books Report
 
 ## Purpose
 Returns a list of all items that are marked 'Missing' across selected Norlin locations.

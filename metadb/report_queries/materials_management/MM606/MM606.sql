@@ -1,12 +1,14 @@
 --MM606: Norlin Missing Books MS1 Report
 SELECT 
-i.jsonb ->> 'barcode' AS item_barcode,
+i.jsonb -> 'status' ->> 'name' AS item_status,
 loc.name AS item_location,
+i.jsonb ->> 'barcode' AS item_barcode,
 i.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS call_number,
 i.jsonb ->> 'effectiveShelvingOrder' AS shelf_order,
-i.jsonb -> 'status' ->> 'name' AS item_status,
-jsonb_extract_path_text(i.jsonb, 'tags', 'tagList') AS tag,
-inst.title
+inst.title AS title,
+i.jsonb ->> 'enumeration' AS enumeration,
+i.jsonb ->> 'copyNumber' AS volume,
+i.jsonb ->> 'volume' AS copy_number
 FROM folio_inventory.item i
 LEFT JOIN folio_inventory.location__t AS loc ON loc.id = (i.jsonb ->> 'effectiveLocationId')::uuid
 LEFT JOIN folio_inventory.holdings_record__t AS holdings ON holdings.id = i.holdingsrecordid
@@ -41,3 +43,4 @@ AND loc.id IN
 '842c360c-5bde-49ee-9f53-97b1403f4166',
 'ea470113-5c5d-4bdf-bdea-469647886213',
 '2515636c-4b84-4cf4-a68b-70b8acf65fc1')
+;

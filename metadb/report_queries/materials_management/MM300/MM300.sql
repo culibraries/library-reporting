@@ -1,20 +1,22 @@
---MM300_Earth Sciences and Map Missing Books
---Returns a list of all items that are marked 'Missing' across all Earth Sciences & Map Library locations.
+--MM300: Earth Sciences Library Missing Books Report
+--Excludes Map Locations
 SELECT 
-loc.name AS LOCATION,
-i.barcode, 
-h.call_number,
-i.volume,
-inst.index_title,
-jsonb_extract_path_text(ij.jsonb, 'status', 'name') AS status_name
-FROM folio_inventory.item__t AS i
-LEFT JOIN folio_inventory.holdings_record__t AS h ON i.holdings_record_id = h.id
-LEFT JOIN folio_inventory.instance__t AS inst ON h.instance_id = inst.id
-LEFT JOIN folio_inventory.location__t AS loc ON loc.id = i.effective_location_id
-LEFT JOIN folio_inventory.loclibrary__t AS lib ON lib.id = loc.library_id
-LEFT JOIN folio_inventory.item AS ij ON ij.id = i.id
-WHERE 
-jsonb_extract_path_text(ij.jsonb, 'status', 'name') = 'Missing'
-AND lib.name = 'Earth Sciences & Map'
-ORDER BY loc.name, h.call_number
+jsonb_extract_path_text(i.jsonb, 'tags', 'tagList') AS tag,
+i.jsonb -> 'status' ->> 'name' AS item_status,
+loc.name AS item_location,
+i.jsonb ->> 'barcode' AS item_barcode,
+i.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS call_number,
+i.jsonb ->> 'effectiveShelvingOrder' AS shelf_order,
+inst.title AS title,
+i.jsonb ->> 'enumeration' AS enumeration,
+i.jsonb ->> 'copyNumber' AS volume,
+i.jsonb ->> 'volume' AS copy_number
+FROM folio_inventory.item i
+LEFT JOIN folio_inventory.location__t AS loc ON loc.id = (i.jsonb ->> 'effectiveLocationId')::uuid
+LEFT JOIN folio_inventory.holdings_record__t AS holdings ON holdings.id = i.holdingsrecordid
+LEFT JOIN folio_inventory.instance__t AS inst ON inst.id = holdings.instance_id
+WHERE i.jsonb -> 'status' ->> 'name' = 'Missing'
+AND loc.library_id = 'dfd44cbc-171a-4d39-b6e9-63e078817f26'
+AND loc.code NOT LIKE 'Map%'
+ORDER BY loc.name, i.jsonb ->> 'effectiveShelvingOrder' ASC
 ;

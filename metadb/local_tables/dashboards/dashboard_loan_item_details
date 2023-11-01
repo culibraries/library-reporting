@@ -1,0 +1,30 @@
+--Local table used for the FOLIO Loan Activity Dashboard
+CREATE TABLE dashboard_loan_item_details AS
+SELECT
+loan.id,
+loan.item_id,
+item.jsonb ->> 'barcode' AS item_barcode,
+item.creation_date,
+item.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS item_callnumber,
+mt.name AS material_type, 
+loc.name AS item_effective_location,
+(item.jsonb -> 'status' ->> 'date')::date AS status_date,
+item.jsonb -> 'status' ->> 'name' AS item_status,
+item.jsonb ->> 'discoverySuppress' AS discovery_suppress,
+holdings.acquisition_method,
+holdings.permanent_location_name,
+holdings.retention_policy,
+holdings.type_name,
+holdings.ill_policy_name,
+pub.publisher,
+pub.date_of_publication
+FROM folio_circulation.loan__t AS loan
+LEFT JOIN folio_inventory.item AS item ON item.id = loan.item_id
+LEFT JOIN folio_inventory.loan_type__t AS lt ON lt.id = item.permanentlocationid 
+LEFT JOIN folio_inventory.location__t AS loc ON loc.id = item.effectivelocationid
+LEFT JOIN folio_inventory.material_type__t AS mt ON mt.id = item.materialtypeid
+LEFT JOIN folio_derived.holdings_ext AS holdings ON holdings.holdings_id = item.holdingsrecordid
+LEFT JOIN folio_derived.instance_publication AS pub ON pub.instance_id = holdings.instance_id
+LEFT JOIN folio_derived.instance_statistical_codes AS stat ON stat.instance_id = holdings.instance_id
+LEFT JOIN arag3385.first_subjects AS sub ON sub.instance_id = holdings.instance_id
+;

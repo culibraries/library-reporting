@@ -1,3 +1,4 @@
+--Creates local table for the FOLIO Collection Statistics Dashboard
 CREATE TABLE DASHBOARD_item_holdings_instance_statistics AS
 SELECT 	
 		isc.statistical_code,
@@ -14,9 +15,9 @@ SELECT
 		ihi.acquisition_method AS acquisition_method, 
 		ihi.holdings_type_name as holdings_type, 
 		ihi.loan_type_name as loan_type, 
-		inst.instance_type_name AS instance_type,
+		instt.name AS instance_type,
 		instf.instance_format_name AS instance_format,
-		count (distinct ihi.instance_id) as instance_count,
+		count (inst.id) as instance_count,
 		count (distinct ihi.holdings_id) as holdings_count,
 		count (distinct ihi.item_id) as item_count,  
 		count (DISTINCT ihi.item_identifier) AS item_identifier_count,
@@ -25,14 +26,15 @@ SELECT
 		count (ihi.item_level_call_number) as item_call_number_count
 FROM folio_derived.items_holdings_instances ihi
 LEFT JOIN folio_derived.item_ext ie ON ihi.item_id = ie.item_id 
-LEFT JOIN folio_derived.instance_ext inst ON ihi.instance_id = inst.instance_id 
-LEFT JOIN folio_derived.instance_formats instf ON instf.instance_id = inst.instance_id 
+LEFT JOIN folio_inventory.instance__t inst ON ihi.instance_id = inst.id 
+LEFT JOIN folio_inventory.instance_type__t AS instt ON instt.id = inst.id
+LEFT JOIN folio_derived.instance_formats instf ON instf.instance_id = inst.id
 LEFT JOIN folio_derived.holdings_ext he ON ihi.holdings_id = he.holdings_id 
 LEFT JOIN folio_inventory.location__t loc ON ie.effective_location_id = loc.id 
 LEFT JOIN folio_inventory.loccampus__t lc ON loc.campus_id = lc.id 
 LEFT JOIN folio_inventory.service_point__t sp ON loc.primary_service_point = sp.id 
 LEFT JOIN folio_inventory.loclibrary__t lt ON loc.library_id = lt.id 
-LEFT JOIN folio_derived.instance_statistical_codes isc ON isc.instance_id = inst.instance_id
+LEFT JOIN folio_derived.instance_statistical_codes isc ON isc.instance_id = inst.id
 GROUP BY 	
 isc.statistical_code,			
 suppression_status,
@@ -48,6 +50,6 @@ suppression_status,
 			ihi.acquisition_method, 
 			holdings_type_name, 
 			loan_type_name,
-			instance_type_name,
+			instt.name,
 			instance_format
 ;

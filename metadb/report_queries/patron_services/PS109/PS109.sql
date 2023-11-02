@@ -1,4 +1,4 @@
---Damage Fee
+--PS109: Patron Billing Report: Damage Fee
 WITH primary_address AS (
 SELECT *
 FROM folio_derived.users_addresses AS ua
@@ -31,6 +31,8 @@ LEFT JOIN primary_address AS pa ON u.id = pa.user_id
 WHERE ffa.type_action = 'Damage Fee' AND a.fee_fine_type = 'Damage Fee'
 and a.LOCATION NOT LIKE 'Law%'
 and ffa.source != 'Sierra'
+--Enter dates in within the green quotations using the format YYYY-MM-DD
+AND ffa.date_action::date BETWEEN '' AND ''
 GROUP BY
 ffa.SOURCE,
 a.id,

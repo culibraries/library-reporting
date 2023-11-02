@@ -1,4 +1,4 @@
---Overdue Fine
+--PS106: Patron Billing Report: Overdue Fines
 WITH primary_address AS (
 SELECT *
 FROM folio_derived.users_addresses AS ua
@@ -31,6 +31,8 @@ LEFT JOIN primary_address AS pa ON u.id = pa.user_id
 WHERE ffa.type_action = 'Overdue fine' AND a.fee_fine_type = 'Overdue fine'
 and a.LOCATION NOT LIKE 'Law%'
 and ffa.source != 'Sierra'
+--Enter dates in within the green quotations using the format YYYY-MM-DD
+AND ffa.date_action::date BETWEEN '' AND ''
 GROUP BY
 ffa.SOURCE,
 a.id,
@@ -48,4 +50,4 @@ a.title,
 a.call_number,
 a.amount,
 a.remaining
-ORDER BY concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'), a.id, ffa.id DESC   
+ORDER BY concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'), a.id, ffa.id DESC  

@@ -1,4 +1,4 @@
---Rep Credit
+--PS105: Patron Billing Report - Replacement / Credits
 WITH primary_address AS (
 SELECT *
 FROM folio_derived.users_addresses AS ua
@@ -28,9 +28,11 @@ LEFT JOIN folio_feesfines.accounts__t AS a ON a.id = ffa.account_id
 LEFT JOIN folio_users.users AS u ON ffa.user_id = u.id
 LEFT JOIN folio_users.groups__t AS pg ON u.patrongroup = pg.id
 LEFT JOIN primary_address AS pa ON u.id = pa.user_id
-WHERE ffa.type_action = 'Lost item fee' AND a.fee_fine_type = 'Cancelled item returned or renewed'
+WHERE ffa.type_action = 'Cancelled item renewed' AND a.fee_fine_type = 'Lost item fee'
 and a.LOCATION NOT LIKE 'Law%'
 and ffa.source != 'Sierra'
+--Enter dates in within the green quotations using the format YYYY-MM-DD
+AND ffa.date_action::date BETWEEN '' AND ''
 GROUP BY
 ffa.SOURCE,
 a.id,
@@ -48,4 +50,4 @@ a.title,
 a.call_number,
 a.amount,
 a.remaining
-ORDER BY concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'), a.id, ffa.id DESC
+ORDER BY concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'), a.id, ffa.id DESC 

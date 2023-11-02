@@ -114,7 +114,15 @@ paste the content of this file into the reporting tool of your choice
 * [PS100: Overdue Items](patron_services/PS100)
 * [PS101: Coming Billed](patron_services/PS101)
 * [PS102: Claimed Return](patron_services/PS102)
-* [PS103: Patron Billing](patron_services/PS103)
+* [PS103: Patron Billing: Lost Item Fees](patron_services/PS103)
+* [PS104: Patron Billing: Lost Item Processing Fees](patron_services/PS104)
+* [PS105: Patron Billing: Credits](patron_services/PS105)
+* [PS106: Patron Billing: Overdue Fines](patron_services/PS106)
+* [PS107: Patron Billing: Replacement Fees](patron_services/PS107)
+* [PS108: Patron Billing: Replacement Processing Fee](patron_services/PS108)
+* [PS109: Patron Billing: Damage Fees](patron_services/PS109)
+* [PS110: Patron Billing: Other Fines](patron_services/PS110)
+* [PS111: Patron Billing: All Details](patron_services/PS111)
 
 ### Reporting & Statistics (RS)
 [Data dashboards](https://o365coloradoedu.sharepoint.com/sites/libraries/collectionmanagement/SitePages/FOLIO-Dashboards.aspx) are available on the Collection Management's Sharepoint Page.

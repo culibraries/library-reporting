@@ -1,5 +1,4 @@
---PS104: Lost Item Fee/Fine Report
---This report provide information about lost item fees. 
+--PS104: Patron Billing Report - Lost Item Processing Fees
 WITH primary_address AS (
 SELECT *
 FROM folio_derived.users_addresses AS ua
@@ -19,9 +18,9 @@ pg.GROUP AS patron_group,
 a.barcode AS item_barcode,
 a.title AS item_title,
 a.call_number AS item_call_number,
-sum(a.amount) AS "Amount",
+0 AS "Amount",
 0 AS "Amount 2",
-0 AS "Amount 3",
+sum(a.amount) AS "Amount 3",
 sum(a.amount) AS "Amt Total",
 a.remaining AS accounts_remaining
 FROM folio_feesfines.feefineactions__t AS ffa
@@ -29,7 +28,7 @@ LEFT JOIN folio_feesfines.accounts__t AS a ON a.id = ffa.account_id
 LEFT JOIN folio_users.users AS u ON ffa.user_id = u.id
 LEFT JOIN folio_users.groups__t AS pg ON u.patrongroup = pg.id
 LEFT JOIN primary_address AS pa ON u.id = pa.user_id
-WHERE ffa.type_action = 'Lost item fee' AND a.fee_fine_type = 'Lost item fee'
+WHERE ffa.type_action = 'Lost item processing fee' AND a.fee_fine_type = 'Lost item processing fee'
 and a.LOCATION NOT LIKE 'Law%'
 and ffa.source != 'Sierra'
 --Enter dates in within the green quotations using the format YYYY-MM-DD

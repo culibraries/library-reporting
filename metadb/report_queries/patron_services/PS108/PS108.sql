@@ -31,6 +31,7 @@ LEFT JOIN primary_address AS pa ON u.id = pa.user_id
 WHERE ffa.type_action = 'Repl Processing Fee' AND a.fee_fine_type = 'Repl Processing Fee'
 and a.LOCATION NOT LIKE 'Law%'
 and ffa.source != 'Sierra'
+AND pg.id != 'c4a4cae4-d4a8-5e63-ba36-6b579e4ad5b6'
 --Enter dates in within the green quotations using the format YYYY-MM-DD
 AND ffa.date_action::date BETWEEN '' AND ''
 GROUP BY

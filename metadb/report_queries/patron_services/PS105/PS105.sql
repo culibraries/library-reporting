@@ -21,7 +21,7 @@ a.call_number AS item_call_number,
 sum(a.amount)*-1 AS "Amount",
 0 AS "Amount 2",
 0 AS "Amount 3",
-sum(a.amount) AS "Amt Total",
+sum(a.amount)*-1 AS "Amt Total",
 a.remaining AS accounts_remaining
 FROM folio_feesfines.feefineactions__t AS ffa
 LEFT JOIN folio_feesfines.accounts__t AS a ON a.id = ffa.account_id
@@ -31,6 +31,7 @@ LEFT JOIN primary_address AS pa ON u.id = pa.user_id
 WHERE ffa.type_action = 'Cancelled item renewed' AND a.fee_fine_type = 'Lost item fee'
 and a.LOCATION NOT LIKE 'Law%'
 and ffa.source != 'Sierra'
+AND pg.id != 'c4a4cae4-d4a8-5e63-ba36-6b579e4ad5b6'
 --Enter dates in within the green quotations using the format YYYY-MM-DD
 AND ffa.date_action::date BETWEEN '' AND ''
 GROUP BY
@@ -50,4 +51,4 @@ a.title,
 a.call_number,
 a.amount,
 a.remaining
-ORDER BY concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'), a.id, ffa.id DESC 
+ORDER BY concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'), a.id, ffa.id DESC      

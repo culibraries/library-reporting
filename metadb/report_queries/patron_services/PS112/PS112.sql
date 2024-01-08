@@ -190,6 +190,7 @@ manual_fees as (
 )
 SELECT
   patron_fines.invoice_date AS "InvDate",
+  patron_fines.item_location AS "Location",
   patron_fines.user_id AS "PatronNo",
   u.jsonb ->> 'externalSystemId' AS "ID",
   u.jsonb ->> 'barcode' AS user_barcode,

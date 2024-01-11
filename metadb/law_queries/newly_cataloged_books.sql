@@ -1,3 +1,6 @@
+--this query finds new books catalogued since a certain due date
+-- remember to change the cat date in the "where" clause to update this report.
+
 select distinct on (folio_inventory.instance__t.hrid) folio_inventory.instance__t.hrid as "HRID", folio_inventory.instance__t.title as "Title", folio_inventory.holdings_record__t.call_number as "Call Number", folio_inventory.location__t."name" as "Location", folio_source_record.marc__t."content" as "ISBN", folio_inventory.instance__t.cataloged_date as "Cat Date"--, folio_orders.po_line__t.requester as "Requestor" 
 from folio_inventory.instance__t
 join folio_inventory.holdings_record__t on folio_inventory.instance__t.id = folio_inventory.holdings_record__t.instance_id

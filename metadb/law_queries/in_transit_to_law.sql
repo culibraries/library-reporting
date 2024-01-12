@@ -1,3 +1,6 @@
+-- this query finds books that are marked in transit to law, but have not arrived
+-- send report to law ILL specialist
+
 select distinct on (folio_inventory.item__t.hrid) folio_derived.loans_items.loan_return_date,folio_derived.loans_items.item_status,folio_inventory.item__t.hrid,
   folio_inventory.item__t.barcode, folio_inventory.holdings_record__t.call_number, folio_inventory.instance__t.title
  from folio_inventory.item__t

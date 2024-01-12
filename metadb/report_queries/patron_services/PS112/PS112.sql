@@ -212,7 +212,7 @@ SELECT
         CONCAT(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'),
         item_barcode, 
         patron_fines.invoice_date)
-      )::text, 3, '0') 
+      )::text, 4, '0') 
     ) AS "LineNum",
   patron_fines.invoice_date::date AS "InvDate",
   patron_fines.item_location AS "Location",

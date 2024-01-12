@@ -1,7 +1,12 @@
 -- PS111: Patron Billing Report: Combined Reports
 -- This report provide information on all fee/fine actions during a specific amount of time
 --   and in the specifed format needed by the internal Patron Fines Access DB.
-WITH primary_address AS (
+WITH parameters AS (
+  SELECT
+    '2023-06-15'::DATE as invoice_interval_start, -- fee fine action date starting (inclusive) 'YYYY-MM-DD'
+    CURRENT_DATE as invoice_interval_end  -- fee fine action date ending (not inclusive) 'YYYY-MM-DD' or CURRENT_DATE
+),
+primary_address AS (
   SELECT
     user_id,
     address_line_1 AS address1,
@@ -37,6 +42,8 @@ lost_fee AS (
   WHERE
     ffa.source != 'Sierra'
     AND a.LOCATION NOT LIKE 'Law%'
+    AND ffa.date_action >= (SELECT invoice_interval_start FROM parameters)
+    AND ffa.date_action < (SELECT invoice_interval_end FROM parameters)
   GROUP BY
     ffa.user_id,
     a.item_id,
@@ -72,6 +79,8 @@ lost_fee_credit AS (
   WHERE
     ffa.source != 'Sierra'
     AND a.LOCATION NOT LIKE 'Law%'
+    AND ffa.date_action >= (SELECT invoice_interval_start FROM parameters)
+    AND ffa.date_action < (SELECT invoice_interval_end FROM parameters)
   GROUP BY
     ffa.user_id,
     a.item_id,
@@ -106,6 +115,8 @@ overdue_fine AS (
     AND a.LOCATION NOT LIKE 'Law%'
     AND a.fee_fine_type = 'Overdue fine'
     AND ffa.type_action  = 'Overdue fine'
+    AND ffa.date_action >= (SELECT invoice_interval_start FROM parameters)
+    AND ffa.date_action < (SELECT invoice_interval_end FROM parameters)
   GROUP BY
     ffa.user_id,
     a.item_id,
@@ -140,6 +151,8 @@ replacement_fee AS (
     AND a.LOCATION NOT LIKE 'Law%'
     AND a.fee_fine_type = 'Replacement Fee'
     AND ffa.type_action  = 'Replacement Fee'
+    AND ffa.date_action >= (SELECT invoice_interval_start FROM parameters)
+    AND ffa.date_action < (SELECT invoice_interval_end FROM parameters)
   GROUP BY
     ffa.user_id,
     a.item_id,
@@ -179,6 +192,8 @@ manual_fees as (
       or (a.fee_fine_type = 'Damage Fee' and ffa.type_action  = 'Damage Fee')
       or (a.fee_fine_type = 'Repl Processing Fee' and ffa.type_action  = 'Repl Processing Fee')
     )
+    AND ffa.date_action >= (SELECT invoice_interval_start FROM parameters)
+    AND ffa.date_action < (SELECT invoice_interval_end FROM parameters)
   GROUP BY
     ffa.user_id,
     a.item_id,
@@ -189,18 +204,29 @@ manual_fees as (
     a.location
 )
 SELECT
+  CONCAT(
+    '1',
+    TO_CHAR(CURRENT_DATE, 'MMDDYY'),
+    LPAD((ROW_NUMBER() OVER (
+      ORDER BY 
+        CONCAT(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName'),
+        item_barcode, 
+        patron_fines.invoice_date)
+      )::text, 3, '0') 
+    ) AS "LineNum",
   patron_fines.invoice_date::date AS "InvDate",
   patron_fines.item_location AS "Location",
   u.jsonb ->> 'barcode'::text AS "PatronNo",
   u.jsonb ->> 'externalSystemId'::text AS "ID",
   CONCAT(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName') AS "Name",
+  '' AS "Name2",
   pa.address1 AS "Address1",
   pa.address2 AS "Address2",
-  pg.GROUP AS "Ptype",
-  patron_fines.item_barcode AS "Item Barcode",
-  patron_fines.item_title AS "Item Title",
+  pg.GROUP AS "pType",
+  patron_fines.item_barcode AS "ItemBarcode",
+  patron_fines.item_title AS "ItemTitle",
   patron_fines.item_call_number AS "CallNo",
-  patron_fines.type AS "Type",
+  patron_fines.type AS "TYPE",
   CASE
     WHEN (patron_fines.amount IS NOT NULL) THEN patron_fines.amount ELSE 0
   END AS "Amount",
@@ -215,6 +241,16 @@ SELECT
   CURRENT_DATE AS "RprtDate",
   (DATE_TRUNC('month', NOW()) + INTERVAL '1 month - 1 day')::DATE AS "CutOffDate",
   (DATE_TRUNC('month', NOW()) + INTERVAL '2 month - 1 day')::DATE AS "DueDateInv",
+  '' AS "CheckNo",
+  '' AS "DatePaid",
+  '' AS "AmtPaid",
+  '' AS "WhoEntered",
+  '' AS "DateToCashiers",
+  '' AS "AcctStatus",
+  '' AS "DateNoticeSent",
+  '' AS "DateToCollection",
+  '' AS "PaidOKToMove",
+  '' AS "Notes",
   CASE
     WHEN (patron_fines.amount IS NOT NULL) THEN patron_fines.label_amount ELSE 'NA'
   END AS "LblAmt",
@@ -223,7 +259,8 @@ SELECT
   END AS "LblAmt2",
   CASE
     WHEN (patron_fines.amount3 IS NOT NULL) THEN patron_fines.label_amount3 ELSE 'NA'
-  END AS "LblAmt3"
+  END AS "LblAmt3",
+  'AmtTotal1' as "AmtTotal1"
 -- get all the results from each of the separate reports
 FROM (
   (SELECT * FROM lost_fee WHERE NOT (lost_fee.amount IS NULL AND lost_fee.amount3 IS NULL))

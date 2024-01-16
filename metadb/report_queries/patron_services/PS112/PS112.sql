@@ -27,6 +27,7 @@ lost_fee AS (
     a.title AS item_title,
     a.call_number AS item_call_number,
     a.location AS item_location,
+    STRING_AGG(ffa.id::varchar, ',') AS invoice_id,
     SUM(ffa.amount_action)
       FILTER (WHERE LOWER(a.fee_fine_type)=LOWER('Lost item fee') AND LOWER(ffa.type_action)=LOWER('Lost item fee')) AS amount,
     NULL::integer AS amount2,
@@ -64,6 +65,7 @@ lost_fee_credit AS (
     a.title AS item_title,
     a.call_number AS item_call_number,
     a.location AS item_location,
+    STRING_AGG(ffa.id::varchar, ',') AS invoice_id,
     ABS(SUM(ffa.amount_action)
       FILTER (WHERE LOWER(a.fee_fine_type)=LOWER('Lost item fee') AND (LOWER(ffa.type_action)=LOWER('Cancelled item returned') OR LOWER(ffa.type_action)=LOWER('Cancelled item renewed')))) * -1 AS amount,
     ABS(SUM(ffa.amount_action)
@@ -100,6 +102,7 @@ overdue_fine AS (
     a.title AS item_title,
     a.call_number AS item_call_number,
     a.location AS item_location,
+    STRING_AGG(ffa.id::varchar, ',') AS invoice_id,
     NULL::integer AS amount,
     NULL::integer AS amount2,
     SUM(ffa.amount_action) AS amount3,
@@ -136,6 +139,7 @@ replacement_fee AS (
     a.title AS item_title,
     a.call_number AS item_call_number,
     a.location AS item_location,
+    STRING_AGG(ffa.id::varchar, ',') AS invoice_id,
     SUM(ffa.amount_action) AS amount,
     NULL::integer AS amount2,
     NULL::integer AS amount3,
@@ -174,6 +178,7 @@ manual_fees as (
     a.title AS item_title,
     a.call_number AS item_call_number,
     a.location AS item_location,
+    STRING_AGG(ffa.id::varchar, ',') AS invoice_id,
     NULL::integer AS amount,
     NULL::integer AS amount2,
     SUM(ffa.amount_action) AS amount3,
@@ -214,6 +219,7 @@ SELECT
         patron_fines.invoice_date)
       )::text, 4, '0') 
     ) AS "LineNum",
+  patron_fines.invoice_id AS "InvoiceNo",
   patron_fines.invoice_date::date AS "InvDate",
   patron_fines.item_location AS "Location",
   u.jsonb ->> 'barcode'::text AS "PatronNo",
@@ -222,6 +228,10 @@ SELECT
   '' AS "Name2",
   pa.address1 AS "Address1",
   pa.address2 AS "Address2",
+  '' AS "Country",
+  '' AS "P1",
+  '' AS "P2",
+  '' AS "P3",
   pg.GROUP AS "pType",
   patron_fines.item_barcode AS "ItemBarcode",
   patron_fines.item_title AS "ItemTitle",
@@ -263,9 +273,9 @@ SELECT
   'AmtTotal1' as "AmtTotal1"
 -- get all the results from each of the separate reports
 FROM (
-  (SELECT * FROM lost_fee WHERE NOT (lost_fee.amount IS NULL AND lost_fee.amount3 IS NULL))
+  (SELECT * FROM lost_fee WHERE NOT (lost_fee.amount IS NULL AND lost_fee.amount2 IS NULL AND lost_fee.amount3 IS NULL))
   UNION ALL
-  (SELECT * FROM lost_fee_credit WHERE NOT (lost_fee_credit.amount IS NULL AND lost_fee_credit.amount3 IS NULL))
+  (SELECT * FROM lost_fee_credit WHERE NOT (lost_fee_credit.amount IS NULL AND lost_fee_credit.amount2 IS NULL AND lost_fee_credit.amount3 IS NULL))
   UNION ALL
   (SELECT * FROM overdue_fine)
   UNION ALL

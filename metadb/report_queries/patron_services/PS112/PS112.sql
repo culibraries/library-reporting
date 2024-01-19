@@ -3,8 +3,10 @@
 --   and in the specifed format needed by the internal Patron Fines Access DB.
 WITH parameters AS (
   SELECT
-    '2023-06-15'::DATE as invoice_interval_start, -- fee fine action date starting (inclusive) 'YYYY-MM-DD'
-    CURRENT_DATE as invoice_interval_end  -- fee fine action date ending (not inclusive) 'YYYY-MM-DD' or CURRENT_DATE
+    -- fee fine action date starting (inclusive).  This needs to be cast to DATE.  IE: 'YYYY-MM-DD'::DATE
+    '2023-06-15'::DATE as invoice_interval_start,
+    -- fee fine action date ending (not inclusive). IE: 'YYYY-MM-DD'::DATE or just the string CURRENT_DATE for upto today
+    CURRENT_DATE as invoice_interval_end
 ),
 primary_address AS (
   SELECT
@@ -243,11 +245,10 @@ SELECT
   CASE
     WHEN (patron_fines.amount2 IS NOT NULL) THEN patron_fines.amount2 ELSE 0
   END AS "Amount2",
-  --patron_fines.amount3 AS "Amount3",
   CASE
     WHEN (patron_fines.amount3 IS NOT NULL) THEN patron_fines.amount3 ELSE 0
   END AS "Amount3",
-  COALESCE(patron_fines.amount, 0) + COALESCE(patron_fines.amount2, 0) + COALESCE(amount3, 0) AS "AmtTotal",
+  COALESCE(patron_fines.amount, 0) + COALESCE(patron_fines.amount2, 0) + COALESCE(patron_fines.amount3, 0) AS "AmtTotal",
   CURRENT_DATE AS "RprtDate",
   (DATE_TRUNC('month', NOW()) + INTERVAL '1 month - 1 day')::DATE AS "CutOffDate",
   (DATE_TRUNC('month', NOW()) + INTERVAL '2 month - 1 day')::DATE AS "DueDateInv",

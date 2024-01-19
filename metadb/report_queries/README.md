@@ -123,6 +123,7 @@ paste the content of this file into the reporting tool of your choice
 * [PS109: Patron Billing: Damage Fees](patron_services/PS109)
 * [PS110: Patron Billing: Other Fines](patron_services/PS110)
 * [PS111: Patron Billing: All Details](patron_services/PS111)
+* [PS112: Patron Billing: Combined Reports](patron_services/PS112)
 
 ### Reporting & Statistics (RS)
 [Data dashboards](https://o365coloradoedu.sharepoint.com/sites/libraries/collectionmanagement/SitePages/FOLIO-Dashboards.aspx) are available on the Collection Management's Sharepoint Page.

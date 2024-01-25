@@ -12,7 +12,7 @@ ffa.user_id,
 u.jsonb ->> 'barcode' AS user_barcode,
 u.jsonb ->> 'externalSystemId' AS user_externalSystemId,
 u.jsonb ->> 'username' AS user_username,
-concat(u.jsonb -> 'personal' ->> 'firstName',' ',u.jsonb -> 'personal' ->> 'lastName') AS user_name,
+concat(u.jsonb -> 'personal' ->> 'lastName',', ',u.jsonb -> 'personal' ->> 'firstName') AS user_name,
 a.fee_fine_type AS account_fee_fine_type,
 a.amount AS account_original_amount,
 ffa.type_action AS feefine_action,
@@ -33,7 +33,7 @@ LEFT JOIN folio_users.users AS u ON ffa.user_id = u.id
 LEFT JOIN primary_address AS pa ON u.id = pa.user_id
 LEFT JOIN folio_users.groups__t AS pg ON u.patrongroup = pg.id
 LEFT JOIN folio_feesfines.accounts__t AS a ON ffa.account_id = a.id 
-WHERE a.LOCATION NOT LIKE 'Law%'
+WHERE (a.LOCATION is NULL OR a.LOCATION NOT LIKE 'Law%')
 AND ffa.source != 'Sierra'
 --Enter dates for when the action occurred. Use format YYYY-MM-DD
 AND ffa.date_action::date BETWEEN '' AND ''

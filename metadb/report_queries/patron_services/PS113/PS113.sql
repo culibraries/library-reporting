@@ -1,3 +1,5 @@
+--PS113: Expiring Patron Accounts
+--Returns ids for all patron accounts expiring before July 1, 2024. 
 select 
 id, 
 jsonb ->> 'active' as active,

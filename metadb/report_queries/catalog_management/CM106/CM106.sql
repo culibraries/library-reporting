@@ -22,5 +22,5 @@ AND loc.name NOT LIKE '%Law%'
 AND stat.statistical_code_name = 'Book, print (books)'
 AND item.barcode != '[NULL]'
 AND format.instance_format_name = 'unmediated -- volume'
-AND inst.discovery_suppress = FALSE
+AND inst.discovery_suppress is not true
 GROUP BY inst.id ORDER BY count(item.id) DESC

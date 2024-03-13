@@ -72,6 +72,7 @@ SELECT
 inst.id AS instance_id,
 auth.contributor_name AS author,
 pub.publication_place AS publication_place,
+title as title,
 pub.publisher AS publisher,
 pub.date_of_publication AS copyright,
 lang.instance_language AS language,
@@ -97,6 +98,7 @@ LEFT JOIN series_volume_number AS svn ON svn.instance_id = inst.id
 SELECT 
 II.instance_hrid,
 ii.identifier AS oclc_identifier,
+instance.title,
 INSTANCE.author,
 INSTANCE.publication_place,
 INSTANCE.publisher,

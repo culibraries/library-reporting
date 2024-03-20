@@ -1,0 +1,20 @@
+--Returns a list of users (with all users__ table columns) from Tiers 2 and 3 that were created within the selected date range. Excludes Law patron groups.
+SELECT
+	u.jsonb -> 'metadata'->'createdDate' as created_date,
+	u.jsonb -> 'metadata'->'createdByUserId' as created_by,
+	g.jsonb -> 'group' as patron_group,
+	u.jsonb -> 'id' as user_id,
+	u.jsonb -> 'username' as username
+FROM folio_users.users u 
+LEFT JOIN folio_users."groups" g ON u.patrongroup = g.id
+--Enter dates in within the green quotations using the format YYYY-MM-DD
+WHERE u.creation_date ::date BETWEEN '2024-2-01' AND '2024-2-29'
+	AND g.__id in ('1','2','9','11','13','14','15','23','24','25','26')
+	AND u.jsonb -> 'active' = 'true'
+	AND u.__current = true 
+ORDER BY u.creation_date
+;
+/*Listed g.__id include ('Alumni','Auditors, Community and Senior','CU Boulder institute and workshop participants','CU System faculty
+	, staff, and student','Naropa','Reciprocal Borrowing Programs','Research partners','State funded CO universities/colleges faculty, staff, and students'
+	,'Colorado high school teachers/students','CU Boulder faculty/staff spouses/partners','CU Public Patron')
+*/

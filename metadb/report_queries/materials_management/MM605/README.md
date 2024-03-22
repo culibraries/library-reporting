@@ -1,7 +1,16 @@
 # Materials Management: Norlin Claimed Returned Report 
 
 ## Purpose
-
+This report returns a list of all items currently marked 'Claimed returned' across the Norlin Library.
 ## Parameters
-
+Searches the Norlin Library location for items that are currently marked "Claimed returned." Provides the loan ID, item status, claimed date, item barcode, item location, call number, copy, volume, claimed returned note, and patron UUID ("Folio number").
 ## Sample Output
+| loan_id                                | status           | clm_date                        | barcode       | location                    | call_num           | cpy   | vol                                    | clm_note                                                                               | pat_uuid             |
+|----------------------------------------|------------------|---------------------------------|---------------|-----------------------------|--------------------|-------|----------------------------------------|----------------------------------------------------------------------------------------|----------------------|
+| "c7a9c6e9-aa8f-4aa3-8f12-8ed8a8988be2" | Claimed returned | "2024-01-17T21:21:31.305+00:00" | P107181510003 | "PASCAL"                    | TP785 .A62         | "1"   |                                        | "Claimed returned 12/20/23"                                                            | patron uuid redacted |
+| "a5830f51-7a7e-40a4-b9dd-fe01addddce6" | Claimed returned | "2024-02-21T00:01:28.000+00:00" | U183027581378 | "Art & Architecture Stacks" | N6853.B55 A4 1998  | "1"   | ""                                     | "Patron thought book was returned along with the others."                              | patron uuid redacted |
+| "502ed998-0afe-4b6c-a114-8d67e161fd95" | Claimed returned | "2024-03-01T18:15:22.000+00:00" | U183043794486 | "Science Stacks"            | QA276.12 .M34 2004 | "1"   | ""                                     | "Patron claims that all of the books were returned during the   pandemic of May 2021." | patron uuid redacted |
+| "de00a663-1eca-4702-a0d3-19c6743ba711" | Claimed returned | "2024-03-01T18:15:22.000+00:00" | U183072481955 | "Norlin Stacks"             | JZ4984.5 .T43 2017 | "1"   | ""                                     | "Patron claims that all of the books were returned during the   pandemic of May 2021." | patron uuid redacted |
+| "a8be60e8-69d7-4cd2-909c-4a78aeac5322" | Claimed returned | "2024-03-07T18:54:19.000+00:00" | U183048861644 | "Norlin AAL Desk"           |                    |       | "Laptop Adapter - wall to USB-C - 65W" | "returned and forgot to check in"                                                      | patron uuid redacted |
+| "8e290b3f-06a7-40a4-8a5e-383785d9ad82" | Claimed returned | "2024-03-13T15:10:53.000+00:00" | U183075497379 | "Norlin East Desk"          | iClickers          | "297" | "CU Clicker"                           | "Patron claims item was returned to Norlin in Dec 2023 before   graduated."            | patron uuid redacted |
+| "7231872a-c980-47eb-a49b-50a4ed157720" | Claimed returned | "2024-03-18T15:30:06.000+00:00" | U183072100305 | "Norlin Stacks"             | HD319.B8 T33 2015  | "1"   | ""                                     | "Patron claims book was returned in May 2023."                                         | patron uuid redacted |

@@ -5,9 +5,10 @@ TABLES
 
 FILTERS FOR USER TO SELECT:
 */
-SELECT id
+SELECT i.id 
 FROM folio_inventory.instance i
+left join folio_inventory.instance__t as it on it.id = i.id 
 WHERE
   i.creation_date >='2023-06-19' AND
   i.creation_date < '2023-06-30' AND
-  i.jsonb->>'discoverySuppress'='false';
+  it.discovery_suppress is not true 

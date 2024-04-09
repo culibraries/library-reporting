@@ -1,35 +1,36 @@
 /** Documentation of Materials Management: Gemmill Claims Returned 
 
-DERIVED TABLES
+Returns a list of all items marked 'Claimed returned' across Engineering, Math and Physics Library.
 
 TABLES
-folio_circulation.loan__t__
-folio_inventory.item__t__
-folio_inventory.location__t__
-folio_inventory.holdings_record__t__
-folio_inventory.instance__t__
-
-FILTERS FOR USER TO SELECT:
+folio_circulation.loan
+folio_inventory.item
+folio_inventory.item__t
+folio_inventory.location
+folio_inventory.loclibrary
 */
---Returns a list of all items marked 'Claimed returned' across selected Engineering, Math, Physics Library locations.
-SELECT DISTINCT
-	lt.item_status AS status,
-	lt.claimed_returned_date AS claim_date,
+
+SELECT 
+	l.jsonb -> 'id' AS loan_id,
+	i.jsonb -> 'status' ->> 'name' AS status,
+	l.jsonb -> 'claimedReturnedDate' AS clm_date,
 	it.barcode AS barcode,
-	lt2.name AS location,
-	hrt.call_number AS call_number,
-	it.copy_number AS copy_number,
-	it.volume AS volume,
-	it2.title AS title,
-	lt.action_comment AS note,
-	lt.user_id AS patron_uuid
-FROM folio_circulation.loan__t__ lt 
-LEFT JOIN folio_inventory.item__t__ it ON it.id = lt.item_id
-LEFT JOIN folio_inventory.location__t__ lt2 ON lt2.id = lt.item_effective_location_id_at_check_out
-LEFT JOIN folio_inventory.holdings_record__t__ hrt ON hrt.id = it.holdings_record_id
-LEFT JOIN folio_inventory.instance__t__ it2 ON it2.id = hrt.instance_id
-WHERE lt.item_status = 'Claimed returned'
-	AND lt2.code IN ('ENG','ENGRES','ENGOV','ENGPOP','ENGST', 'ENGPS','ENGMC','ENGOS')
-	AND call_number IS NOT NULL
-ORDER BY claim_date
+	l2.jsonb -> 'name' AS location,
+	i.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS call_num,
+	i.jsonb -> 'copyNumber' AS cpy,
+	i.jsonb -> 'volume' AS vol,
+	l.jsonb -> 'actionComment' as clm_note,
+	l.jsonb -> 'userId' AS pat_uuid
+FROM folio_circulation.loan l 
+LEFT JOIN folio_inventory.item i on i.jsonb -> 'id' = l.jsonb -> 'itemId'
+LEFT JOIN folio_inventory.item__t it on it.id = i.id
+LEFT JOIN folio_inventory."location" l2 on l2.jsonb -> 'id' = i.jsonb -> 'effectiveLocationId'
+LEFT JOIN folio_inventory.loclibrary l3 on l3.jsonb -> 'id' = l2.jsonb -> 'libraryId'
+where i.jsonb -> 'status' ->> 'name' = 'Claimed returned'
+	AND l.jsonb ->> 'itemStatus' = 'Claimed returned'
+	AND l3.jsonb ->> 'code' in ('ENG')
+	AND l.jsonb ->> 'action' = 'claimedReturned'
+	AND i."__current" = true
+	AND l."__current" = true
+ORDER BY clm_date
 ;

@@ -12,4 +12,4 @@ FROM
 folio_inventory.instance__t AS it
 left join folio_derived.holdings_ext as he on he.instance_id = it.id
 where he.permanent_location_name != '%Law%'
-and it.discovery_suppress = FALSE
+and it.discovery_suppress is not true

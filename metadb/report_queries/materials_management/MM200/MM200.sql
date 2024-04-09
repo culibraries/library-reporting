@@ -1,20 +1,20 @@
---MM200 Business Missing Books Review
---Returns a list of all items that are marked 'Missing' across all Business Library locations.
+--MM200: Business Library Missing Books Report
 SELECT 
-loc.name AS LOCATION,
-i.barcode, 
-h.call_number,
-i.volume,
-inst.index_title,
-jsonb_extract_path_text(ij.jsonb, 'status', 'name') AS status_name
-FROM folio_inventory.item__t AS i
-LEFT JOIN folio_inventory.holdings_record__t AS h ON i.holdings_record_id = h.id
-LEFT JOIN folio_inventory.instance__t AS inst ON h.instance_id = inst.id
-LEFT JOIN folio_inventory.location__t AS loc ON loc.id = i.effective_location_id
-LEFT JOIN folio_inventory.loclibrary__t AS lib ON lib.id = loc.library_id
-LEFT JOIN folio_inventory.item AS ij ON ij.id = i.id
-WHERE 
-jsonb_extract_path_text(ij.jsonb, 'status', 'name') = 'Missing'
-AND lib.name = 'Business'
-ORDER BY loc.name, h.call_number
+jsonb_extract_path_text(i.jsonb, 'tags', 'tagList') AS tag,
+i.jsonb -> 'status' ->> 'name' AS item_status,
+loc.name AS item_location,
+i.jsonb ->> 'barcode' AS item_barcode,
+i.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS call_number,
+i.jsonb ->> 'effectiveShelvingOrder' AS shelf_order,
+inst.title AS title,
+i.jsonb ->> 'enumeration' AS enumeration,
+i.jsonb ->> 'copyNumber' AS volume,
+i.jsonb ->> 'volume' AS copy_number
+FROM folio_inventory.item i
+LEFT JOIN folio_inventory.location__t AS loc ON loc.id = (i.jsonb ->> 'effectiveLocationId')::uuid
+LEFT JOIN folio_inventory.holdings_record__t AS holdings ON holdings.id = i.holdingsrecordid
+LEFT JOIN folio_inventory.instance__t AS inst ON inst.id = holdings.instance_id
+WHERE i.jsonb -> 'status' ->> 'name' = 'Missing'
+AND loc.library_id = '63d3ba9a-091b-42b0-af83-b7bed0b25dd6'
+ORDER BY loc.name, i.jsonb ->> 'effectiveShelvingOrder' ASC
 ;

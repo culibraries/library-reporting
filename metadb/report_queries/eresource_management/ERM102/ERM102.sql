@@ -6,3 +6,6 @@ TABLES
 
 FILTERS FOR USER TO SELECT:
 */
+SELECT *
+FROM folio_derived.agreements_subscription_agreement
+where sa_name like 'U-%'

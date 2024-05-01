@@ -2,7 +2,5 @@
     "displayName": "Voucher payments",
     "description": "voucher payments",
     "instructions": "voucher payments",
-    "parameters": [
-        {}
-    ]
+    "parameters": []
 }

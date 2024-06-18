@@ -1,4 +1,4 @@
--- PS111: Patron Billing Report: Combined Reports
+-- PS112: Patron Billing Report: Combined Reports
 -- This report provide information on all fee/fine actions during a specific amount of time
 --   and in the specifed format needed by the internal Patron Fines Access DB.
 WITH parameters AS (
@@ -32,12 +32,12 @@ lost_fee AS (
     STRING_AGG(ffa.id::varchar, ',') AS invoice_id,
     SUM(ffa.amount_action)
       FILTER (WHERE LOWER(a.fee_fine_type)=LOWER('Lost item fee') AND LOWER(ffa.type_action)=LOWER('Lost item fee')) AS amount,
-    NULL::integer AS amount2,
     SUM(ffa.amount_action)
-      FILTER (WHERE LOWER(a.fee_fine_type)=LOWER('Lost item processing fee') AND LOWER(ffa.type_action)=LOWER('Lost item processing fee')) AS amount3,
+      FILTER (WHERE LOWER(a.fee_fine_type)=LOWER('Lost item processing fee') AND LOWER(ffa.type_action)=LOWER('Lost item processing fee')) as amount2,
+     NULL::integer AS amount3,
     'Rep Charge' AS label_amount,
-    '' AS label_amount2,
-    'Late Fee' AS label_amount3,
+    'Lost item processing fee' AS label_amount2,
+    '' AS label_amount3,
     'Replacement' AS type
   FROM
     folio_feesfines.feefineactions__t AS ffa

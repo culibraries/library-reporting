@@ -1,26 +1,25 @@
---metadb:function claimed_returned
+--metadb:function claimed_returned_all
 
-drop function if exists claimed_returned;
+drop function if exists claimed_returned_all;
 
-create function claimed_returned()
+create function claimed_returned_all()
 returns table(
 loan_id text,
 claimed_date date,
-action text,
-action_comment text,
-user_id text,
-user_name text,
 library text,
 item_location text,
 item_barcode text,
 call_number text,
 copy text,
 volume text
+action_comment text,
+user_id text,
+user_name text,
+user_email text
 )
 as $$
 select
 l.jsonb ->> 'id' as loan_id,
---l.creation_date::date  as claimed_date, NOT CORRECT DATE
 (i.jsonb -> 'status' ->> 'date')::DATE as claimed_date,
 lib.name as library, 
 loc.name as item_location,

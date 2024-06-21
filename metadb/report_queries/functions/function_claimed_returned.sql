@@ -1,8 +1,8 @@
---metadb:function claimed_returned_all
+--metadb:function claimed_returned
 
-drop function if exists claimed_returned_all;
+drop function if exists claimed_returned;
 
-create function claimed_returned_all()
+create function claimed_returned()
 returns table(
 loan_id text,
 claimed_date date,

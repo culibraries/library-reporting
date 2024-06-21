@@ -1,6 +1,6 @@
 {
     "displayName": "Claimed Returned All Libraries",
-    "description": "Claimed Returned",
-    "instructions": "Claimed Returned",
+    "description": "Returns a list of all items currently marked 'Claimed returned' across all library locations and PASCAL.",
+    "instructions": "Click "Submit" to run current report.",
     "parameters": []
 }

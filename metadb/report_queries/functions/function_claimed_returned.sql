@@ -20,17 +20,18 @@ volume text
 as $$
 select
 l.jsonb ->> 'id' as loan_id,
-l.creation_date::date  as claimed_date,
-l.jsonb ->> 'action' as action,
-l.jsonb ->> 'actionComment' as action_comment,
-l.jsonb ->> 'userId' as user_id,
-concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS user_name,
+--l.creation_date::date  as claimed_date, NOT CORRECT DATE
+(i.jsonb -> 'status' ->> 'date')::DATE as claimed_date,
 lib.name as library, 
 loc.name as item_location,
 i.jsonb ->> 'barcode' as item_barcode,
 holdings.call_number as call_number,
 i.jsonb ->> 'copyNumber' as copy,
-i.jsonb ->> 'volume' as volume
+i.jsonb ->> 'volume' as volume,
+l.jsonb ->> 'actionComment' as action_comment,
+l.jsonb ->> 'userId' as user_id,
+concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS user_name,
+u.jsonb -> 'personal' ->> 'email' as user_email
 from folio_circulation.loan as l
 left join folio_inventory.item as i on i.id = (l.jsonb ->> 'itemId')::uuid
 left join folio_users.users as u on u.id = (l.jsonb ->> 'userId')::uuid
@@ -38,7 +39,7 @@ left join folio_inventory.location__t as loc on loc.id = (i.jsonb ->> 'effective
 left join folio_inventory.loclibrary__t as lib on lib.id = loc.library_id
 left join folio_inventory.holdings_record__t as holdings on holdings.id = i.holdingsrecordid 
 where l.jsonb ->> 'action' = 'claimedReturned'
-order by lib.name, l.creation_date::date ASC
+order by lib.name, claimed_date asc
 $$
 language sql
 stable 

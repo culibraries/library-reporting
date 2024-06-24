@@ -67,8 +67,15 @@ FROM folio_source_record.marc__t AS marc
 WHERE marc.field = '830'
 AND marc.sf = 'v'
 AND ord = '1'
+),
+ISSN AS (
+SELECT *
+FROM folio_source_record.marc__t AS marc
+WHERE marc.field = '022'
+AND marc.sf = 'a'
+AND ord = '1'
 )
-SELECT 
+SELECT
 inst.id AS instance_id,
 auth.contributor_name AS author,
 pub.publication_place AS publication_place,
@@ -82,9 +89,10 @@ ep.CONTENT AS ebook_package,
 pISBN.CONTENT AS print_ISBN,
 eISBN.CONTENT AS e_ISBN,
 st.CONTENT AS series_title,
-svn.CONTENT AS series_volume_number
+svn.CONTENT AS series_volume_number,
+ISSN.CONTENT as ISSN
 FROM folio_inventory.instance__t AS inst
-LEFT JOIN first_author AS auth ON auth.instance_id = inst.id 
+LEFT JOIN first_author AS auth ON auth.instance_id = inst.id
 LEFT JOIN first_edition AS ed ON ed.instance_id = inst.id
 LEFT JOIN first_publication AS pub ON pub.instance_id = inst.id
 LEFT JOIN first_language AS lang ON lang.instance_id = inst.id
@@ -94,8 +102,9 @@ LEFT JOIN e_ISBN AS eISBN ON eISBN.instance_id = inst.id
 LEFT JOIN ebook_package AS ep ON ep.instance_id = inst.id
 LEFT JOIN series_title AS st ON st.instance_id = inst.id
 LEFT JOIN series_volume_number AS svn ON svn.instance_id = inst.id
+LEFT JOIN ISSN AS ISSN ON ISSN.instance_id = inst.id
 )
-SELECT 
+SELECT
 II.instance_hrid,
 ii.identifier AS oclc_identifier,
 instance.title,
@@ -110,9 +119,10 @@ INSTANCE.ebook_package,
 INSTANCE.print_ISBN,
 INSTANCE.e_ISBN,
 INSTANCE.series_title,
-INSTANCE.series_volume_number
+INSTANCE.series_volume_number,
+INSTANCE.ISSN
 from folio_derived.instance_identifiers as ii
-LEFT JOIN INSTANCE ON INSTANCE.INSTANCE_id = ii.instance_id 
+LEFT JOIN INSTANCE ON INSTANCE.INSTANCE_id = ii.instance_id
 where identifier_type_name = 'OCLC'
 and identifier like '%spr%'
 ORDER BY instance_hrid ASC

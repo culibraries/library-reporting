@@ -1,112 +1,402 @@
 --dashboard_acquisitions_transactions
+DROP TABLE dashboard_acquisitions_transactions; 
+DROP TABLE purchase_orders;
+drop table receiving_statistics;
+
 CREATE TABLE dashboard_acquisitions_transactions AS
 WITH
 acq AS (
-SELECT 
-po.id AS po_id,
-acq.data #>> '{}' AS acq_unit,
-au.name AS acquisition_unit
-FROM folio_orders.purchase_order AS po
-CROSS JOIN LATERAL jsonb_array_elements(jsonb_extract_path(po.jsonb, 'acqUnitIds')) WITH ORDINALITY AS acq (data)
-LEFT JOIN folio_orders.acquisitions_unit__t AS au ON au.id = (acq.data #>> '{}')::uuid
-),
-ISBN AS (
 SELECT
-ii.instance_id AS instance_id,
-string_agg (DISTINCT ii.identifier,' | ') AS ISBN
-FROM folio_derived.instance_identifiers AS ii
-WHERE ii.identifier_type_name = 'ISBN'
-GROUP BY instance_id
-),
-ISSN AS (
-SELECT
-ii.instance_id AS instance_id,
-string_agg (DISTINCT ii.identifier,' | ') AS ISSN
-FROM folio_derived.instance_identifiers AS ii
-WHERE ii.identifier_type_name = 'ISSN'
-GROUP BY instance_id
+	po.id AS po_id,
+	au.name AS acquisition_unit
+FROM
+	folio_orders.purchase_order AS po
+CROSS JOIN LATERAL jsonb_array_elements(jsonb_extract_path(po.jsonb,
+	'acqUnitIds')) WITH ORDINALITY AS acq (DATA)
+LEFT JOIN folio_orders.acquisitions_unit__t AS au ON
+	au.id = (acq.data #>> '{}')::uuid
 ),
 publisher AS (
-SELECT 
-ip.instance_id AS instance_id,
-string_agg (DISTINCT ip.publisher, ' | ') AS publisher, 
-string_agg (DISTINCT ip.date_of_publication,' | ') AS publication_date
-FROM folio_derived.instance_publication AS ip
+SELECT
+	ip.instance_id AS instance_id,
+	string_agg (DISTINCT ip.publisher,
+	' | ') AS publisher,
+	string_agg (DISTINCT ip.date_of_publication,
+	' | ') AS publication_date
+FROM
+	folio_derived.instance_publication AS ip
 GROUP BY
-ip.instance_id
+	ip.instance_id
+),
+transactions AS (
+--Transfers Going From Fund
+SELECT
+fy.name as fiscal_year,	
+tr.id AS transaction_id,
+tr.jsonb ->> 'sourceInvoiceLineId' as invoice_line_id,
+tr.jsonb -> 'encumbrance' ->> 'sourcePoLineId' as pol_id,
+tr.jsonb ->> 'transactionType' AS transaction_type,
+tr.jsonb ->> 'source' AS transaction_source,
+tr.creation_date::date as creation_date,
+(tr.jsonb -> 'metadata' ->> 'updatedDate')::date as updated_date,
+concat(tcb.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tcb.jsonb -> 'personal' ->> 'lastName') AS transaction_created_by,
+concat(tub.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tub.jsonb -> 'personal' ->> 'lastName') AS transaction_updated_by,
+f.name AS transaction_fund,
+f.code AS transaction_fund_code,
+	(tr.jsonb ->> 'amount')::NUMERIC(12,
+	2)*-1 AS transaction_amount
+FROM
+	folio_finance.TRANSACTION AS tr
+LEFT JOIN folio_finance.fund__t AS f ON
+	f.id = tr.fromfundid
+LEFT JOIN folio_users.users AS tcb ON
+	tcb.id = (tr.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+left join folio_users.users as tub on 
+	tub.id = (tr.jsonb -> 'metadata' ->> 'updatedByUserId')::uuid
+LEFT JOIN folio_finance.fiscal_year__t AS fy ON
+	fy.id = tr.fiscalyearid
+WHERE
+	tr.jsonb ->> 'transactionType' = 'Transfer'
+UNION
+--Transfers Going To Funds
+SELECT
+fy.name as fiscal_year,	
+tr.id AS transaction_id,
+tr.jsonb ->> 'sourceInvoiceLineId' as invoice_line_id,
+tr.jsonb -> 'encumbrance' ->> 'sourcePoLineId' as pol_id,
+tr.jsonb ->> 'transactionType' AS transaction_type,
+tr.jsonb ->> 'source' AS transaction_source,
+tr.creation_date::date as creation_date,
+(tr.jsonb -> 'metadata' ->> 'updatedDate')::date as updated_date,
+concat(tcb.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tcb.jsonb -> 'personal' ->> 'lastName') AS transaction_created_by,
+concat(tub.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tub.jsonb -> 'personal' ->> 'lastName') AS transaction_updated_by,
+	f.name AS transaction_fund,
+f.code AS transaction_fund_code,
+	(tr.jsonb ->> 'amount')::NUMERIC(12,
+	2) AS transaction_amount
+FROM
+	folio_finance.TRANSACTION AS tr
+LEFT JOIN folio_finance.fund__t AS f on
+	f.id = tr.tofundid
+LEFT JOIN folio_users.users AS tcb ON
+	tcb.id = (tr.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+left join folio_users.users as tub on 
+	tub.id = (tr.jsonb -> 'metadata' ->> 'updatedByUserId')::uuid
+LEFT JOIN folio_finance.fiscal_year__t AS fy ON
+	fy.id = tr.fiscalyearid
+WHERE
+	tr.jsonb ->> 'transactionType' = 'Transfer'
+UNION
+--Money Coming Out of Funds
+SELECT
+fy.name as fiscal_year,	
+tr.id AS transaction_id,
+tr.jsonb ->> 'sourceInvoiceLineId' as tsource_invoice,
+tr.jsonb -> 'encumbrance' ->> 'sourcePoLineId' as tsource_pol,
+tr.jsonb ->> 'transactionType' AS transaction_type,
+tr.jsonb ->> 'source' AS transaction_source,
+tr.creation_date::date as creation_date,
+(tr.jsonb -> 'metadata' ->> 'updatedDate')::date as updated_date,
+concat(tcb.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tcb.jsonb -> 'personal' ->> 'lastName') AS transaction_created_by,
+concat(tub.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tub.jsonb -> 'personal' ->> 'lastName') AS transaction_updated_by,
+f.name AS transaction_fund,
+f.code AS transaction_fund_code,
+	(tr.jsonb ->> 'amount')::NUMERIC(12,
+	2)*-1 AS transaction_amount
+FROM
+	folio_finance.transaction AS tr
+LEFT JOIN folio_finance.fund__t AS f ON
+	f.id = tr.fromfundid
+LEFT JOIN folio_users.users AS tcb ON
+	tcb.id = (tr.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+left join folio_users.users as tub on 
+	tub.id = (tr.jsonb -> 'metadata' ->> 'updatedByUserId')::uuid
+LEFT JOIN folio_finance.fiscal_year__t AS fy ON
+	fy.id = tr.fiscalyearid
+WHERE
+	tr.fromfundid NOTNULL
+UNION
+--Money Going Into Funds
+SELECT
+fy.name as fiscal_year,	
+tr.id AS transaction_id,
+tr.jsonb ->> 'sourceInvoiceLineId' as invoice_line_id,
+tr.jsonb -> 'encumbrance' ->> 'sourcePoLineId' as pol_id,
+tr.jsonb ->> 'transactionType' AS transaction_type,
+tr.jsonb ->> 'source' AS transaction_source,
+tr.creation_date::date as creation_date,
+(tr.jsonb -> 'metadata' ->> 'updatedDate')::date as updated_date,
+concat(tcb.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tcb.jsonb -> 'personal' ->> 'lastName') AS transaction_created_by,
+concat(tub.jsonb -> 'personal' ->> 'firstName',
+		' ',
+		tub.jsonb -> 'personal' ->> 'lastName') AS transaction_updated_by,
+f.name AS transaction_fund,
+f.code AS transaction_fund_code,
+(tr.jsonb ->> 'amount')::NUMERIC(12,2) AS transaction_amount
+FROM
+	folio_finance.transaction AS tr
+LEFT JOIN folio_finance.fund__t AS f ON
+	f.id = tr.tofundid
+LEFT JOIN folio_users.users AS tcb ON
+	tcb.id = (tr.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+left join folio_users.users as tub on 
+	tub.id = (tr.jsonb -> 'metadata' ->> 'updatedByUserId')::uuid
+LEFT JOIN folio_finance.fiscal_year__t AS fy ON
+	fy.id = tr.fiscalyearid
+WHERE
+	tr.tofundid NOTNULL
 )
 SELECT
-tr.jsonb,
-fy.name AS fiscal_year,
-tr.id AS transaction_id,
-tr.creation_date::date,
-concat((po.jsonb ->> 'dateOrdered')::date, (poinv.jsonb ->> 'dateOrdered')::date) AS date_ordered,
-tr.jsonb ->> 'source' AS transaction_source,
-tr.jsonb ->> 'transactionType' AS transaction_type,
-concat(tcb.jsonb -> 'personal' ->> 'firstName', ' ', tcb.jsonb -> 'personal' ->> 'lastName') AS transaction_created_by,
-concat(tub.jsonb -> 'personal' ->> 'firstName', ' ', tub.jsonb -> 'personal' ->> 'lastName') AS transaction_updated_by,
-concat(ff.name, '',tf.name) AS fund,
-concat(oopo.name, ooinv.name) AS vendor,
-concat(po.jsonb ->> 'poNumber', poinv.jsonb ->> 'poNumber') AS po_number,
-concat(po.jsonb ->> 'workflowStatus', poinv.jsonb ->> 'workflowStatus') AS workflowstatus,
-concat(po.jsonb -> 'closeReason' ->> 'reason', poinv.jsonb -> 'closeReason' ->> 'reason') AS reason_closed,
-concat(po.jsonb ->> 'reEncumber', poinv.jsonb ->> 'reEncumber') AS re_encumber,
-concat(po.jsonb ->> 'orderType', poinv.jsonb ->> 'orderType') AS order_type,
-concat(po.jsonb ->> 'approved', poinv.jsonb ->> 'approved') AS approval_status,
-concat(amt.value, amtinv.value) AS acquisition_method,
-concat(pol.jsonb ->> 'poLineNumber', polinvl.jsonb ->> 'poLineNumber') AS po_line_number,
-concat(pol.jsonb ->> 'orderFormat', polinvl.jsonb ->> 'orderFormat') AS order_format,
-concat(pol.jsonb ->> 'rush', polinvl.jsonb ->> 'rush') AS rush,
-concat(pol.jsonb ->> 'paymentStatus', polinvl.jsonb ->> 'paymentStatus') AS payment_status,
-concat(pol.jsonb ->> 'receiptStatus', polinvl.jsonb ->> 'receiptStatus') AS receipt_status,
-concat(mte.name, mtp.name, invmte.name, invmtp.name) AS material_type,
-concat(t.title, invl.jsonb ->> 'description') AS title_description,
-concat(ISBN.ISBN, ISBNinvl.ISBN) AS ISBN,
-concat(ISSN.ISSN, ISSNinvl.ISSN) AS ISSN,
-concat(publisher.publisher, publisherinvl.publisher) AS publisher,
-concat(publisher.publication_date, publisherinvl.publication_date) AS publication_date,
-inv.jsonb ->> 'vendorInvoiceNo' AS vendor_invoice_number,
-invl.jsonb ->> 'invoiceLineNumber' AS invoice_line_number,
-inv.jsonb ->> 'adjustmentsTotal' AS invoice_adjustments,
-(invl.jsonb ->> 'total') AS invl_total,
-(inv.jsonb ->> 'total') AS inv_total,
-(tr.jsonb ->> 'amount') AS transaction_amount,
-(tr.jsonb -> 'encumbrance' ->> 'amountAwaitingPayment') AS transaction_encumbrance_amount_awaiting_payment,
-(tr.jsonb -> 'encumbrance' ->> 'amountExpended') AS transaction_encumbrance_amount_expended,
-(tr.jsonb -> 'encumbrance' ->> 'initialAmountEncumbered') AS transaction_encumbrance_initial_amount
+	tra.fiscal_year,
+	tra.transaction_id,
+	tra.creation_date::date,
+	tra.updated_date::date,
+	tra.transaction_created_by,
+	tra.transaction_updated_by,
+	tra.transaction_type,
+	tra.transaction_source,
+	tra.transaction_fund,
+	tra.transaction_fund_code,
+	tra.transaction_amount,
+	concat((po.jsonb ->> 'dateOrdered')::date,
+	(poinv.jsonb ->> 'dateOrdered')::date) AS date_ordered,
+	concat(oopo.name, ooinv.name, oo.name) AS vendor,
+	concat(concat(upo.jsonb -> 'personal' ->> 'firstName', ' ', upo.jsonb -> 'personal' ->> 'lastName'),
+	concat(upoinvl.jsonb -> 'personal' ->> 'firstName', ' ', upoinvl.jsonb -> 'personal' ->> 'lastName')) AS purchase_created_by,
+	concat(po.jsonb ->> 'poNumber', poinv.jsonb ->> 'poNumber') AS po_number,
+	concat(po.jsonb ->> 'workflowStatus', poinv.jsonb ->> 'workflowStatus') AS workflowstatus,
+	concat(po.jsonb -> 'closeReason' ->> 'reason', poinv.jsonb -> 'closeReason' ->> 'reason') AS reason_closed,
+	concat(po.jsonb ->> 'reEncumber',poinv.jsonb ->> 'reEncumber') AS re_encumber,
+	concat(po.jsonb -> 'ongoing' ->> 'interval', poinv.jsonb -> 'ongoing' ->> 'interval') AS ongoing_interval,
+	concat(po.jsonb -> 'ongoing' ->> 'manualRenewal', poinv.jsonb -> 'ongoing' ->> 'manualRenewal') AS ongoing_manual_renewal,
+	concat(po.jsonb -> 'ongoing' ->> 'isSubscription', poinv.jsonb -> 'ongoing' ->> 'isSubscription') AS is_subscription,
+	concat(po.jsonb ->> 'orderType', poinv.jsonb ->> 'orderType') AS order_type,
+	concat(po.jsonb ->> 'approved', poinv.jsonb ->> 'approved') AS approval_status,
+	concat(otpo.template_name, otpoinv.template_name) AS order_template,
+	concat(amt.value, amtinv.value) AS acquisition_method,
+	concat(acq.acquisition_unit, acqinv.acquisition_unit) as acquisition_unit,
+	concat(pol.jsonb ->> 'poLineNumber', polinvl.jsonb ->> 'poLineNumber') AS po_line_number,
+	concat(pol.jsonb ->> 'orderFormat', polinvl.jsonb ->> 'orderFormat') AS order_format,
+	concat(pol.jsonb ->> 'rush', polinvl.jsonb ->> 'rush') AS rush,
+	concat(pol.jsonb ->> 'paymentStatus', polinvl.jsonb ->> 'paymentStatus') AS payment_status,
+	concat(pol.jsonb ->> 'receiptStatus', polinvl.jsonb ->> 'receiptStatus') AS receipt_status,
+	concat(pol.jsonb ->> 'notes', polinvl.jsonb ->> 'notes') AS po_notes,
+	concat(pol.jsonb -> 'details' ->> 'subscriptionFrom', polinvl.jsonb -> 'details' ->> 'subscriptionFrom') as subscription_from,
+	concat(pol.jsonb -> 'details' ->> 'subscriptionTo', polinvl.jsonb -> 'details' ->> 'subscriptionTo') as subscription_to,
+	concat(mte.name, mtp.name, invmte.name, invmtp.name) AS material_type,
+	concat(pol.jsonb ->> 'titleOrPackage', invl.jsonb ->> 'description') AS title_description,
+	concat(publisher.publisher, publisherinvl.publisher) AS publisher,
+	concat(publisher.publication_date, publisherinvl.publication_date) AS publication_date,
+	inv.jsonb ->> 'vendorInvoiceNo' AS vendor_invoice_number,
+	invl.jsonb ->> 'invoiceLineNumber' AS invoice_line_number,
+	inv.jsonb ->> 'adjustmentsTotal' AS invoice_adjustments,
+	(invl.jsonb ->> 'total') AS invl_total,
+	(inv.jsonb ->> 'total') AS inv_total
+from transactions AS tra
+LEFT JOIN folio_invoice.invoice_lines AS invl on tra.invoice_line_id::uuid = invl.id
+LEFT JOIN folio_invoice.invoices AS inv on inv.id = invl.invoiceid
+LEFT JOIN folio_orders.po_line AS pol on pol.id = tra.pol_id::uuid
+LEFT JOIN folio_inventory.material_type__t AS mtp on mtp.id = (pol.jsonb -> 'physical' ->> 'materialType')::uuid
+LEFT JOIN folio_inventory.material_type__t AS mte on mte.id = (pol.jsonb -> 'eresource' ->> 'materialType')::uuid
+LEFT JOIN publisher on publisher.instance_id = (pol.jsonb ->> 'instanceId')::uuid
+LEFT JOIN folio_orders.purchase_order AS po on po.id = pol.purchaseorderid
+LEFT JOIN acq on acq.po_id = po.id
+LEFT JOIN folio_organizations.organizations__t AS oo on oo.id = (po.jsonb ->> 'vendor')::uuid
+LEFT JOIN folio_orders.po_line AS polinvl on (invl.jsonb ->> 'poLineId')::uuid = polinvl.id
+LEFT JOIN folio_orders.acquisition_method__t AS amt on amt.id = (polinvl.jsonb ->> 'acquisitionMethod')::uuid
+LEFT JOIN folio_orders.acquisition_method__t AS amtinv on amtinv.id = (pol.jsonb ->> 'acquisitionMethod')::uuid
+LEFT JOIN folio_orders.purchase_order AS poinv on poinv.id = polinvl.purchaseorderid
+LEFT JOIN folio_orders.order_templates__t AS otpo on otpo.id = (po.jsonb ->> 'template')::uuid
+LEFT JOIN folio_orders.order_templates__t AS otpoinv on otpoinv.id = (poinv.jsonb ->> 'template')::uuid
+LEFT JOIN acq AS acqinv on acqinv.po_id = poinv.id
+LEFT JOIN folio_organizations.organizations__t AS ooinv on ooinv.id = (inv.jsonb ->> 'vendorId')::uuid
+LEFT JOIN folio_organizations.organizations__t AS oopo on oopo.id = (poinv.jsonb ->> 'vendorId')::uuid
+LEFT JOIN folio_inventory.material_type__t AS invmtp on invmtp.id = (polinvl.jsonb -> 'physical' ->> 'materialType')::uuid
+LEFT JOIN folio_inventory.material_type__t AS invmte on invmte.id = (polinvl.jsonb -> 'eresource' ->> 'materialType')::uuid
+LEFT JOIN publisher AS publisherinvl on publisherinvl.instance_id = (polinvl.jsonb ->> 'instanceId')::uuid
+LEFT JOIN folio_users.users AS upo on upo.id = (pol.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+LEFT JOIN folio_users.users AS upoinvl on upoinvl.id = (polinvl.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+WHERE
+	tra.fiscal_year NOT LIKE '%Law%'
+ORDER BY
+	tra.creation_date::date DESC
+;
+
+--PURCHASE ORDERS REPORT
+--Details about all purchase orders and relevant invoice lines. 
+CREATE TABLE purchase_orders AS
+with pol as (
+select
+amt.value as acquisition_method,
+pol.id as pol_id,
+pol.purchaseorderid as purchase_order_id,
+pol.jsonb ->> 'poLineNumber' AS po_line_number,
+pol.creation_date::date AS po_line_created,
+pol.jsonb ->> 'receiptStatus' AS receipt_status,
+(pol.jsonb ->> 'receiptDate')::date AS receipt_date,
+pol.jsonb ->> 'paymentStatus' AS pol_payment_status,
+pol.jsonb ->> 'titleOrPackage' AS po_title,
+pol.jsonb ->> 'orderFormat' AS format,
+pol.jsonb -> 'vendorDetail' ->> 'vendorAccount' AS vendor_account,
+pol.jsonb -> 'vendorDetail' ->> 'instructions' AS vendor_instructions,
+pol.jsonb -> 'vendorDetail' ->> 'referenceNumbers' AS vendor_reference,
+dist.DATA ->> 'code' AS pol_fund_code,
+dist.DATA ->> 'encumbrance' AS encumbrance_id,
+(pol.jsonb -> 'cost' ->> 'poLineEstimatedPrice')::NUMERIC(12,2) AS estimated_price
+FROM folio_orders.po_line AS pol 
+CROSS JOIN LATERAL jsonb_array_elements(jsonb_extract_path(pol.jsonb, 'fundDistribution')) AS dist (data)
+LEFT JOIN folio_orders.acquisition_method__t AS amt ON amt.id = (pol.jsonb ->> 'acquisitionMethod')::uuid
+),
+purchase_orders as (
+WITH
+acq AS (
+SELECT
+	po.id AS po_id,
+	au.name AS acquisition_unit
 FROM
-folio_finance.transaction AS tr
-LEFT JOIN folio_users.users AS tcb ON tcb.id = tr.created_by
-LEFT JOIN folio_users.users AS tub ON tub.id = (tr.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
-LEFT JOIN folio_finance.fiscal_year__t AS fy ON fy.id = tr.fiscalyearid
-LEFT JOIN folio_finance.fund__t AS ff ON ff.id = tr.fromfundid
-LEFT JOIN folio_finance.fund__t AS tf ON tf.id = tr.tofundid
-LEFT JOIN folio_finance.budget__t AS fb ON fb.fund_id = tr.fromfundid AND tr.fiscalyearid = fb.fiscal_year_id
-LEFT JOIN folio_finance.expense_class__t AS ec ON ec.id = tr.expenseclassid
-LEFT JOIN folio_invoice.invoice_lines AS invl ON (tr.jsonb ->> 'sourceInvoiceLineId')::uuid = invl.id
-LEFT JOIN folio_invoice.invoices AS inv ON inv.id = invl.invoiceid 
-LEFT JOIN folio_orders.po_line AS pol ON pol.id = (tr.jsonb -> 'encumbrance' ->> 'sourcePoLineId')::uuid
-LEFT JOIN folio_inventory.material_type__t AS mtp ON mtp.id = (pol.jsonb -> 'physical' ->> 'materialType')::uuid
-LEFT JOIN folio_inventory.material_type__t AS mte ON mte.id = (pol.jsonb -> 'eresource' ->> 'materialType')::uuid
-LEFT JOIN ISBN ON ISBN.instance_id = (pol.jsonb ->> 'instanceId')::uuid
-LEFT JOIN ISSN ON ISSN.instance_id = (pol.jsonb ->> 'instanceId')::uuid
-LEFT JOIN publisher ON publisher.instance_id = (pol.jsonb ->> 'instanceId')::uuid
-LEFT JOIN folio_orders.purchase_order AS po ON po.id = (tr.jsonb -> 'encumbrance' ->> 'sourcePurchaseOrderId')::uuid
-LEFT JOIN acq ON acq.po_id = po.id
-LEFT JOIN folio_organizations.organizations__t AS oo ON oo.id = (po.jsonb ->> 'vendor')::uuid 
-LEFT JOIN folio_orders.titles__t AS t ON (tr.jsonb -> 'encumbrance' ->> 'sourcePoLineId')::uuid = t.po_line_id 
-LEFT JOIN folio_orders.po_line AS polinvl ON (invl.jsonb ->> 'poLineId')::uuid = polinvl.id
-LEFT JOIN folio_orders.acquisition_method__t AS amt ON amt.id = (polinvl.jsonb ->> 'acquisitionMethod')::uuid
-LEFT JOIN folio_orders.acquisition_method__t AS amtinv ON amtinv.id = (pol.jsonb ->> 'acquisitionMethod')::uuid
-LEFT JOIN folio_orders.purchase_order AS poinv ON poinv.id = polinvl.purchaseorderid
-LEFT JOIN acq AS acqinv ON acqinv.po_id = poinv.id
-LEFT JOIN folio_orders.acquisitions_unit__t AS auinv ON acqinv.acq_unit::uuid = auinv.id
-LEFT JOIN folio_organizations.organizations__t AS ooinv ON ooinv.id = (inv.jsonb ->> 'vendorId')::uuid
-LEFT JOIN folio_organizations.organizations__t AS oopo ON oopo.id = (poinv.jsonb ->> 'vendorId')::uuid 
-LEFT JOIN folio_inventory.material_type__t AS invmtp ON invmtp.id = (polinvl.jsonb -> 'physical' ->> 'materialType')::uuid
-LEFT JOIN folio_inventory.material_type__t AS invmte ON invmte.id = (polinvl.jsonb -> 'eresource' ->> 'materialType')::uuid
-LEFT JOIN ISBN AS ISBNinvl ON ISBNinvl.instance_id = (polinvl.jsonb ->> 'instanceId')::uuid
-LEFT JOIN ISSN AS ISSNinvl ON ISSNinvl.instance_id = (polinvl.jsonb ->> 'instanceId')::uuid
-LEFT JOIN publisher AS publisherinvl ON publisherinvl.instance_id = (polinvl.jsonb ->> 'instanceId')::uuid
-WHERE fy.name NOT LIKE '%Law%'
-ORDER BY tr.creation_date::date DESC
+	folio_orders.purchase_order AS po
+CROSS JOIN LATERAL jsonb_array_elements(jsonb_extract_path(po.jsonb,
+	'acqUnitIds')) WITH ORDINALITY AS acq (DATA)
+LEFT JOIN folio_orders.acquisitions_unit__t AS au ON
+	au.id = (acq.data #>> '{}')::uuid
+)
+select 
+acq.acquisition_unit,
+po.id,
+po.jsonb ->> 'poNumber' AS purchase_order,
+(po.jsonb ->> 'dateOrdered')::date as date_ordered,
+concat(ucb.jsonb -> 'personal' ->> 'firstName',' ',ucb.jsonb -> 'personal' ->> 'lastName') AS purchase_created_by,
+concat(uub.jsonb -> 'personal' ->> 'firstName',' ',uub.jsonb -> 'personal' ->> 'lastName') as purchase_updated_by,
+po.creation_date::date AS purchase_order_created,
+po.jsonb ->> 'workflowStatus' AS workflow_status,
+org.jsonb ->> 'name' AS po_vendor,
+ot.template_name as order_template,
+po.jsonb ->> 'orderType' as order_type,
+po.jsonb -> 'reEncumber' as re_encumber,
+po.jsonb -> 'ongoing' ->> 'isSubscription' as subscription,
+po.jsonb ->> 'approved' as purchase_approved
+from folio_orders.purchase_order as po
+left join acq on acq.po_id = po.id
+LEFT JOIN folio_users.users AS ucb on ucb.id = (po.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+LEFT JOIN folio_users.users AS uub on uub.id = (po.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+left join folio_organizations.organizations as org on org.id = (po.jsonb ->> 'vendor')::uuid
+left join folio_orders.order_templates__t as ot on ot.id = (po.jsonb ->> 'template')::uuid
+order by po.jsonb ->> 'poNumber' asc
+),
+fdist AS (  
+SELECT
+        concat(u.jsonb -> 'personal' ->> 'firstName',' ',u.jsonb -> 'personal' ->> 'lastName') AS invoice_created_by,
+    	 invl.id AS invoice_line_id,
+        invl.jsonb ->> 'poLineId' AS po_line,
+        (dist.data ->> 'encumbrance')::uuid as encumbrance_id,
+    	inv.creation_date::date AS invoice_created,
+    	invl.creation_date::date AS invl_created,
+    	inv.jsonb ->> 'vendorInvoiceNo' AS vendor_invoice,
+    	invl.jsonb ->> 'invoiceLineNumber' AS invoice_line_number,
+    	(inv.jsonb ->> 'invoiceDate')::DATE AS invoice_date,
+   		org.jsonb ->> 'name' AS invoice_vendor,   
+        jsonb_extract_path_text(dist.data, 'code') AS fund_distribution_code,
+        f.name AS fund_name,
+        jsonb_extract_path_text(invl.jsonb, 'subTotal')::numeric(19,4) AS invoice_line_sub_total,
+        jsonb_extract_path_text(invl.jsonb, 'total')::numeric(19,4) AS invoice_line_total,
+		invl.jsonb ->> 'description' AS invoice_title,
+		invl.jsonb ->> 'accountNumber' AS invoice_account_number,
+		invl.jsonb ->> 'referenceNumbers' AS invoice_reference_number,
+		invl.jsonb ->> 'comment' AS invoice_line_comment,
+		(inv.jsonb ->> 'paymentDate')::DATE AS payment_date,
+		inv.jsonb ->> 'paymentMethod' AS payment_method
+    FROM
+        folio_invoice.invoice_lines AS invl
+        CROSS JOIN LATERAL jsonb_array_elements(jsonb_extract_path(invl.jsonb, 'fundDistributions')) AS dist(data)
+        LEFT JOIN folio_invoice.invoices AS inv ON inv.id = invl.invoiceid
+        LEFT JOIN folio_finance.fund__t AS f ON f.code = jsonb_extract_path_text(dist.data, 'code')
+        LEFT JOIN folio_users.users AS u ON u.id = invl.created_by
+        LEFT JOIN folio_organizations.organizations AS org ON org.id = (inv.jsonb ->> 'vendorId')::uuid
+    ORDER BY inv.jsonb ->> 'vendorInvoiceNo',invl.jsonb ->> 'invoiceLineNumber' ASC
+    )
+SELECT 
+po.acquisition_unit,
+pol.acquisition_method,
+po.purchase_order,
+pol.po_line_number,
+po.purchase_created_by,
+po.purchase_updated_by,
+po.purchase_order_created::date,
+po.workflow_status,
+po.po_vendor,
+pol.po_line_created,
+pol.receipt_status,
+pol.receipt_date::date,
+pol.pol_payment_status,
+pol.po_title,
+pol.format,
+pol.vendor_account,
+pol.vendor_instructions,
+pol.vendor_reference,
+pol.pol_fund_code,
+pol.encumbrance_id,
+pol.estimated_price,
+po.order_template,
+fdist.invoice_line_id,
+fdist.invoice_created_by,
+fdist.invoice_created,
+fdist.invl_created,
+fdist.vendor_invoice,
+fdist.invoice_line_number,
+fdist.invoice_date,
+fdist.invoice_vendor,   
+fdist.fund_distribution_code,
+fdist.fund_name,
+fdist.invoice_line_sub_total,
+fdist.invoice_line_total,
+fdist.invoice_title,
+fdist.invoice_account_number,
+fdist.invoice_reference_number,
+fdist.invoice_line_comment,
+fdist.payment_date,
+fdist.payment_method
+from purchase_orders as po
+left join  pol on pol.purchase_order_id = po.id
+LEFT JOIN fdist ON fdist.encumbrance_id = pol.pol_id
+ORDER BY pol.po_line_number, fdist.vendor_invoice, fdist.invoice_line_number asc
+;
+
+create table receiving_statistics as 
+select 
+pol.id,
+pol.creation_date::date as created_date,
+(pol.jsonb -> 'metadata' ->> 'updatedDate')::date as updated_date,
+concat(u.jsonb -> 'personal' ->> 'firstName',' ',u.jsonb -> 'personal' ->> 'lastName') as created_by,
+concat(uu.jsonb -> 'personal' ->> 'firstName',' ',uu.jsonb -> 'personal' ->> 'lastName') as updated_by,
+org.name as vendor,
+po.jsonb ->> 'workflowStatus' as po_workflow,
+pol.jsonb ->> 'poLineNumber' as pol,
+pol.jsonb ->> 'paymentStatus' as payment_status,
+pol.jsonb ->> 'receiptStatus' as receipt_status,
+po.jsonb ->> 'orderType' as order_type,
+(po.jsonb ->> 'dateOrdered')::date as order_date,
+pol.jsonb ->> 'orderFormat' as order_format,
+(pol.jsonb ->> 'receiptDate')::date as receipt_date,
+pol.jsonb ->> 'titleOrPackage' as title,
+pol.jsonb ->> 'description' as internal_note
+from folio_orders.po_line as pol
+left join folio_orders.purchase_order as po on po.id = pol.purchaseorderid
+left join folio_inventory.instance__t as inst on inst.id = (pol.jsonb ->> 'instanceId')::uuid
+left join folio_organizations.organizations__t as org on org.id = (po.jsonb ->> 'vendor')::uuid
+LEFT JOIN folio_users.users AS u on u.id = (pol.jsonb -> 'metadata' ->> 'createdByUserId')::uuid
+LEFT JOIN folio_users.users AS uu on uu.id = (pol.jsonb -> 'metadata' ->> 'updatedByUserId')::uuid
+;

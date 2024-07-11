@@ -38,7 +38,7 @@ where start_date <= created_date and created_date < end_date
 	and g.__id in ('1','2','9','11','13','14','15','23','24','25','26')
 	and u.jsonb -> 'active' = 'true'
 	and u.__current = true
-ORDER BY u.creation_date
+ORDER BY created_date
 $$
 language sql
 stable 

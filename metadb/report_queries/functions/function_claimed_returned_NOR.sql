@@ -1,6 +1,6 @@
 --metadb:function claimed_returned_NOR
 
-drop function if exists claimed_returned;
+drop function if exists claimed_returned_NOR;
 
 create function claimed_returned()
 returns table(
@@ -39,7 +39,7 @@ left join folio_inventory.loclibrary__t as lib on lib.id = loc.library_id
 left join folio_inventory.holdings_record__t as holdings on holdings.id = i.holdingsrecordid 
 where l.jsonb ->> 'action' = 'claimedReturned'
 	and lib.jsonb ->> 'code' in ('NOR','OFF')
-order by claimed_date asc
+order by claimed_date asc, loc.name
 $$
 language sql
 stable 

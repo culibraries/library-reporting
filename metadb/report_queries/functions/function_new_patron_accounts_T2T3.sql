@@ -1,4 +1,3 @@
---Returns a list of users from Tiers 2 and 3 that were created within the selected date range. Excludes Law patron groups.
 --metadb:function new_patron_accounts_T2T3
 
 drop function if exists new_patron_accounts_T2T3;

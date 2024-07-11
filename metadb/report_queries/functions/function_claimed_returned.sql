@@ -12,10 +12,10 @@ call_number text,
 "copy" text,
 volume text,
 action_comment text,
-loan_id text,
-user_id text,
 user_name text,
-user_email text
+user_email text,
+user_id text,
+loan_id text
 )
 as $$
 select
@@ -27,10 +27,10 @@ holdings.call_number as call_number,
 i.jsonb ->> 'copyNumber' as "copy",
 i.jsonb ->> 'volume' as volume,
 l.jsonb ->> 'actionComment' as action_comment,
-l.jsonb ->> 'id' as loan_id,
-l.jsonb ->> 'userId' as user_id,
 concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS user_name,
-u.jsonb -> 'personal' ->> 'email' as user_email
+u.jsonb -> 'personal' ->> 'email' as user_email,
+l.jsonb ->> 'userId' as user_id,
+l.jsonb ->> 'id' as loan_id
 from folio_circulation.loan as l
 left join folio_inventory.item as i on i.id = (l.jsonb ->> 'itemId')::uuid
 left join folio_users.users as u on u.id = (l.jsonb ->> 'userId')::uuid

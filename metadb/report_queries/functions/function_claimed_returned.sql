@@ -4,7 +4,6 @@ drop function if exists claimed_returned;
 
 create function claimed_returned()
 returns table(
-loan_id text,
 claimed_date date,
 "library" text,
 item_location text,
@@ -13,13 +12,13 @@ call_number text,
 "copy" text,
 volume text,
 action_comment text,
+loan_id text,
 user_id text,
 user_name text,
 user_email text
 )
 as $$
 select
-l.jsonb ->> 'id' as loan_id,
 (i.jsonb -> 'status' ->> 'date')::DATE as claimed_date,
 lib.name as "library", 
 loc.name as item_location,
@@ -28,6 +27,7 @@ holdings.call_number as call_number,
 i.jsonb ->> 'copyNumber' as "copy",
 i.jsonb ->> 'volume' as volume,
 l.jsonb ->> 'actionComment' as action_comment,
+l.jsonb ->> 'id' as loan_id,
 l.jsonb ->> 'userId' as user_id,
 concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS user_name,
 u.jsonb -> 'personal' ->> 'email' as user_email

@@ -2,7 +2,7 @@
 
 drop function if exists claimed_returned_NOR;
 
-create function claimed_returned()
+create function claimed_returned_NOR()
 returns table(
 loan_id text,
 claimed_date date,
@@ -39,7 +39,7 @@ left join folio_inventory.loclibrary__t as lib on lib.id = loc.library_id
 left join folio_inventory.holdings_record__t as holdings on holdings.id = i.holdingsrecordid 
 where l.jsonb ->> 'action' = 'claimedReturned'
 	and lib.code in ('NOR','OFF')
-order by claimed_date asc
+order by lib.name, claimed_date asc
 $$
 language sql
 stable 

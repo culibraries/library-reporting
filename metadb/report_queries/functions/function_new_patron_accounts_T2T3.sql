@@ -35,7 +35,8 @@ join creators c on c.created_by_id = u.created_by
 LEFT JOIN folio_users."groups" g  ON u.patrongroup = g.id
 --Enter dates using the format YYYY-MM-DD
 --where u.creation_date ::date BETWEEN '2023-7-01' AND '2024-6-28'
-where g.__id in ('1','2','9','11','13','14','15','23','24','25','26')
+where start_date <= created_date and created_date < end_date
+	and g.__id in ('1','2','9','11','13','14','15','23','24','25','26')
 	and u.jsonb -> 'active' = 'true'
 	and u.__current = true
 ORDER BY u.creation_date

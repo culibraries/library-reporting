@@ -38,7 +38,7 @@ left join folio_inventory.location__t as loc on loc.id = (i.jsonb ->> 'effective
 left join folio_inventory.loclibrary__t as lib on lib.id = loc.library_id
 left join folio_inventory.holdings_record__t as holdings on holdings.id = i.holdingsrecordid 
 where l.jsonb ->> 'action' = 'claimedReturned'
-	and lib.jsonb ->> 'code' in ('NOR','OFF')
+	and lib.code in ('NOR','OFF')
 order by claimed_date asc, loc.name
 $$
 language sql

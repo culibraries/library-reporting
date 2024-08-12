@@ -1,0 +1,6 @@
+{
+    "displayName": "Google Books: All Items with Google Book Note Type",
+    "description": "Returns a list of all items with a Google Note.",
+    "instructions": "Click Submit button to run current report.",
+    "parameters": []
+}

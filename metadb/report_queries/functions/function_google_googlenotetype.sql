@@ -1,10 +1,9 @@
 --Function_Google Books Notes: Generates a list of all Items wtih a Google Note Type. 
-
 drop function if exists googlebooknotes();
 
 create function googlebooknotes()
 returns TABLE(
-discovery_suppress boolean,
+discovery_suppress text,
 item_hrid text,
 holdings_hrid text,
 item_location text,
@@ -16,8 +15,8 @@ material_type text,
 title text,
 note_type_name text,
 note text,
-staff_only boolean,
-note_ordinality char
+staff_only text,
+note_ordinality integer
 )
 as $$
 SELECT

@@ -1,4 +1,5 @@
---Function_Google Books Notes: Generates a list of all Items wtih a Google Note Type. 
+--metadb:function googlebooknotes
+
 drop function if exists googlebooknotes();
 
 create function googlebooknotes()

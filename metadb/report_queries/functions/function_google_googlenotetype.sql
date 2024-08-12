@@ -1,6 +1,6 @@
 --metadb:function googlebooknotes
 
-drop function if exists googlebooknotes();
+drop function if exists googlebooknotes;
 
 create function googlebooknotes()
 returns TABLE(

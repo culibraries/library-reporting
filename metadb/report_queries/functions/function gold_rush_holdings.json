@@ -1,0 +1,6 @@
+{
+    "displayName": "Gold Rush",
+    "description": "Run quarterly to update holdings with GoldRush, managed by CARL.",
+    "instructions": "Click Submit button to run current report.",
+    "parameters": []
+}

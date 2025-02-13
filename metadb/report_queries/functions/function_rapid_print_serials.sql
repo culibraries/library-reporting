@@ -50,4 +50,8 @@ and loc.name not like '%Archives%'
 AND loc.name NOT LIKE '%Law%'
 AND stat.statistical_code_name = 'Serials, print (serials)'
 AND inst.discovery_suppress is not true
-AND statements.statements NOTNULL;
+AND statements.statements NOTNULL
+$$
+language sql 
+stable 
+parallel safe;

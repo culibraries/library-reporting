@@ -1,0 +1,13 @@
+{
+    "displayName": "Search Inventory by Publisher",
+    "description": "Generates a Title List by Publisher",
+    "instructions": "Enter a Publisher Name. Search is case-sensitive.",
+    "parameters": [
+        {
+            "name": "publisher",
+            "displayName": "Publisher",
+            "type": "text",
+            "required": false
+        }
+    ]
+}

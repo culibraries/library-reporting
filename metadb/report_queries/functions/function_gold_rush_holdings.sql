@@ -1,4 +1,4 @@
---metadb:function_gold_rush_holdings
+--metadb:function gold_rush_holdings
 
 drop function if exists gold_rush_holdings;
 

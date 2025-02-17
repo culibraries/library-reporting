@@ -3,6 +3,19 @@
 drop function if exists rapid_print_serials;
 
 create function rapid_print_serials()
+returns TABLE(
+oclc text,
+holdings_hrid text,
+instance_hrid text,
+title text,
+call_number text,
+holdings_statement text,
+holdings_location text,
+issn text,
+discovery_suppress text,
+statistical_code_name text
+)  
+as $$
 WITH holdings_statement AS (
 SELECT
 hs.holdings_id,

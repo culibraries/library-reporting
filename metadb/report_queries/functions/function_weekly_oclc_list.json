@@ -1,0 +1,19 @@
+{
+    "displayName": "Inventory Weekly OCLC List",
+    "description": "Run weekly, used to gather the print MARC records created in the past week to be sent to OCLC to update our holdings. Emily Semenoff sends every Monday. Change dates to previous Monday-Sunday.",
+    "instructions": "Choose a start and end date for the cataloged date.",
+    "parameters": [
+        {
+            "name": "start_date",
+            "displayName": "Earliest cataloged date",
+            "type": "date",
+            "required": false
+        },
+        {
+            "name": "end_date",
+            "displayName": "Latest cataloged date",
+            "type": "date",
+            "required": false
+        }
+    ]
+}

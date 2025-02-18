@@ -4,11 +4,13 @@ drop function if exists gold_rush_holdings;
 
 create function gold_rush_holdings()
 returns TABLE(
-hrid text
+hrid text,
+id text  
 )  
 as $$
 SELECT
-it.hrid
+it.hrid,
+it.id
 FROM
 folio_inventory.instance__t AS it
 left join folio_derived.holdings_ext as he on he.instance_id = it.id

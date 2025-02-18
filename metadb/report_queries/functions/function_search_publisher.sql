@@ -1,7 +1,9 @@
 --ldp:fuction search_publisher
 
+drop function if exists search_publisher;
+
 create function search_publisher(
-publisher text default ''
+publisher text
 )
 returns TABLE(
 "Barcode" text,
@@ -19,14 +21,14 @@ loc.name as "Item Location",
 inst.hrid as "Instance HRID",
 inst.title AS "Title",
 pub.date_of_publication AS "Date of Publication",
-pub.publisher as "Publication",
+pub.publisher as "Publisher",
 pub.publication_place as "Publication Place"
 from folio_derived.instance_publication as pub
 left join folio_inventory.instance__t as inst on inst.id = pub.instance_id  
 left join folio_inventory.holdings_record__t as ho on ho.instance_id = inst.id
 left join folio_inventory.item__t as i on i.holdings_record_id = ho.id
 left join folio_inventory.location__t as loc on loc.id = i.effective_location_id
-where publisher like publisher
+where pub.publisher like Concat('%',Publisher,'%')
 $$
 language sql
 stable parallel SAFE;

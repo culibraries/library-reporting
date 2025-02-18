@@ -4,7 +4,7 @@
     "instructions": "Enter a Publisher Name. Search is case-sensitive.",
     "parameters": [
         {
-            "name": "publisher",
+            "name": "search_text",
             "displayName": "Publisher",
             "type": "text",
             "required": false

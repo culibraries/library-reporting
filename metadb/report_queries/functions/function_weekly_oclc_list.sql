@@ -3,8 +3,8 @@
 drop function if exists weekly_oclc_list;
 
 create function occams_reader(
-  cataloged_date date DEFAULT '2000-01-01',
-  cataloged_date date DEFAULT '2099-01-01'
+  start_date date DEFAULT '2000-01-01',
+  end_date date DEFAULT '2099-01-01'
 )
 returns TABLE(
 uuid text,

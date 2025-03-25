@@ -1,6 +1,6 @@
 {
     "displayName": "Claimed Returned Norlin Library",
-    "description": "Returns a list of all items currently marked 'Claimed returned' across Norlin Library and PASCAL.",
+    "description": "Returns a list of all items currently marked 'Claimed returned' across Norlin Library, PASCAL, and Engineering (while Gemmill collection being stored in NorBase).",
     "instructions": "Click Submit button to run current report.",
     "parameters": []
 }

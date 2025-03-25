@@ -1,0 +1,6 @@
+{
+    "displayName": "Missing Books Report - All Locations",
+    "description": "Generates a list of books with the item status 'missing' with MS1 OR MS2 tags across all library locations.",
+    "instructions": "Click Submit button to run current report.",
+    "parameters": []
+}

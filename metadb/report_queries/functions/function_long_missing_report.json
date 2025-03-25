@@ -1,0 +1,6 @@
+{
+    "displayName": "Long Missing Report - All Locations",
+    "description": "Returns a list of all items currently marked Long Missing across all library locations.",
+    "instructions": "Click Submit button to run current report.",
+    "parameters": []
+}

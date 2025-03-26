@@ -1,0 +1,6 @@
+{
+    "displayName": "Claimed Returned Business Library",
+    "description": "Returns a list of all items currently marked 'Claimed returned' within the Business Library.",
+    "instructions": "Click Submit button to run current report.",
+    "parameters": []
+}

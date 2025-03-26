@@ -5,32 +5,33 @@ Returns a list of all items marked 'Claimed returned' across Engineering, Math a
 TABLES
 folio_circulation.loan
 folio_inventory.item
-folio_inventory.item__t
-folio_inventory.location
-folio_inventory.loclibrary
+folio_users.users
+folio_inventory.location__t
+folio_inventory.loclibrary__t
+folio_inventory.holdings_record__t
 */
 
 SELECT 
-	l.jsonb -> 'id' AS loan_id,
-	i.jsonb -> 'status' ->> 'name' AS status,
-	l.jsonb -> 'claimedReturnedDate' AS clm_date,
-	it.barcode AS barcode,
-	l2.jsonb -> 'name' AS location,
-	i.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS call_num,
-	i.jsonb -> 'copyNumber' AS cpy,
-	i.jsonb -> 'volume' AS vol,
-	l.jsonb -> 'actionComment' as clm_note,
-	l.jsonb -> 'userId' AS pat_uuid
+	(i.jsonb -> 'status' ->> 'date')::DATE as claimed_date,
+	i.jsonb ->> 'barcode' as barcode,
+	lt.discovery_display_name as location,
+	holdings.call_number as call_number,
+	i.jsonb ->> 'copyNumber' AS cpy,
+	i.jsonb ->> 'volume' AS vol,
+	l.jsonb ->> 'actionComment' as claim_note,
+	l.jsonb ->> 'id' AS loan_id,
+	concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS user_name,
+	u.jsonb -> 'personal' ->> 'email' as user_email,
+	l.jsonb ->> 'userId' AS user_id
 FROM folio_circulation.loan l 
-LEFT JOIN folio_inventory.item i on i.jsonb -> 'id' = l.jsonb -> 'itemId'
-LEFT JOIN folio_inventory.item__t it on it.id = i.id
-LEFT JOIN folio_inventory."location" l2 on l2.jsonb -> 'id' = i.jsonb -> 'effectiveLocationId'
-LEFT JOIN folio_inventory.loclibrary l3 on l3.jsonb -> 'id' = l2.jsonb -> 'libraryId'
+LEFT JOIN folio_inventory.item i on i.id = (l.jsonb ->> 'itemId')::uuid
+LEFT JOIN folio_users.users as u on u.id = (l.jsonb ->> 'userId')::uuid
+LEFT JOIN folio_inventory.location__t lt  on lt.id = (i.jsonb ->> 'effectiveLocationId')::uuid
+LEFT JOIN folio_inventory.loclibrary__t lt2 on lt2.id = lt.library_id 
+LEFT JOIN folio_inventory.holdings_record__t as holdings on holdings.id = i.holdingsrecordid
 where i.jsonb -> 'status' ->> 'name' = 'Claimed returned'
 	AND l.jsonb ->> 'itemStatus' = 'Claimed returned'
-	AND l3.jsonb ->> 'code' in ('ENG')
 	AND l.jsonb ->> 'action' = 'claimedReturned'
-	AND i."__current" = true
-	AND l."__current" = true
-ORDER BY clm_date
+	and lt2.code in ('ENG') 
+ORDER BY claimed_date asc
 ;

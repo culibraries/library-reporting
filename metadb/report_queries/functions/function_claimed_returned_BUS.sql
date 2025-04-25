@@ -1,4 +1,4 @@
---metadb:function claimed_returned_BUS --Business Library
+--metadb:function claimed_returned_BUS
 
 drop function if exists claimed_returned_BUS;
 

@@ -1,4 +1,4 @@
---metadb:function claimed_returned_MUS --Music Library
+--metadb:function claimed_returned_MUS
 
 drop function if exists claimed_returned_MUS;
 

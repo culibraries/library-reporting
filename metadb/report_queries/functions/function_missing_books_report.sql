@@ -1,4 +1,4 @@
---metadb: Function MM102 - Missing Books Report - All Locations
+--metadb:function missing_books_report
 drop function if exists missing_books_report;
 
 create function missing_books_report()

@@ -1,4 +1,4 @@
---metadb:function claimed_returned --ALL Locations
+--metadb:function claimed_returned
 
 drop function if exists claimed_returned;
 

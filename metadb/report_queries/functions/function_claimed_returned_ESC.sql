@@ -1,4 +1,4 @@
---metadb:function claimed_returned_ESC --Earth Sciences and Maps Library
+--metadb:function claimed_returned_ESC
 
 drop function if exists claimed_returned_ESC;
 

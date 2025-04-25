@@ -1,4 +1,4 @@
---metadb:function claimed_returned_ENG --Engineering, Math, Physics Library
+--metadb:function claimed_returned_ENG
 
 drop function if exists claimed_returned_ENG;
 

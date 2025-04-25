@@ -1,4 +1,4 @@
---metadb: Function MM105 - Long Missing Report - All Locations
+--metadb:function long_missing
 drop function if exists long_missing;
 
 create function long_missing()

@@ -2,7 +2,7 @@
 
 drop function if exists weekly_oclc_list;
 
-create function occams_reader(
+create function weekly_oclc_list(
   start_date date DEFAULT '2000-01-01',
   end_date date DEFAULT '2099-01-01'
 )

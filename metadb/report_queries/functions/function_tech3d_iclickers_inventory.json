@@ -15,41 +15,9 @@
             "displayName": "Optional Location Name #2",
             "type": "text",
             "required": false,
-            "default": "",
             "controlled.options": ["Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"],
+            "default": "",
             "disabled": false
-        },
-        {
-            "name": "location_code3",
-            "displayName": "Optional Location Code #3",
-            "type": "text",
-            "required": false,
-            "default": " ",
-            "disabled": true
-        },
-        {
-            "name": "location_code4",
-            "displayName": "Optional Location Code #4",
-            "type": "text",
-            "required": false,
-            "default": "  ",
-            "disabled": true
-        },
-        {
-            "name": "location_code5",
-            "displayName": "Optional Location Code #5",
-            "type": "text",
-            "required": false,
-            "default": "   ",
-            "disabled": true
-        },
-        {
-            "name": "location_code6",
-            "displayName": "Optional Location Code #6",
-            "type": "text",
-            "required": false,
-            "default": "    ",
-            "disabled": true
         }
     ]
 }

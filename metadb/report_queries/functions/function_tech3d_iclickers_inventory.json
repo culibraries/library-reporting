@@ -16,7 +16,7 @@
             "type": "text",
             "required": false,
             "default": "",
-            "controlled.options": ["Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
+            "controlled.options": ["Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"],
             "disabled": false
         },
         {

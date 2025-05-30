@@ -1,7 +1,7 @@
 {
     "displayName": "3D Tech & iClicker Inventory by Location",
     "description": "Generates a list of all 3D Tech and iClickers by location and their statuses.",
-    "instructions": "Enter a location code: NORED, NORAAL, bus (Gemmill tech), BUSST, ESCST, or MUSST."
+    "instructions": "Enter a location code: NORED, NORAAL, bus (Gemmill tech), BUSST, ESCST, or MUSST.",
     "parameters": [
         {
             "name": "search_text",

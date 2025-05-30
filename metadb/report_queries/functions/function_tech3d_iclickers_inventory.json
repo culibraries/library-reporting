@@ -15,8 +15,7 @@
             "displayName": "Optional Location Name #2",
             "type": "text",
             "required": false,
-            "controlled.options": ["Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"],
-            "default": "",
+            "controlled.options": ["","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"],
             "disabled": false
         }
     ]

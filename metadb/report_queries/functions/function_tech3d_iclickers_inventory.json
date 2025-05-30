@@ -5,13 +5,13 @@
     "parameters": [
         {
             "name": "location_code1",
-            "displayName": "Location Code 1",
+            "displayName": "Location Code #1",
             "type": "text",
             "required": true
         },
         {
             "name": "location_code2",
-            "displayName": "Optional Location Code 2",
+            "displayName": "Optional Location Code #2",
             "type": "text",
             "required": false
         }

@@ -1,20 +1,22 @@
 {
     "displayName": "3D Tech & iClicker Inventory by Location",
     "description": "Generates a list of all 3D Tech and iClickers by location and their statuses.",
-    "instructions": "Enter 1-6 location codes: NORED, NORAAL, bus (Gemmill tech), BUSST, ESCST, or MUSST.",
+    "instructions": "Select 1 or 2 locations from the drop down menus. (NORED, NORAAL, bus (Gemmill tech), BUSST, ESCST, or MUSST.)",
     "parameters": [
         {
             "name": "location_code1",
-            "displayName": "Location Code #1",
+            "displayName": "Location Name #1",
             "type": "text",
-            "required": true
+            "required": true,
+            "controlled.options": ["Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
         },
         {
             "name": "location_code2",
-            "displayName": "Optional Location Code #2",
+            "displayName": "Optional Location Name #2",
             "type": "text",
             "required": false,
             "default": "",
+            "controlled.options": ["Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
             "disabled": false
         },
         {
@@ -23,7 +25,7 @@
             "type": "text",
             "required": false,
             "default": " ",
-            "disabled": false
+            "disabled": true
         },
         {
             "name": "location_code4",
@@ -31,7 +33,7 @@
             "type": "text",
             "required": false,
             "default": "  ",
-            "disabled": false
+            "disabled": true
         },
         {
             "name": "location_code5",
@@ -39,7 +41,7 @@
             "type": "text",
             "required": false,
             "default": "   ",
-            "disabled": false
+            "disabled": true
         },
         {
             "name": "location_code6",
@@ -47,7 +49,7 @@
             "type": "text",
             "required": false,
             "default": "    ",
-            "disabled": false
+            "disabled": true
         }
     ]
 }

@@ -10,8 +10,7 @@ returns table(
 "Status" text,
 "Barcode" text,
 "Volume" text,
-"Updated" date,
-"Location Code" text,
+"Updated" timestamp,
 "Location Name" text
 )
 as $$
@@ -20,7 +19,6 @@ select
 	i.jsonb ->> 'barcode' as "Barcode",
 	i.jsonb ->> 'volume' as "Volume",
 	(i.jsonb -> 'metadata' ->> 'updatedDate')::timestamp as "Updated",
-	l.jsonb ->> 'code' as "Location Code",
 	l.jsonb ->> 'name' as "Location Name"
 from folio_inventory.item i
 left join folio_inventory.location l on (l.jsonb ->> 'id')::uuid = (i.jsonb ->> 'effectiveLocationId')::uuid

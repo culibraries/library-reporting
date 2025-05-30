@@ -1,6 +1,6 @@
 {
     "displayName": "3D Tech & iClicker Inventory by Location",
-    "description": "Generates a list of all 3D Tech and iClickers by location and their statuses.",
+    "description": "Generates a list of all 3D Tech and iClickers with their statuses by location.",
     "instructions": "Select 1 or 2 locations from the drop down menus.",
     "parameters": [
         {
@@ -15,6 +15,7 @@
             "displayName": "Optional Location Name #2",
             "type": "text",
             "required": false,
+            "default": "",
             "controlled.options": ["","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"],
             "disabled": false
         }

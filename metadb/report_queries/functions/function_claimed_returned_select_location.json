@@ -17,8 +17,7 @@
             "type": "text",
             "required": false,
             "default": "",
-            "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"],
-            "disabled": false
+            "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
         },
         {
             "name": "location_name_3",
@@ -26,8 +25,7 @@
             "type": "text",
             "required": false,
             "default": "",
-            "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"],
-            "disabled": false
+            "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
         }
     ]
 }

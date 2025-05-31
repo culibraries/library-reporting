@@ -38,7 +38,6 @@ LEFT JOIN folio_inventory.location l2 on l2.id = (i.jsonb ->> 'effectiveLocation
 LEFT JOIN folio_inventory.loclibrary l3 on l3.id = (l2.jsonb ->> 'libraryId')::uuid
 WHERE l3.jsonb ->> 'name' in (location_name_1, location_name_2, location_name_3)
 	AND i.jsonb -> 'status' ->> 'name' = 'Claimed returned'
-	AND l.jsonb ->> 'itemStatus' = 'Claimed returned'
 	AND l.jsonb ->> 'action' = 'claimedReturned' 
 ORDER BY "Claimed Date" asc, "User Name"
 $$

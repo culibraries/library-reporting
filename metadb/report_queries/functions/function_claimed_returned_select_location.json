@@ -1,0 +1,33 @@
+{
+    "displayName": "Claimed Returned by Location",
+    "description": "Generates a list of claimed returned items by location. Includes: Claimed Date, Barcode, Location Name, Call Number, Copy, Volume, Claim Note, Loan ID, User Name, and User Email.",
+    "instructions": "Select 1-3 locations from the drop down menus, then click Submit. If nothing happens immediately, please wait for the list to generate.",
+    "parameters": [
+        {
+            "name": "location_name_1",
+            "displayName": "Location Name #1",
+            "type": "text",
+            "required": true,
+            "default": "",
+            "controlled.options": ["","Norlin, Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
+        },
+        {
+            "name": "location_name_2",
+            "displayName": "Optional Location Name #2",
+            "type": "text",
+            "required": false,
+            "default": "",
+            "controlled.options": ["","Norlin, Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"],
+            "disabled": false
+        },
+        {
+            "name": "location_name_3",
+            "displayName": "Optional Location Name #3",
+            "type": "text",
+            "required": false,
+            "default": "",
+            "controlled.options": ["","Norlin, Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"],
+            "disabled": false
+        }
+    ]
+}

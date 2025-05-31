@@ -1,6 +1,0 @@
-{
-    "displayName": "Claimed Returned Music Library",
-    "description": "Returns a list of all items currently marked 'Claimed returned' within the Music Library.",
-    "instructions": "Click Submit button to run current report.",
-    "parameters": []
-}

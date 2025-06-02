@@ -7,7 +7,7 @@
             "name": "location_name_1",
             "displayName": "Location Name #1",
             "type": "text",
-            "required": false,
+            "required": true,
             "default": "",
             "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
         },

@@ -8,8 +8,8 @@
             "displayName": "Location Name #1",
             "type": "text",
             "required": true,
-            "default": "",
-            "controlled.options": ["","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
+            "default": "ALL",
+            "controlled.options": ["ALL","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
         },
         {
             "name": "location_name2",

@@ -1,15 +1,15 @@
 {
     "displayName": "Claimed Returned by Location",
     "description": "Generates a list of claimed returned items by location. Includes: Claimed Date, Barcode, Location Name, Call Number, Copy, Volume, Claim Note, Loan ID, User Name, and User Email.",
-    "instructions": "Select 1-3 locations from the drop down menus, then click Submit. If nothing happens immediately, please wait for the list to generate.",
+    "instructions": "Select from 1 to 3 locations from the drop down menus, or select ALL from the first menu, then click Submit. If nothing happens immediately, please wait for the list to generate.",
     "parameters": [
         {
             "name": "location_name_1",
             "displayName": "Location Name #1",
             "type": "text",
             "required": true,
-            "default": "",
-            "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
+            "default": "ALL",
+            "controlled.options": ["ALL","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
         },
         {
             "name": "location_name_2",

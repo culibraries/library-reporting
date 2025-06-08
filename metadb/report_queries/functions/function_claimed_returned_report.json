@@ -1,5 +1,5 @@
 {
-    "displayName": "Claimed Returned by Location",
+    "displayName": "Claimed Returned Report",
     "description": "Generates a list of claimed returned items by location. Includes: Claimed Date, Barcode, Location Name, Call Number, Copy, Volume, Claim Note, Loan ID, User Name, and User Email.",
     "instructions": "Select from 1 to 3 locations from the drop down menus, or select ALL from the first menu, then click Submit. If nothing happens immediately, please wait for the list to generate.",
     "parameters": [

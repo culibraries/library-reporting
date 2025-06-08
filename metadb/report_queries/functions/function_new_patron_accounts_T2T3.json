@@ -1,5 +1,5 @@
 {
-    "displayName": "New Patron Accounts Report (Tiers 2+3)",
+    "displayName": "Services - New Patron Accounts Report (Tiers 2+3)",
     "description": "Returns a list of users from Tiers 2 and 3 that were created within the selected date range. Excludes Law patron groups.",
     "instructions": "Choose a start and end date for the user creation period.",
     "parameters": [

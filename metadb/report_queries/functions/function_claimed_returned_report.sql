@@ -1,8 +1,8 @@
---metadb:function claimed_returned_select_location
+--metadb:function claimed_returned_report
 
-drop function if exists claimed_returned_select_location;
+drop function if exists claimed_returned_report;
 
-create function claimed_returned_select_location(
+create function claimed_returned_report(
 location_name_1 text,
 location_name_2 text,
 location_name_3 text

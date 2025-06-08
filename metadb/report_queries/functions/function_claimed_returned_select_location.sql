@@ -36,9 +36,12 @@ LEFT JOIN folio_inventory.item i on i.id = (l.jsonb ->> 'itemId')::uuid
 LEFT JOIN folio_users.users as u on u.id = (l.jsonb ->> 'userId')::uuid
 LEFT JOIN folio_inventory.location l2 on l2.id = (i.jsonb ->> 'effectiveLocationId')::uuid
 LEFT JOIN folio_inventory.loclibrary l3 on l3.id = (l2.jsonb ->> 'libraryId')::uuid
-WHERE l3.jsonb ->> 'name' in (location_name_1, location_name_2, location_name_3)
-	AND i.jsonb -> 'status' ->> 'name' = 'Claimed returned'
-	AND l.jsonb ->> 'action' = 'claimedReturned' 
+WHERE CASE
+	WHEN location_name_1 = 'ALL' THEN l3.jsonb ->> 'name' in ('Norlin', 'Business', 'Music', 'Offsite', 'INN-REACH', 'Earth Sciences & Map', 'Engineering Math & Physics')
+	ELSE l3.jsonb ->> 'name' IN (location_name_1, location_name_2, location_name_3)
+END 
+AND i.jsonb -> 'status' ->> 'name' = 'Claimed returned'
+AND l.jsonb ->> 'action' = 'claimedReturned'
 ORDER BY "Claimed Date" asc, "User Name"
 $$
 language sql

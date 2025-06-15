@@ -1,0 +1,19 @@
+{
+    "displayName": "Services - Claimed Returned Historical Report",
+    "description": "Generates a list of claimed returned items from all locations within the selected date range. Includes claim date, item location, material type, item barcode, call number, volume, checkout service point, patron group, and loan ID.",
+    "instructions": "Enter a date range below to see all items claimed returned during the indicated period.",
+    "parameters": [
+        {
+            "name": "start_date",
+            "displayName": "Earliest claim date",
+            "type": "date",
+            "required": true
+        },
+        {
+            "name": "end_date",
+            "displayName": "Latest claim date",
+            "type": "date",
+            "required": true
+        }
+    ]
+}

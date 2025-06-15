@@ -1,0 +1,19 @@
+{
+    "displayName": "Services - Expiring Patron Accounts Report",
+    "description": "Returns a list of all expiring patron accounts expiring within the selected date range. Excludes Law types and departments. Includes account expiration date, patron name, barcode, patron group, number of open loan, and total remaining fines.",
+    "instructions": "Choose a start and end date for the user account expiration period.",
+    "parameters": [
+        {
+            "name": "start_date",
+            "displayName": "Earliest date of account expiration",
+            "type": "date",
+            "required": true
+        },
+        {
+            "name": "end_date",
+            "displayName": "Latest date of account expiration",
+            "type": "date",
+            "required": true
+        }
+    ]
+}

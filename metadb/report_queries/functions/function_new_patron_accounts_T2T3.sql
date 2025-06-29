@@ -36,7 +36,7 @@ LEFT JOIN folio_users."groups" g  ON u.patrongroup = g.id
 --where u.creation_date ::date BETWEEN '2023-7-01' AND '2024-6-28'
 where start_date <= (u.jsonb -> 'metadata'->>'createdDate')::date and (u.jsonb -> 'metadata'->>'createdDate')::date < end_date
 	and g.__id in ('1','2','9','11','14','15','17','23','24','25','26','31')
-	and u.jsonb -> 'active' = 'true'
+	--and u.jsonb -> 'active' = 'true' 
 	and u.__current = true
 ORDER BY created_date
 $$

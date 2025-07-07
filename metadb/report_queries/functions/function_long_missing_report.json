@@ -2,5 +2,14 @@
     "displayName": "Long Missing Report - All Locations",
     "description": "Generates a list of books with the item status 'long missing' across all library locations.",
     "instructions": "Click Submit button to run current report.",
-    "parameters": []
+    "parameters": [
+     {
+            "name": "item_location",
+            "displayName": "Item Location",
+            "type": "text",
+            "required": true,
+            "default": "ALL",
+            "controlled.options": ["ALL","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
+        }   
+    ]
 }

@@ -1,7 +1,8 @@
 --metadb:function long_missing
 drop function if exists long_missing;
 
-create function long_missing()
+create function long_missing(
+item_location text)
 returns table(
 tag text,
 item_status text,
@@ -42,7 +43,8 @@ LEFT JOIN lmissing ON lmissing.item_hrid = i.jsonb ->> 'hrid'
 LEFT JOIN folio_inventory.location__t AS loc ON loc.id = (i.jsonb ->> 'effectiveLocationId')::uuid
 LEFT JOIN folio_inventory.holdings_record__t AS holdings ON holdings.id = i.holdingsrecordid
 LEFT JOIN folio_inventory.instance__t AS inst ON inst.id = holdings.instance_id
-WHERE i.jsonb -> 'status' ->> 'name' = 'Long missing'
+WHERE i.jsonb -> 'status' ->> 'name' = 'Long missing' 
+and case when item_location = 'ALL' then true else loc.name in (item_location) end
 ORDER BY loc.name, i.jsonb ->> 'effectiveShelvingOrder' ASC
 $$
 language sql

@@ -3,28 +3,28 @@
 drop function if exists preservation_loans;
 
 create function preservation_loans(
-start_date date,
-end_date date,
-preservation_account text,
-item_location text
+start_date date default '2025-01-01',
+end_date date default '2099-12-31',
+username text default '',
+item_location text default ''
 )
 returns TABLE(
-"checkout_date" date,
-"user" text,
-"item_location" text,
-"instance_hrid" text,
-"holdings_hrid" text,
-"item_barcode" text,
-"material_type" text,
-"item_status" text,
-"call_number" text,
-"title" text,
-"volume" text
+checkout_date date,
+username text,
+item_location text,
+instance_hrid text,
+holdings_hrid text,
+item_barcode text,
+material_type text,
+item_status text,
+call_number text,
+title text,
+volume text
 )
 as $$
 select 
 (loan.jsonb -> 'loan' ->> 'loanDate')::date as checkout_date,
-u.jsonb ->> 'username' as user,
+u.jsonb ->> 'username' as username,
 loc.name as item_location,
 inst.jsonb ->> 'hrid' as instance_hrid,
 ho.jsonb ->> 'hrid' as holdings_hrid,
@@ -58,7 +58,7 @@ and u.id in
 'd13b3186-2fc4-5926-a055-260d16a8b776',
 'd15043ec-0cc4-5b31-b599-33b377c108e0',
 'd9bd0d2b-88c2-5bb6-9e85-2057a1223ede')
-and u.jsonb ->> 'username' = preservation_account
+and u.jsonb ->> 'username' = username
 and loc.name = item_location
 and start_date <= (loan.jsonb -> 'loan' ->> 'loanDate')::date and (loan.jsonb -> 'loan' ->> 'loanDate')::date <= end_date
 order by (loan.jsonb -> 'loan' ->> 'loanDate')::date desc

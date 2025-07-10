@@ -1,4 +1,4 @@
---ldp:function preservation_Loans
+--ldp:function preservation_loans
 
 drop function if exists preservation_loans;
 

@@ -24,7 +24,7 @@ returns TABLE(
 as $$
 select 
 (loan.jsonb -> 'loan' ->> 'loanDate')::date as checkout_date,
-u.jsonb ->> 'barcode' as user,
+u.jsonb ->> 'username' as user,
 loc.name as item_location,
 inst.jsonb ->> 'hrid' as instance_hrid,
 ho.jsonb ->> 'hrid' as holdings_hrid,
@@ -58,9 +58,9 @@ and u.id in
 'd13b3186-2fc4-5926-a055-260d16a8b776',
 'd15043ec-0cc4-5b31-b599-33b377c108e0',
 'd9bd0d2b-88c2-5bb6-9e85-2057a1223ede')
-and (u.jsonb ->> 'barcode') in (preservation_account)
-and loc.name in (item_location)
-and start_date <= (loan.jsonb -> 'loan' ->> 'loanDate')::date and(loan.jsonb -> 'loan' ->> 'loanDate')::date <= end_date
+and u.jsonb ->> 'username' = preservation_account
+and loc.name = item_location
+and start_date <= (loan.jsonb -> 'loan' ->> 'loanDate')::date and (loan.jsonb -> 'loan' ->> 'loanDate')::date <= end_date
 order by (loan.jsonb -> 'loan' ->> 'loanDate')::date desc
 $$
 language sql

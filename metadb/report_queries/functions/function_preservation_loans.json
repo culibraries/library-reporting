@@ -1,0 +1,31 @@
+{
+    "displayName": "Preservation Loans",
+    "description": "Generates a Title List by Items Checked Out to Preservation Account",
+    "instructions": "",
+    "parameters": [
+        {
+            "name": "start_date",
+            "displayName": "Start Date",
+            "type": "date",
+            "required": false
+        },
+        {
+            "name": "end_date",
+            "displayName": "End Date",
+            "type": "date",
+            "required": false
+        },
+        {
+            "name": "preservation_account",
+            "displayName": "Preservation Account",
+            "type": "text",
+            "required": false
+        },
+        {
+            "name": "item_location",
+            "displayName": "Item Location",
+            "type": "text",
+            "required": false
+        }
+    ]
+}

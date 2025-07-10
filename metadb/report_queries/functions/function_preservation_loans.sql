@@ -5,7 +5,7 @@ drop function if exists preservation_loans;
 create function preservation_loans(
 start_date date default '2025-01-01',
 end_date date default '2099-12-31',
-username text default '',
+username text default ''
 )
 returns TABLE(
 checkout_date date,

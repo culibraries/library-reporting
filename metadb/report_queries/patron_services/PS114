@@ -1,20 +1,26 @@
---Returns a list of users (with all users__ table columns) from Tiers 2 and 3 that were created within the selected date range. Excludes Law patron groups.
-SELECT
-	u.jsonb -> 'metadata'->'createdDate' as created_date,
-	u.jsonb -> 'metadata'->'createdByUserId' as created_by,
-	g.jsonb -> 'group' as patron_group,
-	u.jsonb -> 'id' as user_id,
-	u.jsonb -> 'username' as username
-FROM folio_users.users u 
-LEFT JOIN folio_users."groups" g ON u.patrongroup = g.id
---Enter dates in within the green quotations using the format YYYY-MM-DD
-WHERE u.creation_date ::date BETWEEN '2024-2-01' AND '2024-2-29'
-	AND g.__id in ('1','2','9','11','13','14','15','23','24','25','26')
-	AND u.jsonb -> 'active' = 'true'
-	AND u.__current = true 
-ORDER BY u.creation_date
+--Returns a list of users from Tiers 2 and 3 (plus Friends) that were created within the selected date range. Excludes Law patron groups.
+with creators as (
+	select concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS "Creator Name",
+		u.id as created_by_id
+	from folio_users.users u 
+)
+select
+	(u.jsonb -> 'metadata'->>'createdDate')::date as "Created Date",
+	(u.jsonb ->> 'active') as "Active",
+	g.jsonb ->> 'group' as "Patron Group",
+	u.jsonb ->> 'username' as "Username",
+	concat(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS "Patron Name",
+	u.jsonb ->> 'id' as "Patron ID",
+	c."Creator Name",
+	u.created_by as created_by_id
+from folio_users.users u 
+join creators c on c.created_by_id = u.created_by
+LEFT JOIN folio_users."groups" g  ON u.patrongroup = g.id
+--Enter dates using the format YYYY-MM-DD
+where u.creation_date ::date BETWEEN '2023-7-01' AND '2024-6-30'
+--where start_date <= (u.jsonb -> 'metadata'->>'createdDate')::date and (u.jsonb -> 'metadata'->>'createdDate')::date <= end_date
+	and g.__id in ('1','2','9','11','14','15','17','23','24','25','26','31')
+	--and u.jsonb -> 'active' = 'true'
+	and u.__current = true
+ORDER BY "Created Date"
 ;
-/*Listed g.__id include ('Alumni','Auditors, Community and Senior','CU Boulder institute and workshop participants','CU System faculty
-	, staff, and student','Naropa','Reciprocal Borrowing Programs','Research partners','State funded CO universities/colleges faculty, staff, and students'
-	,'Colorado high school teachers/students','CU Boulder faculty/staff spouses/partners','CU Public Patron')
-*/

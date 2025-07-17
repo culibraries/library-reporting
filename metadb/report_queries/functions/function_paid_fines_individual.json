@@ -1,0 +1,19 @@
+{
+    "displayName": "Patron Accounts - Paid Fines Report",
+    "description": "Generates a list of fines that were paid within the selected date range. Includes Patron Name, External System ID, Date Paid, Fine Type, Paid Amount, Material Type, Barcode, Call Number, and Volume.",
+    "instructions": "Enter a date range below to see all Paid items during the indicated period.",
+    "parameters": [
+        {
+            "name": "start_date",
+            "displayName": "Earliest date",
+            "type": "date",
+            "required": true
+        },
+        {
+            "name": "end_date",
+            "displayName": "Latest date",
+            "type": "date",
+            "required": true
+        }
+    ]
+}

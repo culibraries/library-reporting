@@ -1,8 +1,8 @@
 --metadb:function course_reserves_permloantype
 
-drop function if exists course_reserve_permloantype;
+drop function if exists course_reserves_permloantype;
 
-create function course_reserve_permloantype()
+create function course_reserves_permloantype()
 returns table(
 "Title" text,
 "Barcode" text,

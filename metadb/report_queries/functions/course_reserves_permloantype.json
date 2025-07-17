@@ -1,0 +1,6 @@
+{
+    "displayName": "Course Reserves Permanent Loan Type List",
+    "description": "Returns a list of all items with a permanent loan type of 'Course Reserves' only.",
+    "instructions": "Click Submit button to run list.",
+    "parameters": []
+}

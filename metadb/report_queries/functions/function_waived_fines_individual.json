@@ -1,5 +1,5 @@
 {
-    "displayName": "Services - Waived Fines Report",
+    "displayName": "Patron Accounts - Waived Fines Report",
     "description": "Generates a list of fines that were waived within the selected date range. Includes Patron Name, External System ID, Date Waived, Fine Type, Waived Amount, Material Type, Barcode, Call Number, and Volume.",
     "instructions": "Enter a date range below to see all waived items during the indicated period.",
     "parameters": [

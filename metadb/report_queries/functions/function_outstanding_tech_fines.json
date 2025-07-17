@@ -1,5 +1,5 @@
 {
-    "displayName": "Services - Outstanding Tech/Misc Fines",
+    "displayName": "Services - Tech/Misc Outstanding Fines",
     "description": "Generates a list of items from 3D tech and miscellaneous material types within the selected date range that have outstanding lost fines. Includes updated date, item status, material type, item barcode, call number, volume, fine remaining, and patron barcode.",
     "instructions": "Enter a date range below to see all tech/misc items with outstanding lost fines during the indicated period.",
     "parameters": [

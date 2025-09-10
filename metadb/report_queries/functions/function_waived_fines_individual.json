@@ -1,7 +1,7 @@
 {
     "displayName": "Patron Accounts - Waived Fines Report",
-    "description": "Generates a list of fines that were waived within the selected date range. Includes Patron Name, External System ID, Date Waived, Fine Type, Waived Amount, Material Type, Barcode, Call Number, and Volume.",
-    "instructions": "Enter a date range below to see all waived items during the indicated period.",
+    "description": "Generates a list of fines that were waived within the selected date range, and an optional filter for item material type. Includes Patron Name, External System ID, Date Waived, Fine Type, Waived Amount, Material Type, Barcode, Call Number, and Volume.",
+    "instructions": "Enter a date range below to see all waived items during the indicated period. Search for a material type for additional filtering.",
     "parameters": [
         {
             "name": "start_date",
@@ -14,6 +14,12 @@
             "displayName": "Latest date",
             "type": "date",
             "required": true
+        },
+        {
+            "name": "material_type_name_search",
+            "displayName": "Search Material Type",
+            "type": "text",
+            "required": false
         }
     ]
 }

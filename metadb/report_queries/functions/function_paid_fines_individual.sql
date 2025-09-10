@@ -4,7 +4,8 @@ drop function if exists paid_fines_individual;
 
 create function paid_fines_individual(
 	start_date date DEFAULT '2000-01-01',
- 	end_date date DEFAULT '2999-01-01'
+ 	end_date date DEFAULT '2999-01-01',
+ 	material_type_name_search text default ''
 )
 returns table(
 "Patron Name" text,
@@ -31,8 +32,11 @@ SELECT DISTINCT
 FROM folio_feesfines.accounts a
 LEFT JOIN folio_inventory.item i ON i.id = (a.jsonb ->> 'itemId')::uuid
 LEFT JOIN folio_users.users u ON u.id = (a.jsonb ->> 'userId')::uuid
-WHERE a.jsonb -> 'paymentStatus' ->> 'name' = 'Paid fully'
-	AND (a.jsonb -> 'metadata' ->> 'updatedDate')::date BETWEEN '2024-7-01' AND '2025-6-30'
+WHERE a.jsonb ->> 'materialType' ilike Concat('%',material_type_name_search,'%')
+	--AND a.jsonb ->> 'materialType' IN (material_type_name)
+	AND a.jsonb -> 'paymentStatus' ->> 'name' = 'Paid fully'
+	AND start_date <= (a.jsonb -> 'metadata' ->> 'updatedDate')::date and end_date >= (a.jsonb -> 'metadata' ->> 'updatedDate')::date
+	--AND (a.jsonb -> 'metadata' ->> 'updatedDate')::date BETWEEN '2024-7-01' AND '2025-6-30'
 	AND a.jsonb ->> 'feeFineOwner' IN ('Patron Accounts','University Libraries')
 ORDER BY "Date Paid" ASC
 $$

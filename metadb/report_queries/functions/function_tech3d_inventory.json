@@ -1,7 +1,7 @@
 {
-    "displayName": "Services - 3D Tech & iClicker Inventory by Location",
-    "description": "Generates a list of all 3D Tech and iClickers with their statuses by location.",
-    "instructions": "Select 1, 2, or ALL locations from the drop down menus, then click Submit. If nothing happens immediately, please wait for the list to generate.",
+    "displayName": "Services - 3D Tech Inventory by Location",
+    "description": "Generates a list of all 3D Tech with their statuses by location.",
+    "instructions": "Select 1, 2, or ALL locations from the drop down menus, then click Submit.",
     "parameters": [
         {
             "name": "location_name1",

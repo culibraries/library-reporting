@@ -13,6 +13,7 @@ returns table(
 "Date Waived" date,
 "Fine Type" text,
 "Waived Amount" text,
+"Status" text,
 "Material Type" text,
 "Barcode" text,
 "Call Number" text,
@@ -22,9 +23,10 @@ as $$
 SELECT DISTINCT
 	CONCAT(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS "Patron Name",
 	u.jsonb ->> 'externalSystemId' AS "Ext Sys ID",
-	(a.jsonb -> 'metadata' ->> 'updatedDate')::date AS "Date Waived", 
+	ffa.date_action::date AS "Date Waived", 
 	a.jsonb ->> 'feeFineType' AS "Fine Type",
 	a.jsonb ->> 'amount' AS "Waived Amount",
+	a.jsonb -> 'paymentStatus' ->> 'name' AS "Status",
 	a.jsonb ->> 'materialType' AS "Material Type",
 	a.jsonb ->> 'barcode' AS "Barcode",
 	a.jsonb ->> 'callNumber' AS "Call Number",
@@ -32,12 +34,12 @@ SELECT DISTINCT
 FROM folio_feesfines.accounts a
 LEFT JOIN folio_inventory.item i ON i.id = (a.jsonb ->> 'itemId')::uuid
 LEFT JOIN folio_users.users u ON u.id = (a.jsonb ->> 'userId')::uuid
-WHERE a.jsonb ->> 'materialType' ilike Concat('%',material_type_name_search,'%')
-	--AND a.jsonb ->> 'materialType' IN (material_type_name)
-	and a.jsonb -> 'paymentStatus' ->> 'name' = 'Waived fully'
-	and start_date <= (a.jsonb -> 'metadata' ->> 'updatedDate')::date and end_date >= (a.jsonb -> 'metadata' ->> 'updatedDate')::date
-	--AND (a.jsonb -> 'metadata' ->> 'updatedDate')::date BETWEEN '2024-7-01' AND '2025-6-30'
+LEFT JOIN folio_feesfines.feefineactions__t ffa on ffa.account_id = a.id
+WHERE start_date <= ffa.date_action::date and end_date >= ffa.date_action::date
+	AND a.jsonb ->> 'materialType' ilike Concat('%',material_type_name_search,'%')
+	AND a.jsonb -> 'paymentStatus' ->> 'name' IN ('Waived fully','Waived partially')
 	AND a.jsonb ->> 'feeFineOwner' IN ('Patron Accounts','University Libraries')
+	--AND ffa.type_action IN ('Waived fully','Waived partially')
 ORDER BY "Date Waived" asc
 $$
 language sql

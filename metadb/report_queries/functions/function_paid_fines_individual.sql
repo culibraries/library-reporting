@@ -35,7 +35,7 @@ FROM folio_feesfines.accounts a
 LEFT JOIN folio_inventory.item i ON i.id = (a.jsonb ->> 'itemId')::uuid
 LEFT JOIN folio_users.users u ON u.id = (a.jsonb ->> 'userId')::uuid
 LEFT JOIN folio_feesfines.feefineactions__t ffa on ffa.account_id = a.id
-WHERE start_date <= (a.jsonb -> 'metadata' ->> 'updatedDate')::date and end_date >= (a.jsonb -> 'metadata' ->> 'updatedDate')::date
+WHERE start_date <= ffa.date_action::date and end_date >= ffa.date_action::date
 	AND a.jsonb ->> 'materialType' ilike Concat('%',material_type_name_search,'%')
 	AND a.jsonb -> 'paymentStatus' ->> 'name' in ('Paid fully','Paid partially') 
 	AND a.jsonb ->> 'feeFineOwner' IN ('Patron Accounts','University Libraries')

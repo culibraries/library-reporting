@@ -1,23 +1,41 @@
 {
     "displayName": "Services - iClickers Inventory by Location",
     "description": "Generates a list of all iClickers with their statuses by location.",
-    "instructions": "Select 1, 2, or ALL locations from the drop down menus, then click Submit.",
+    "instructions": "Select a location or ALL from the drop down menu. Select ALL or 1 to 3 item statuses. Click Submit.",
     "parameters": [
         {
             "name": "location_name1",
-            "displayName": "Location Name #1",
+            "displayName": "Location #1",
             "type": "text",
             "required": true,
             "default": "ALL",
             "controlled.options": ["ALL","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"]
         },
         {
-            "name": "location_name2",
-            "displayName": "Optional Location Name #2",
+            "name": "item_status1",
+            "displayName": "Status #1",
+            "type": "text",
+            "required": true,
+            "default": "ALL",
+            "controlled.options": ["ALL","Aged to lost","Available","Checked out","Claimed returned","Declared lost","In transit","Lost and paid","Missing","Unavailable","Withdrawn"],
+            "disabled": false
+        },
+        {
+            "name": "item_status2",
+            "displayName": "Optional Status #2",
             "type": "text",
             "required": false,
             "default": "",
-            "controlled.options": ["","Norlin East Desk","Norlin AAL Desk","Business Library","Business Stacks","Earth Sciences Stacks","Music Stacks"],
+            "controlled.options": ["","Aged to lost","Available","Checked out","Claimed returned","Declared lost","In transit","Lost and paid","Missing","Unavailable","Withdrawn"],
+            "disabled": false
+        },
+        {
+            "name": "item_status3",
+            "displayName": "Optional Status #3",
+            "type": "text",
+            "required": false,
+            "default": "",
+            "controlled.options": ["","Aged to lost","Available","Checked out","Claimed returned","Declared lost","In transit","Lost and paid","Missing","Unavailable","Withdrawn"],
             "disabled": false
         }
     ]

@@ -1,4 +1,4 @@
---metadb:in_process_open_holds
+--metadb:function in_process_open_holds
 
 drop function if exists in_process_open_holds;
 

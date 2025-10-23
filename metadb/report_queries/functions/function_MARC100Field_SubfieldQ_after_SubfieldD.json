@@ -1,5 +1,5 @@
 {
-    "displayName": "MARC 700 Fields with Subfield q after subfield d",
+    "displayName": "MARC 100 Fields with Subfield q after subfield d",
     "description": "Used to identify subfields that are out of order.",
     "instructions": "Click Submit button to run current report.",
     "parameters": []

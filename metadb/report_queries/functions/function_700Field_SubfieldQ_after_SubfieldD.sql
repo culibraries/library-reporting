@@ -1,4 +1,4 @@
---metadb:700Field_SubfieldQ_after_SubfieldD
+--metadb:function 700Field_SubfieldQ_after_SubfieldD
 
 drop function if exists 700Field_SubfieldQ_after_SubfieldD;
 

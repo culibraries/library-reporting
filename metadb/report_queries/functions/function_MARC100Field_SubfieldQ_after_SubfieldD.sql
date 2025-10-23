@@ -4,7 +4,7 @@ drop function if exists MARC100Field_SubfieldQ_after_SubfieldD;
 
 create function MARC100Field_SubfieldQ_after_SubfieldD()
 returns TABLE(
-hrid text  
+instance_hrid text  
 )  
 as $$
 SELECT instance_hrid

@@ -1,8 +1,8 @@
---metadb:function 700Field_SubfieldQ_after_SubfieldD
+--metadb:function MARC100Field_SubfieldQ_after_SubfieldD
 
-drop function if exists 700Field_SubfieldQ_after_SubfieldD;
+drop function if exists MARC100Field_SubfieldQ_after_SubfieldD;
 
-create function 700Field_SubfieldQ_after_SubfieldD()
+create function MARC100Field_SubfieldQ_after_SubfieldD()
 returns TABLE(
 hrid text,  
 )  

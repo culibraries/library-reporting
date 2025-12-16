@@ -5,7 +5,7 @@
     "parameters": [
         {
             "name": "start_date",
-            "displayName": "Earliest date of user creation",
+            "displayName": "Earliest create date",
             "type": "date",
             "required": true
         }

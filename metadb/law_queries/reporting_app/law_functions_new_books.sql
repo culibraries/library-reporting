@@ -25,7 +25,8 @@ select folio_inventory.instance__t.hrid as hrid,
   join folio_inventory.location__t on folio_inventory.holdings_record__t.permanent_location_id = folio_inventory.location__t.id
   join folio_source_record.marc__t on folio_inventory.instance__t.id = folio_source_record.marc__t.instance_id
   join folio_orders.po_line__t on folio_inventory.instance__t.id = folio_orders.po_line__t.instance_id
-  where folio_inventory.location__t."name" like '%Law%'
+  where folio_inventory.instance__t.cataloged_date > start_date
+    and folio_inventory.location__t."name" like '%Law%'
     and folio_inventory.location__t."name" != 'Law Electronic Resources'
     and folio_source_record.marc__t.field = '020'
 $$

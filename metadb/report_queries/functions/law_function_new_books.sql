@@ -3,8 +3,8 @@
 DROP FUNCTION IF EXISTS law_new_books;
 
 CREATE FUNCTION get_users(
-    start_date date DEFAULT '2025-01-01',
-    end_date date DEFAULT '2025-01-31')
+    start_date date DEFAULT '2025-01-01'
+    )
 RETURNS TABLE(
   hrid,
   title,

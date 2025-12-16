@@ -1,0 +1,13 @@
+{
+    "displayName": "Newly Cataloged Books",
+    "description": "Find newly cataloged books at the law library",
+    "instructions": "Choose a start date.",
+    "parameters": [
+        {
+            "name": "start_date",
+            "displayName": "Earliest date of user creation",
+            "type": "date",
+            "required": true
+        }
+    ]
+}

@@ -29,8 +29,7 @@ where folio_inventory.instance__t.cataloged_date > start_date
     and folio_inventory.location__t."name" like '%Law%'
     and folio_inventory.location__t."name" != 'Law Electronic Resources'
     and folio_source_record.marc__t.field = '020'
-    
 $$
-language sql
+LANGUAGE SQL
 STABLE
 PARALLEL SAFE;

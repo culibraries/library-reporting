@@ -1,11 +1,11 @@
 {
-    "displayName": "Newly Cataloged Books",
+    "displayName": "LAW Newly Cataloged Books",
     "description": "Find newly cataloged books at the law library",
-    "instructions": "Choose a start date.",
+    "instructions": "Choose a create date.",
     "parameters": [
         {
             "name": "start_date",
-            "displayName": "Earliest date of user creation",
+            "displayName": "Create Date",
             "type": "date",
             "required": true
         }

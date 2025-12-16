@@ -1,6 +1,6 @@
 --metadb:function law_new_books
 
-DROP FUNCTION IF EXISTS law_new_books;
+/*DROP FUNCTION IF EXISTS law_new_books;
 
 CREATE FUNCTION get_users(
     start_date date DEFAULT '2025-01-01'

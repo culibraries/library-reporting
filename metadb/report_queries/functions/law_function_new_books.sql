@@ -31,4 +31,5 @@ where i.cataloged_date > start_date
 $$
 LANGUAGE SQL
 STABLE
-PARALLEL SAFE;
+PARALLEL SAFE
+;

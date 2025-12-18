@@ -1,35 +1,36 @@
 --metadb:function law_new_books
 
-DROP FUNCTION IF EXISTS law_new_books(start_date);
+DROP FUNCTION IF EXISTS law_new_books(date);
 
 CREATE FUNCTION law_new_books(
     start_date date DEFAULT '2025-01-01'
     )
 RETURNS TABLE(
     hrid text,
-    i.title text,
-    h.call_number text,
-    loc."name" text,
-    folio_source_record.marc__t."content" text,
-    i.cataloged_date timestampz,
-    pol.requester
+    title text,
+    call_number text,
+    location text,
+    marco text,
+    cataloged_date timestamptz,
+    requester text
   )
 AS $$
-select i.hrid,
-    i.title, h.call_number, 
-    loc."name",
-    folio_source_record.marc__t."content",
-    i.cataloged_date,
-    pol.requester
+select i.hrid as hrid,
+    i.title as title,
+    h.call_number as call_number, 
+    loc."name" as location,
+    marc."content" as marco,
+    i.cataloged_date at cataloged_date,
+    pol.requester as requester
 from folio_inventory.instance__t as i
 join folio_inventory.holdings_record__t as h on i.id = h.instance_id
 join folio_inventory.location__t as loc on h.permanent_location_id = loc.id
-join folio_source_record.marc__t on i.id = folio_source_record.marc__t.instance_id
+join folio_source_record.marc__t as marc on i.id = marc.instance_id
 join folio_orders.po_line__t as pol on i.id = pol.instance_id
 where i.cataloged_date > start_date
     and loc."name" like '%Law%'
     and loc."name" != 'Law Electronic Resources'
-    and folio_source_record.marc__t.field = '020'
+    and folio_source_record.marc__t.field = '020';
 $$
 LANGUAGE SQL
 STABLE

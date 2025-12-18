@@ -15,7 +15,8 @@ RETURNS TABLE(
     requester text
   )
 AS $$
-select i.hrid as hrid,
+select distinct on (hrid)
+    i.hrid as hrid,
     i.title as title,
     h.call_number as call_number, 
     loc."name" as location,
@@ -30,7 +31,8 @@ join folio_orders.po_line__t as pol on i.id = pol.instance_id
 where i.cataloged_date > start_date
     and loc."name" like '%Law%'
     and loc."name" != 'Law Electronic Resources'
-    and marc.field = '020';
+    and marc.field = '020'
+order by i.hrid, i.title, h.call_number, loc."name", marc."content", pol.requester;
 $$
 LANGUAGE SQL
 STABLE

@@ -10,7 +10,7 @@ RETURNS TABLE(
     title text,
     call_number text,
     location text,
-    marco text,
+    isbn text,
     --cataloged_date timestamptz,
     requester text
   )
@@ -20,7 +20,7 @@ select distinct on (hrid)
     i.title as title,
     h.call_number as call_number, 
     loc."name" as location,
-    marc."content" as marco,
+    marc."content" as isbn,
     --i.cataloged_date as cataloged_date,
     pol.requester as requester
 from folio_inventory.instance__t as i

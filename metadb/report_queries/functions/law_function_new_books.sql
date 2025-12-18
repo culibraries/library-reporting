@@ -1,9 +1,9 @@
 --metadb:function law_new_books
 
-DROP FUNCTION IF EXISTS law_new_books(date);
+DROP FUNCTION IF EXISTS law_new_books(text);
 
 CREATE FUNCTION law_new_books(
-    start_date date DEFAULT '2025-01-01'
+    start_date text DEFAULT '2025-01-01'
     )
 RETURNS TABLE(
     hrid text,

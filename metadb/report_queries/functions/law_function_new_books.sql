@@ -15,7 +15,7 @@ RETURNS TABLE(
     requester text
   )
 AS $$
-select distinct on (i.hrid) i.hrid as hrid,
+select i.hrid as hrid,
     i.title as title,
     h.call_number as call_number, 
     loc."name" as location,

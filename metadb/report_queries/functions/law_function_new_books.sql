@@ -20,7 +20,7 @@ select i.hrid as hrid,
     h.call_number as call_number, 
     loc."name" as location,
     marc."content" as marco,
-    i.cataloged_date at cataloged_date,
+    i.cataloged_date as cataloged_date,
     pol.requester as requester
 from folio_inventory.instance__t as i
 join folio_inventory.holdings_record__t as h on i.id = h.instance_id
@@ -30,7 +30,7 @@ join folio_orders.po_line__t as pol on i.id = pol.instance_id
 where i.cataloged_date > start_date
     and loc."name" like '%Law%'
     and loc."name" != 'Law Electronic Resources'
-    and folio_source_record.marc__t.field = '020';
+    and marc.field = '020';
 $$
 LANGUAGE SQL
 STABLE

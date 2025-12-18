@@ -11,7 +11,7 @@ RETURNS TABLE(
     call_number text,
     location text,
     marco text,
-    --cataloged_date timestamptz,
+    cataloged_date timestamptz,
     requester text
   )
 AS $$
@@ -20,7 +20,7 @@ select i.hrid as hrid,
     h.call_number as call_number, 
     loc."name" as location,
     marc."content" as marco,
-    --i.cataloged_date as cataloged_date,
+    i.cataloged_date as cataloged_date,
     pol.requester as requester
 from folio_inventory.instance__t as i
 join folio_inventory.holdings_record__t as h on i.id = h.instance_id

@@ -1,6 +1,15 @@
 {
-    "displayName": "Missing Books Report - All Locations",
-    "description": "Generates a list of books with the item status 'missing' with MS1 OR MS2 tags across all library locations.",
-    "instructions": "Click Submit button to run current report.",
-    "parameters": []
+    "displayName": "Missing Books Report - By Library Location",
+    "description": "Generates a list of books with the item status 'missing' according to selected library location.",
+    "instructions": "Select location from drop down and click Submit button to run current report.",
+    "parameters": [
+     {
+            "name": "lib_location",
+            "displayName": "Library Location",
+            "type": "text",
+            "required": true,
+            "default": "ALL",
+            "controlled.options": ["ALL","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
+        }   
+    ]
 }

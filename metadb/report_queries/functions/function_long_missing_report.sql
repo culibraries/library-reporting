@@ -12,8 +12,8 @@ call_number text,
 shelf_order text,
 title text,
 enumeration text,
-volume text,
 copy_number text,
+volume text,
 long_missing_note text
 )
 as $$
@@ -35,8 +35,8 @@ i.jsonb -> 'effectiveCallNumberComponents' ->> 'callNumber' AS call_number,
 i.jsonb ->> 'effectiveShelvingOrder' AS shelf_order,
 inst.title AS title,
 i.jsonb ->> 'enumeration' AS enumeration,
-i.jsonb ->> 'copyNumber' AS volume,
-i.jsonb ->> 'volume' AS copy_number,
+i.jsonb ->> 'copyNumber' AS copy_number,
+i.jsonb ->> 'volume' AS volume,
 lmissing.long_missing_note
 FROM folio_inventory.item i
 LEFT JOIN lmissing ON lmissing.item_hrid = i.jsonb ->> 'hrid'

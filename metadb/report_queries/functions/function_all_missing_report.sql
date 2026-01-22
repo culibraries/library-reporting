@@ -54,8 +54,8 @@ WHERE
 	(p_item_status = 'Both' AND (i.jsonb -> 'status' ->> 'name') IN ('Missing','Long missing'))
 	OR (p_item_status <> 'Both' AND (i.jsonb -> 'status' ->> 'name') = p_item_status)
 	)
-  AND (p_lib_location IS NULL OR ll.name = p_lib_location)
-  AND (p_item_location IS NULL OR loc.name = p_item_location)
+  	AND (NULLIF(p_lib_location, '') IS NULL OR ll.name = p_lib_location)
+	AND (NULLIF(p_item_location, '') IS NULL OR loc.name = p_item_location)
 ORDER BY loc.name, i.jsonb ->> 'effectiveShelvingOrder' ASC
 $$
 language sql

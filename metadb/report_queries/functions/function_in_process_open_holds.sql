@@ -24,10 +24,9 @@ with holds as (
 select 
 	item_id, 
 	count(item_id) as open_holds,
-	request_date as requested 
+	request_date as requested
 from folio_circulation.request__t 
-where request_type = 'Hold' 
-	and status like '%Open%'
+where request_type = 'Hold' and status like '%Open%'
 group by item_id, request_date
 )
 select 
@@ -52,8 +51,9 @@ left join folio_users.users__t as u on u.id = (i.jsonb -> 'metadata' ->> 'update
 left join folio_inventory.instance__t as inst on inst.id = ho.instanceid
 left join holds on holds.item_id = i.id
 where i.jsonb -> 'status' ->> 'name' = 'In process'
-  and holds.open_holds NOTNULL
-order by loc.name, i.jsonb ->> 'effectiveShelvingOrder' asc
+	and holds.open_holds notnull
+	and i.jsonb ->> 'barcode' notnull
+order by holds.requested asc
 $$
 language sql
 stable 

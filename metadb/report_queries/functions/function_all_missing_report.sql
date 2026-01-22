@@ -3,9 +3,9 @@
 drop function if exists all_missing_report;
 
 create function all_missing_report(
-	item_status text,
-	lib_location text,
-	item_location text)
+	p_item_status text,
+	p_lib_location text,
+	p_item_location text)
 returns table(
 	tag text,
 	item_status text,
@@ -49,9 +49,13 @@ LEFT JOIN folio_inventory.location__t AS loc ON loc.id = (i.jsonb ->> 'effective
 LEFT JOIN folio_inventory.holdings_record__t AS holdings ON holdings.id = i.holdingsrecordid
 LEFT JOIN folio_inventory.instance__t AS inst ON inst.id = holdings.instance_id
 LEFT JOIN folio_inventory.loclibrary__t AS ll ON ll.id = loc.library_id
-WHERE i.jsonb -> 'status' ->> 'name' IN (item_status)
-	AND loc.name IN (item_location)
-	OR CASE WHEN lib_location = 'ALL' THEN TRUE ELSE ll.name IN (lib_location) END
+WHERE
+	(
+	(p_item_status = 'Both' AND (i.jsonb -> 'status' ->> 'name') IN ('Missing','Long missing'))
+	OR (p_item_status <> 'Both' AND (i.jsonb -> 'status' ->> 'name') = p_item_status)
+	)
+  AND (p_lib_location IS NULL OR ll.name = p_lib_location)
+  AND (p_item_location IS NULL OR loc.name = p_item_location)
 ORDER BY loc.name, i.jsonb ->> 'effectiveShelvingOrder' ASC
 $$
 language sql

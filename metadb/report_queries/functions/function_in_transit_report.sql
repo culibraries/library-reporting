@@ -10,14 +10,15 @@ create function in_transit_report(
 returns table(
 "Item hrid" text,
 "Item Created Date" date,
+"Holdings Call Number" text,
+"Volume" text,
+"Barcode" text,
 "Current Status" text,
 "Last Checkin Date" date,
 "Status Prior Checkin" text,
 "Service Point" text,
 "Effective Location" text,
-"Title" text,
-"Holdings Call Number" text,
-"Item Call Number" text
+"Title" text
 )
 as $$
 with checkin as (
@@ -33,15 +34,15 @@ group by item_id, prior_status, spt."name"
 SELECT
 	i.jsonb->>'hrid' AS "Item hrid", 
 	i.creation_date::date AS "Item Created Date",
+	hrt.call_number AS "Holdings Call Number",
+	i.jsonb->>'volume' AS "Volume",
+	i.jsonb->>'barcode' as "Barcode",
 	i.jsonb->'status'->>'name' AS "Current Status",
 	checkin.most_recent_time::date AS "Last Checkin Date",
 	checkin.prior_status AS "Status Prior Checkin",
 	checkin.last_service_point AS "Service Point",
-	--spt."name" AS "Last Service Point",
 	loct."name" AS "Effective Location",
-	inst.index_title AS "Title",
-	hrt.call_number AS "Holdings Call Number",
-	i.jsonb->'effectiveCallNumberComponents'->>'callNumber' AS "Item Call Number"
+	inst.index_title AS "Title"
 FROM folio_inventory.item i
 LEFT JOIN checkin ON checkin.item_id = i.id
 LEFT JOIN folio_inventory.location__t loct ON loct.id = i.effectivelocationid

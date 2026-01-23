@@ -1,0 +1,27 @@
+{
+    "displayName": "Materials Mgmt - In Transit Report",
+    "description": "Generates a list of materials with a current status of 'In-transit.' Library location filter is provided and optional.",
+    "instructions": "Select a desired library location (optional), no selection searches all. Enter a start date and end date (both required). Click the Submit button to run the report, and wait for completion. Export the CSV using the button to the upper right once the report has generated (may be required if results exceed 1,000 - fix coming).",
+    "parameters": [
+        {
+            "name": "p_lib_location",
+            "displayName": "Library Location",
+            "type": "text",
+            "required": false,
+            "default": "",
+            "controlled.options": ["","Norlin", "Business", "Music", "Offsite", "INN-REACH", "Earth Sciences & Map", "Engineering Math & Physics"]
+        },
+        {
+            "name": "start_date",
+            "displayName": "Start Date",
+            "type": "date",
+            "required": true
+        },
+        {
+            "name": "end_date",
+            "displayName": "End Date",
+            "type": "date",
+            "required": true
+        }   
+    ]
+}

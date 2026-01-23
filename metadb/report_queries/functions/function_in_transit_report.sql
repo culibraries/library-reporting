@@ -54,6 +54,7 @@ WHERE
 	AND (NULLIF(p_lib_location, '') IS NULL OR llt."name" = p_lib_location)
 	AND (i.creation_date::date) <= start_date	
 	AND (checkin.most_recent_time::date) <= end_date
+ORDER BY "Effective Location" asc,"Last Checkin Date" asc
 $$
 language sql
 stable 

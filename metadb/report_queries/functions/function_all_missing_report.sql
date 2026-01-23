@@ -45,7 +45,7 @@ SELECT
 	lmissing.long_missing_note
 FROM folio_inventory.item i
 LEFT JOIN lmissing ON lmissing.item_hrid = i.jsonb ->> 'hrid'
-LEFT JOIN folio_inventory.location__t AS loc ON loc.id = (i.jsonb ->> 'effectiveLocationId')::uuid
+LEFT JOIN folio_inventory.location__t AS loc ON loc.id = i.effectivelocationid
 LEFT JOIN folio_inventory.holdings_record__t AS holdings ON holdings.id = i.holdingsrecordid
 LEFT JOIN folio_inventory.instance__t AS inst ON inst.id = holdings.instance_id
 LEFT JOIN folio_inventory.loclibrary__t AS ll ON ll.id = loc.library_id

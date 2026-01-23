@@ -1,5 +1,5 @@
 {
-    "displayName": "Missing Books Report - By Library Location",
+    "displayName": "MM - Missing Books Report (lib loc)",
     "description": "Generates a list of books with the item status 'missing' according to selected library location.",
     "instructions": "Select location from drop down and click Submit button to run current report.",
     "parameters": [

@@ -1,5 +1,5 @@
 {
-    "displayName": "Long Missing Report - By Item Location",
+    "displayName": "MM - Long Missing Report (item loc)",
     "description": "Generates a list of books with the item status 'long missing' according to selected item location.",
     "instructions": "Select location from drop down and click Submit button to run current report.",
     "parameters": [

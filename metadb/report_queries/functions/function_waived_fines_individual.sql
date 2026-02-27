@@ -21,7 +21,7 @@ returns table(
 )
 as $$
 SELECT DISTINCT
-	CONCAT(u.jsonb -> 'personal' ->> 'firstName',' ', u.jsonb -> 'personal' ->> 'lastName') AS "Patron Name",
+	CONCAT(u.jsonb -> 'personal' ->> 'lastName',', ', u.jsonb -> 'personal' ->> 'firstName') AS "Patron Name",
 	u.jsonb ->> 'externalSystemId' AS "Ext Sys ID",
 	ffa.date_action::date AS "Date Waived", 
 	a.jsonb ->> 'feeFineType' AS "Fine Type",
@@ -39,7 +39,7 @@ WHERE start_date <= ffa.date_action::date and end_date >= ffa.date_action::date
 	AND a.jsonb ->> 'materialType' ilike Concat('%',material_type_name_search,'%')
 	AND a.jsonb -> 'paymentStatus' ->> 'name' IN ('Waived fully','Waived partially')
 	AND a.jsonb ->> 'feeFineOwner' IN ('Patron Accounts','University Libraries')
-	--AND ffa.type_action IN ('Waived fully','Waived partially')
+	AND ffa.type_action IN ('Waived fully','Waived partially')
 ORDER BY "Date Waived" asc
 $$
 language sql

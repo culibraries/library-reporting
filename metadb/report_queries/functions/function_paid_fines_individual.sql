@@ -14,6 +14,7 @@ returns table(
 "Fine Type" text,
 "Paid Amount" text,
 "Status" text,
+"Comments" text,
 "Material Type" text,
 "Barcode" text,
 "Call Number" text,
@@ -21,12 +22,16 @@ returns table(
 )
 as $$
 SELECT DISTINCT
-	CONCAT(u.jsonb -> 'personal' ->> 'lastName',', ', u.jsonb -> 'personal' ->> 'firstName') AS "Patron Name",
+	--CONCAT(u.jsonb -> 'personal' ->> 'lastName',', ', u.jsonb -> 'personal' ->> 'firstName') AS "Patron Name",
+	FORMAT('"%s, %s"',
+       u.jsonb -> 'personal' ->> 'lastName',
+       u.jsonb -> 'personal' ->> 'firstName') AS "Patron Name",
 	u.jsonb ->> 'externalSystemId' AS "Ext Sys ID",
 	ffa.date_action::date AS "Date Paid",
 	a.jsonb ->> 'feeFineType' AS "Fine Type",
 	a.jsonb ->> 'amount' AS "Paid Amount",
 	a.jsonb -> 'paymentStatus' ->> 'name' AS "Status",
+	ffa."comments" AS "Comments",
 	a.jsonb ->> 'materialType' AS "Material Type",
 	a.jsonb ->> 'barcode' AS "Barcode",
 	a.jsonb ->> 'callNumber' AS "Call Number",

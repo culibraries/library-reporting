@@ -13,16 +13,18 @@ returns table(
 "Location Name" text,
 "Barcode" text,
 "Material Type" text,
+"Note Type" text,
 "Note Date" date,
-"Check-In Note" text
+"Note Contents" text
 )
 as $$
 select
 	l.jsonb ->> 'name' as "Location Name",
 	i.jsonb ->> 'barcode' as "Barcode",
 	mtt.name as "Material Type",
+	cn ->> 'noteType' as "Note Type",
 	(cn ->> 'date')::date as "Note Date",
-	cn ->> 'note' as "Check-In Note"
+	cn ->> 'note' as "Note Contents"
 from folio_inventory.item i
 left join folio_inventory.location l on (l.jsonb ->> 'id')::uuid = (i.jsonb ->> 'effectiveLocationId')::uuid
 left join folio_inventory.material_type__t mtt on mtt.id = (i.jsonb ->> 'materialTypeId')::uuid

@@ -30,7 +30,8 @@ left join folio_inventory.location l on (l.jsonb ->> 'id')::uuid = (i.jsonb ->> 
 left join folio_inventory.material_type__t mtt on mtt.id = (i.jsonb ->> 'materialTypeId')::uuid
 cross join lateral jsonb_array_elements(i.jsonb -> 'circulationNotes') as cn
 where cn ->> 'noteType' = note_type
-	and mtt.name = material_type
+	--and mtt.name = material_type
+	and case when material_type = 'ALL' then true else mtt.name in (material_type) end
 	and (cn ->> 'date')::date between start_date and end_date
 	and case when item_location = 'ALL' then true else (l.jsonb ->> 'name') in (item_location) end
 order by "Location Name", "Note Date"

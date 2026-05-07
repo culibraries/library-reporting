@@ -3,11 +3,11 @@
 drop function if exists item_CheckInOut_notes;
 
 create function item_CheckInOut_notes(
-	note_type text,
-	material_type text,
-	item_location text,
-	start_date date default '2000-01-01',
-	end_date date default '2999-01-01'
+	p_note_type text,
+	p_material_type text,
+	p_item_location text,
+	p_start_date date default '2000-01-01',
+	p_end_date date default '2999-01-01'
 )
 returns table(
 "Location Name" text,
@@ -29,11 +29,10 @@ from folio_inventory.item i
 left join folio_inventory.location l on (l.jsonb ->> 'id')::uuid = (i.jsonb ->> 'effectiveLocationId')::uuid
 left join folio_inventory.material_type__t mtt on mtt.id = (i.jsonb ->> 'materialTypeId')::uuid
 cross join lateral jsonb_array_elements(i.jsonb -> 'circulationNotes') as cn
-where cn ->> 'noteType' = note_type
-	--and mtt.name = material_type
-	and case when material_type = 'ALL' then true else mtt.name in (material_type) end
-	and (cn ->> 'date')::date between start_date and end_date
-	and case when item_location = 'ALL' then true else (l.jsonb ->> 'name') in (item_location) end
+where cn ->> 'noteType' = p_note_type
+	and case when p_material_type = 'ALL' then true else mtt.name = p_material_type end
+	and (cn ->> 'date')::date between p_start_date and p_end_date
+	and case when p_item_location = 'ALL' then true else (l.jsonb ->> 'name') = p_item_location end
 order by "Location Name", "Note Date"
 $$
 language sql

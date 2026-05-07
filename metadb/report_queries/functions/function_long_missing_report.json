@@ -9,7 +9,7 @@
             "type": "text",
             "required": true,
             "default": "ALL",
-            "controlled.options": ["ALL","Art & Architecture Stacks","Asian Studies Stacks","Business Stacks","Children & Young Adult Stacks","Earth Sciences Stacks","Closed Stacks - Engineering, Math, Physics Stacks","Map Library Stacks","Media Stacks","Music Stacks","Norlin Stacks","Reference Stacks","Science Stacks"]
+            "controlled.options": ["ALL","Art & Architecture Stacks","Asian Studies Stacks","Business Stacks","Children & Young Adult Stacks","Earth Sciences Stacks","Engineering, Math, Physics Stacks","Map Library Stacks","Media Stacks","Music Stacks","Norlin Stacks","Reference Stacks","Science Stacks"]
         }   
     ]
 }

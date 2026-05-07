@@ -1,0 +1,43 @@
+{
+    "displayName": "Item Check-In/Check-Out Notes",
+    "description": "Generates a list of materials with their check-in or check-out notes. (These are the pop-up notes that appear upon a check-in or check-out action, and they live on the item record under 'Loan and availability.') Data includes: Item location, barcode, material type, note type, note date, note contents.",
+    "instructions": "Required filters: note type and date range. Optional filters: material type and item location. Click the Submit button to run the report, and wait for completion. Export the CSV using the button to the upper right once the report has generated (may be required if results exceed 1,000).",
+    "parameters": [
+    	{
+            "name": "note_type",
+            "displayName": "Circ Note Type",
+            "type": "text",
+            "required": true,
+            "default": "",
+            "controlled.options": ["Check in","Check out"]
+        },
+        {
+            "name": "material_type",
+            "displayName": "Material Type",
+            "type": "text",
+            "required": false,
+            "default": "",
+            "controlled.options": ["3 Day Tech Items", "3D item 3 day loan", "3D item 4 hour loan", "3D item semester loan", "4 Hour Tech Items", "7 Day Loan", "AMRC PASCAL", "Artworks", "audiocassette", "book", "Book, no Prospector", "Brakhage Films", "cd-rom", "computer disk", "document", "dvd", "DVD, conversion from VHS", "DVD: No Prospector", "DVD: Prospector", "film reel", "filmstrip", "Flash Drive", "Gov Pub Special", "Hotspot", "iClicker", "iClicker Kit", "journal", "Key", "Laptop", "Laserdisc", "laserdisk", "lebowitz collection", "Lock", "LP", "map", "MELL", "microfiche", "microfilm", "Microfilm: Prospector", "microprint", "Misc Tech/Supply", "Mona", "Music Gindes Collection", "Music Scores Limited Use", "Music Spec Coll PASCAL", "Newspaper", "Park Pass", "Reference Circulating Collection", "Reserves", "score", "Slide", "sound Recording", "Sound recordings - No Prospector", "SPC & ARV PASCAL", "Standards", "text", "Thesis", "unspecified", "VHS video", "video recording"]
+        },
+        {
+            "name": "item_location",
+            "displayName": "Item Location",
+            "type": "text",
+            "required": false,
+            "default": "ALL",
+            "controlled.options": ["ALL","ALTEC", "Archives", "Archives AMRC", "Archives Brakhage", "Archives Cambell", "Archives Historical", "Archives Mazal", "Archives Mazal OV", "Archives Music", "Archives OV", "Archives Ref", "Archives Stacks", "Archives Storage", "Archives Uni Pub", "Art & Achitecture Storage", "Art & Architecture", "Art & Architecture Office", "Art & Architecture OV", "Art & Architecture Ref", "Art & Architecture Stacks", "Asian Studies", "Asian Studies Circ Ref", "Asian Studies Office", "Asian Studies OV", "Asian Studies Periodicals", "Asian Studies Ref", "Asian Studies Ref OV", "Asian Studies Stacks", "Asian Studies Storage", "Business Library", "Business Microform", "Business New Books", "Business OV", "Business Popular Reading", "Business Ref", "Business Reserves", "Business Reserves 24Hr", "Business Reserves 2hr", "Business Reserves 4Hr", "Business Reserves 72H", "Business Serials", "Business Stacks", "Business Storage", "Children & Young Adult Stacks", "Children's & Young Adult Collection", "Children's & Young Adult Oversize", "Dean's Office", "Earth Sciences & Map Library", "Earth Sciences CDROM", "Earth Sciences Display", "Earth Sciences Microform", "Earth Sciences OV", "Earth Sciences Ref", "Earth Sciences Reserves", "Earth Sciences Reserves 24Hr", "Earth Sciences Reserves 2Hr", "Earth Sciences Reserves 4h", "Earth Sciences Reserves 72H", "Earth Sciences Stacks", "Earth Sciences Storage", "Earth Sciences Thesis", "EMP Gov Pub", "En Route To PASCAL", "En Route to PASCAL Reading Room", "Engineering Math & Physics Library", "Engineering Math & Physics Library - Popular Reading", "Engineering, Math, & Physics Library Reserves 2H", "Engineering, Math, & Physics Reserves", "Engineering, Math, & Physics Reserves 24H", "Engineering, Math, & Physics Reserves 4H", "Engineering, Math, & Physics Reserves 72H", "Engineering, Math, Physics Materials", "Engineering, Math, Physics Office", "Engineering, Math, Physics OV", "Engineering, Math, Physics Stacks", "Engineering, Math, Physics Standards", "Engineering, Math, Physics Storage", "Faculty Study Carrels", "Gov Info", "Gov Info Basement Colorado", "Gov Info Basement Foreign", "Gov Info Basement OV", "Gov Info Basement State", "Gov Info Basement US", "Gov Info Display", "Gov Info Grotto", "Gov Info International", "Gov Info International OV", "Gov Info Map Case", "Gov Info McGov", "Gov Info Microform", "Gov Info Office", "Gov Info OV", "Gov Info Ref", "Gov Info Storage", "Gov Info Teaching Collection", "Gov Info UN", "Gov Info US", "Grad Carrels", "ILL Stacks", "Juvenile Books", "Map Library", "Map Library Ask Library Staff", "Map Library Atlas", "Map Library Data", "Map Library Geology Folio", "Map Library Map Books", "Map Library OV", "Map Library Ref", "Map Library Reserves", "Map Library South Wall", "Map Library Stacks", "Map Library Storage", "Map Library USGS Topo", "Media", "Media Archeology Lab", "Media Film Studies", "Media Stacks", "Music", "Music Closed Stacks", "Music Closed Stacks Audio", "Music Closed Stacks OV", "Music Library Reserves 24H", "Music Library Reserves 2H", "Music Library Reserves 4H", "Music Library Reserves 72H", "Music Microform", "Music Miniature", "Music Office", "Music OV", "Music Ref", "Music Reserves", "Music Stacks", "MUSIC Storage", "NOR Stacks", "Norlin AAL Desk", "Norlin Artwork Collection", "Norlin Basement", "Norlin DVD", "Norlin East Desk", "Norlin General", "Norlin Library – CU Authors Research Display", "Norlin Library – East Display Cart", "Norlin Library - Playscripts Collection", "Norlin Library – Research Area Display Cart", "Norlin Library – West Display Cart", "Norlin Mindfulness Room", "Norlin NUC Room", "Norlin OV", "Norlin Popular Reading Collection", "Norlin Reserves", "Norlin Reserves 24Hr", "Norlin Reserves 2Hr", "Norlin Reserves 4Hr", "Norlin Reserves 72Hr", "Norlin Reserves 8 Hr", "Norlin Sci Stacks", "Norlin Stacks", "Norlin Storage", "PASCAL", "PASCAL Cinema Studies", "PASCAL Prospector Test", "PASCAL Reading Room", "Periodicals Collection", "Periodicals OV", "Periodicals Stacks", "Periodicals Storage", "Prospector Stacks", "Rare Books - Midnight", "Rare Books - Photo Albums", "Rare Books Annex", "Rare Books Bailey", "Rare Books Bailey OV 1", "Rare Books Bailey OV 2", "Rare Books Book Arts", "Rare Books Book Arts OV 1", "Rare Books Book Arts OV 2", "Rare Books Collection", "Rare Books Creamer", "Rare Books Creighton", "Rare Books Creighton OV 1", "Rare Books Creighton OV 2", "Rare Books DePuy", "Rare Books Hayes", "Rare Books Historical Children's & YA", "Rare Books Lippard", "Rare Books Lippard OV 1", "Rare Books Lippard OV 2", "Rare Books Map 1", "Rare Books Map 2", "Rare Books Nilon", "Rare Books Nilon OV", "Rare Books OV 1", "Rare Books OV 2", "Rare Books Photo Portfolio", "Rare Books Plume", "Rare Books Plume OV", "Rare Books Publisher's Bindings", "Rare Books Realia", "Rare Books Ref", "Rare Books Scuba", "Rare Books Scuba OV 1", "Rare Books Stacks", "Rare Books Storage", "Rare Books Transfers from Music", "Rare Books Wolff", "Rare Books Wolff OV", "Rare Books Wolff Viewbooks", "Reference", "Reference Atlas Case", "Reference Circulating", "Reference Classroom", "Reference HRAF", "Reference Microform", "Reference Microform Guides", "Reference Office", "Reference OV", "Reference Stacks", "Reference Storage", "Science OV", "Science Ref", "Science Stacks", "Science Storage"]
+        },
+        {
+            "name": "start_date",
+            "displayName": "Start Date",
+            "type": "date",
+            "required": true
+        },
+        {
+            "name": "end_date",
+            "displayName": "End Date",
+            "type": "date",
+            "required": true
+        }   
+    ]
+}

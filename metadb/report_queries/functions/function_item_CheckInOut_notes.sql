@@ -6,8 +6,8 @@ create function item_CheckInOut_notes(
 	p_note_type text,
 	p_material_type text,
 	p_item_location text,
-	p_start_date date default '2000-01-01',
-	p_end_date date default '2999-01-01'
+	start_date date default '2000-01-01',
+	end_date date default '2999-01-01'
 )
 returns table(
 "Location Name" text,
@@ -31,7 +31,7 @@ left join folio_inventory.material_type__t mtt on mtt.id = (i.jsonb ->> 'materia
 cross join lateral jsonb_array_elements(i.jsonb -> 'circulationNotes') as cn
 where cn ->> 'noteType' = p_note_type
 	and case when p_material_type = 'ALL' then true else mtt.name = p_material_type end
-	and (cn ->> 'date')::date between p_start_date and p_end_date
+	and (cn ->> 'date')::date between start_date and end_date
 	and case when p_item_location = 'ALL' then true else (l.jsonb ->> 'name') = p_item_location end
 order by "Location Name", "Note Date"
 $$

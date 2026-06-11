@@ -31,13 +31,15 @@
             "name": "start_date",
             "displayName": "Start Date",
             "type": "date",
-            "required": false
+            "required": false,
+            "default": "2000-01-01"
         },
         {
             "name": "end_date",
             "displayName": "End Date",
             "type": "date",
-            "required": false
+            "required": false,
+            "default": "2999-01-01"
         }   
     ]
 }

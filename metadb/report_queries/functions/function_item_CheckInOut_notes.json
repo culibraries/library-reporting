@@ -1,7 +1,7 @@
 {
     "displayName": "Item Check-In/Check-Out Notes",
     "description": "Generates a list of materials with their check-in or check-out notes. (These are the pop-up notes that appear upon a check-in or check-out action, and they live on the item record under 'Loan and availability.') Data includes: Item location, barcode, material type, note type, note date, note contents.",
-    "instructions": "Required filters: note type and date range. Optional filters: material type and item location. Click the Submit button to run the report, and wait for completion. Export the CSV using the button to the upper right once the report has generated (may be required if results exceed 1,000).",
+    "instructions": "Required filters: note type. Optional filters: material type, item location, and date range. Click the Submit button to run the report, and wait for completion. Export the CSV using the button to the upper right once the report has generated (may be required if results exceed 1,000).",
     "parameters": [
     	{
             "name": "p_note_type",
@@ -31,13 +31,13 @@
             "name": "start_date",
             "displayName": "Start Date",
             "type": "date",
-            "required": true
+            "required": false
         },
         {
             "name": "end_date",
             "displayName": "End Date",
             "type": "date",
-            "required": true
+            "required": false
         }   
     ]
 }

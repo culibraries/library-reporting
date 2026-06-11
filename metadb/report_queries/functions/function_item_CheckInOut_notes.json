@@ -4,7 +4,7 @@
     "instructions": "Required filters: note type and date range. Optional filters: material type and item location. Click the Submit button to run the report, and wait for completion. Export the CSV using the button to the upper right once the report has generated (may be required if results exceed 1,000).",
     "parameters": [
     	{
-            "name": "note_type",
+            "name": "p_note_type",
             "displayName": "Circ Note Type",
             "type": "text",
             "required": true,
@@ -12,7 +12,7 @@
             "controlled.options": ["Check in","Check out"]
         },
         {
-            "name": "material_type",
+            "name": "p_material_type",
             "displayName": "Material Type",
             "type": "text",
             "required": false,
@@ -20,7 +20,7 @@
             "controlled.options": ["ALL", "3 Day Tech Items", "3D item 3 day loan", "3D item 4 hour loan", "3D item semester loan", "4 Hour Tech Items", "7 Day Loan", "AMRC PASCAL", "Artworks", "audiocassette", "book", "Book, no Prospector", "Brakhage Films", "cd-rom", "computer disk", "document", "dvd", "DVD, conversion from VHS", "DVD: No Prospector", "DVD: Prospector", "film reel", "filmstrip", "Flash Drive", "Gov Pub Special", "Hotspot", "iClicker", "iClicker Kit", "journal", "Key", "Laptop", "Laserdisc", "laserdisk", "lebowitz collection", "Lock", "LP", "map", "MELL", "microfiche", "microfilm", "Microfilm: Prospector", "microprint", "Misc Tech/Supply", "Mona", "Music Gindes Collection", "Music Scores Limited Use", "Music Spec Coll PASCAL", "Newspaper", "Park Pass", "Reference Circulating Collection", "Reserves", "score", "Slide", "sound Recording", "Sound recordings - No Prospector", "SPC & ARV PASCAL", "Standards", "text", "Thesis", "unspecified", "VHS video", "video recording"]
         },
         {
-            "name": "item_location",
+            "name": "p_item_location",
             "displayName": "Item Location",
             "type": "text",
             "required": false,

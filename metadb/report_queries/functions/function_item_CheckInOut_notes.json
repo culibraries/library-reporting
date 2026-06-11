@@ -8,6 +8,7 @@
             "displayName": "Circ Note Type",
             "type": "text",
             "required": true,
+            "default": "Check in",
             "controlled.options": ["Check in","Check out"]
         },
         {

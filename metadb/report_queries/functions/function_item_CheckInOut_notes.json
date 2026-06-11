@@ -8,7 +8,6 @@
             "displayName": "Circ Note Type",
             "type": "text",
             "required": true,
-            "default": "",
             "controlled.options": ["Check in","Check out"]
         },
         {

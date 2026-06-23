@@ -1,0 +1,6 @@
+{
+    "displayName": "Cataloging - In-Process Items with Open Holds (Includes null barcodes)",
+    "description": "Returns a list of all items that are in process and have open requests.",
+    "instructions": "Click Submit button to run list.",
+    "parameters": []
+}

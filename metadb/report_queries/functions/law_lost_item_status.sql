@@ -1,8 +1,8 @@
---metadb:function law_function_lost_item_status
+--metadb:function law_lost_item_status
 
-drop function if exists law_function_lost_item_status(text);
+drop function if exists law_lost_item_status;
 
-create function law_function_lost_item_status()
+create function law_lost_item_status()
 returns table(
 instance_hrid text  
 )  
@@ -24,7 +24,7 @@ or ie.status_name = 'Missing'
 or ie.status_name = 'Aged%'
 or ie.status_name = 'Declared lost'
 or ie.status_name = 'Claimed returned')
-and ie.effective_location_name like 'Law%'	
+and ie.effective_location_name like 'Law%';	
 $$
 language sql 
 stable 

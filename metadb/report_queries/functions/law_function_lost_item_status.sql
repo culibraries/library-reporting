@@ -1,6 +1,6 @@
 --metadb:function law_function_lost_item_status
 
-drop function if exists law_function_lost_item_status;
+drop function if exists law_function_lost_item_status(text);
 
 create function law_function_lost_item_status()
 returns table(

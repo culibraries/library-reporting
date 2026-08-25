@@ -1,6 +1,6 @@
 {
     "displayName": "Law Books Marked Available in Restricted Locations",
-    "description": "Finds items that are marked "available" in locations that should have statuses of "restricted."
+    "description": "Finds items that are marked available in locations that should have statuses of restricted.
     "instructions": "Click Submit button to run current report.",
     "parameters": []
 }

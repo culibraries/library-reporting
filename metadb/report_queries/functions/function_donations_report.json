@@ -26,6 +26,6 @@
 	            "displayName": "End Date",
 	            "type": "date",
 	            "required": false
-	        },
+	        }
 	    ]
 	}

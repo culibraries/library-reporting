@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS donations_report;
 
 CREATE FUNCTION donations_report(
     p_donor_name text,
-    p_language text,
+    p_language text DEFAULT '',
     start_date date DEFAULT '2000-01-01',
     end_date date DEFAULT '2999-01-01'
     )

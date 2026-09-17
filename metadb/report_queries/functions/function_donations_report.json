@@ -1,7 +1,7 @@
 {
 	"displayName": "Donations Report by Donor",
 	"description": "Generates a list of items donated according to donor or collection name entered. Filters for material language and cataloged date range. Provides OCLC #, hrid, donor/collection note (from MARC field 541), cataloged date, language code, call number, barcode, title, standard numbers (ISBN, ISSN, other).",
-	"instructions": "Enter a donor's name (surname/succinct is best), and optionally enter the material language and/or cataloged date range. Search is NOT case-sensitive.",
+	"instructions": "Enter a donor or collection name (surname/succinct is best), and optionally enter the material language and/or cataloged date range. Search is NOT case-sensitive.",
 	"parameters": [
 		{
 			"name": "p_donor_name",

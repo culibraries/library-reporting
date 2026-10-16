@@ -1,6 +1,6 @@
 {
     "displayName": "In-Process Items",
     "description": "Returns a list of all items with a status of 'In-process,' ordered by the status date.",
-    "instructions": "Click Submit button to run list. Long list may take time to generate. Once generated, click CSV button to export full list.",
+    "instructions": "Click Submit button to run list. Once generated, click Excel button to export full list.",
     "parameters": []
 }

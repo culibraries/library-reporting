@@ -1,0 +1,6 @@
+{
+    "displayName": "Materials Mgmt - CU Authors Report",
+    "description": "Returns a list of all items marked CU Boulder Author in MARC field 730.",
+    "instructions": "Click Submit button to run list.",
+    "parameters": []
+}
